@@ -1,3 +1,14 @@
 apiVersion: v1
-entries: {}
-generated: "2022-05-08T22:17:38.0038465-06:00"
+entries:
+  application:
+  - apiVersion: v2
+    appVersion: 0.0.1
+    created: "2022-05-09T05:04:39.521959723Z"
+    description: A Helm chart for Kubernetes
+    digest: b31d4c89fe66c104249a47d1f8d5a57d75f0691821adcf5c8edcc6f8aceb86b9
+    name: application
+    type: application
+    urls:
+    - https://github.com/massdriver-cloud/helm-charts/releases/download/application-0.0.1/application-0.0.1.tgz
+    version: 0.0.1
+generated: "2022-05-09T05:04:39.521964723Z"
