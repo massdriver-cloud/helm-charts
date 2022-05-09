@@ -2,8 +2,6 @@
 
 [![Artifact HUB](https://img.shields.io/endpoint?url=https://artifacthub.io/badge/repository/massdriver-cloud)](https://artifacthub.io/packages/search?repo=massdriver-cloud)
 
-The code is provided as-is with no warranties.
-
 ## Usage
 
 [Helm](https://helm.sh) must be installed to use the charts.
