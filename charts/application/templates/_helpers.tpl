@@ -49,7 +49,7 @@ app.kubernetes.io/name: {{ include "application.name" . }}
 {{- end }}
 
 {{/*
-Create the name of the service account to use
+Create the name of the service account to use.
 */}}
 {{- define "application.serviceAccountName" -}}
 {{- if .Values.serviceAccount.create }}
