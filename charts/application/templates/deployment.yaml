@@ -51,10 +51,15 @@ spec:
           readinessProbe:
             {{- toYaml .Values.readinessProbe | nindent 12 }}
           {{- end }}
-          {{- with $.Values.resources }}
           resources:
-            {{- toYaml $.Values.resources | nindent 12 }}
-          {{- end }}
+            {{- with $.Values.resource_requests }}
+            requests:
+              {{- toYaml $.Values.resource_requests | nindent 14 }}
+            {{- end }}
+            {{- with $.Values.resource_limits }}
+            limits:
+              {{- toYaml $.Values.resource_limits | nindent 14 }}
+            {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

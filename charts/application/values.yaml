@@ -15,7 +15,8 @@ serviceAccount:
   annotations: {}
   name: ''
 
-resources: {}
+resource_requests: {}
+resource_limits: {}
 
 autoscaling:
   enabled: true
