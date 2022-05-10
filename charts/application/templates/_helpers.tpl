@@ -47,14 +47,3 @@ Selector labels
 {{- define "application.selectorLabels" -}}
 app.kubernetes.io/name: {{ include "application.name" . }}
 {{- end }}
-
-{{/*
-Create the name of the service account to use.
-*/}}
-{{- define "application.serviceAccountName" -}}
-{{- if .Values.serviceAccount.create }}
-{{- default (include "application.fullname" .) .Values.serviceAccount.name }}
-{{- else }}
-{{- default "default" .Values.serviceAccount.name }}
-{{- end }}
-{{- end }}
