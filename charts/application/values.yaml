@@ -25,12 +25,16 @@ autoscaling:
   targetCPUUtilizationPercentage: 80
 
 ingress:
+  annotations: {}
   enabled: true
+  className: nginx
   host: www.example.com
   path: /path
 
 aws:
   enabled: false
+
+
 # imagePullSecrets: []
 # nameOverride: ""
 # fullnameOverride: ""
