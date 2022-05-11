@@ -32,7 +32,9 @@ ingress:
   path: /path
 
 aws:
-  enabled: false
+  securityGroup:
+    enabled: false
+    id: ""
 
 
 # imagePullSecrets: []

@@ -1,5 +1,5 @@
-{{- if and .Values.aws.enabled .Values.aws.securityGroupId -}}
-{{- $securityGroupId := .Values.aws.securityGroupId -}}
+{{- if and .Values.aws.securityGroup.enabled .Values.aws.securityGroup.id -}}
+{{- $securityGroupId := .Values.aws.securityGroup.id -}}
 apiVersion: vpcresources.k8s.aws/v1beta1
 kind: SecurityGroupPolicy
 metadata:
