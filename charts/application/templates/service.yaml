@@ -4,7 +4,7 @@ kind: Service
 metadata:
   name: {{ include "application.fullname" . }}
   labels:
-    # {{- include "application.labels" . | nindent 4 }}
+    {{- include "application.labels" . | nindent 4 }}
     app.kubernetes.io/name: {{ include "application.fullname" . }}
 spec:
   type: ClusterIP
@@ -13,6 +13,6 @@ spec:
       targetPort: {{ .Values.port }}
       protocol: TCP
   selector:
-    # {{- include "application.selectorLabels" . | nindent 4 }}
+    {{- include "application.selectorLabels" . | nindent 4 }}
     app.kubernetes.io/name: {{ include "application.fullname" . }}
 {{- end }}

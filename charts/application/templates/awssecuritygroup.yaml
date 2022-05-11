@@ -1,0 +1,18 @@
+{{- if and .Values.aws.enabled .Values.aws.securityGroupId -}}
+{{- $securityGroupId := .Values.aws.securityGroupId -}}
+apiVersion: vpcresources.k8s.aws/v1beta1
+kind: SecurityGroupPolicy
+metadata:
+  name: {{ include "application.fullname" . }}
+  labels:
+    {{- include "application.labels" . | nindent 4 }}
+    app.kubernetes.io/name: {{ include "application.fullname" . }}
+spec:
+  podSelector: 
+    matchLabels:
+      {{- include "application.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/name: {{ include "application.fullname" . }}
+  securityGroups:
+    groupIds:
+      - {{ $securityGroupId }}
+{{- end }}

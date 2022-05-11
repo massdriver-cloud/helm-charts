@@ -28,6 +28,9 @@ ingress:
   enabled: true
   host: www.example.com
   path: /path
+
+aws:
+  enabled: false
 # imagePullSecrets: []
 # nameOverride: ""
 # fullnameOverride: ""
