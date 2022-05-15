@@ -4,7 +4,6 @@ metadata:
   name: {{ include "application.fullname" . }}
   labels:
     {{- include "application.labels" . | nindent 4 }}
-    app.kubernetes.io/name: {{ include "application.fullname" . }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
@@ -12,7 +11,6 @@ spec:
   selector:
     matchLabels:
       {{- include "application.selectorLabels" . | nindent 6 }}
-      app.kubernetes.io/name: {{ include "application.fullname" . }}
   template:
     metadata:
       {{- with .Values.podAnnotations }}
@@ -21,7 +19,6 @@ spec:
       {{- end }}
       labels:
         {{- include "application.selectorLabels" . | nindent 8 }}
-        app.kubernetes.io/name: {{ include "application.fullname" . }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
