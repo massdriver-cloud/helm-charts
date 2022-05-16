@@ -6,12 +6,10 @@ metadata:
   name: {{ include "application.fullname" . }}
   labels:
     {{- include "application.labels" . | nindent 4 }}
-    app.kubernetes.io/name: {{ include "application.fullname" . }}
 spec:
   podSelector: 
     matchLabels:
       {{- include "application.selectorLabels" . | nindent 6 }}
-      app.kubernetes.io/name: {{ include "application.fullname" . }}
   securityGroups:
     groupIds:
       - {{ $securityGroupId }}
