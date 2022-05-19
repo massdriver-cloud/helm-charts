@@ -2,6 +2,16 @@ apiVersion: v1
 entries:
   application:
   - apiVersion: v2
+    appVersion: 0.0.3
+    created: "2022-05-19T21:12:03.113935562Z"
+    description: A Helm chart for Kubernetes
+    digest: 95bb42dbb8eddb3628bd89b2023d1e31186f97fe9913680397d097d776fd3c21
+    name: application
+    type: application
+    urls:
+    - https://github.com/massdriver-cloud/helm-charts/releases/download/application-0.0.3/application-0.0.3.tgz
+    version: 0.0.3
+  - apiVersion: v2
     appVersion: 0.0.2
     created: "2022-05-16T16:19:46.419184791Z"
     description: A Helm chart for Kubernetes
@@ -21,4 +31,4 @@ entries:
     urls:
     - https://github.com/massdriver-cloud/helm-charts/releases/download/application-0.0.1/application-0.0.1.tgz
     version: 0.0.1
-generated: "2022-05-16T16:19:46.419193191Z"
+generated: "2022-05-19T21:12:03.113951862Z"
