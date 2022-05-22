@@ -13,10 +13,6 @@ spec:
       {{- include "application.selectorLabels" . | nindent 6 }}
   template:
     metadata:
-      {{- with .Values.podAnnotations }}
-      annotations:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
       labels:
         {{- include "application.selectorLabels" . | nindent 8 }}
     spec:
@@ -25,19 +21,33 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       serviceAccountName: {{ include "application.fullname" . }}
+      {{- with .Values.podSecurityContext }}
       securityContext:
-        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       {{- if and .Values.aws.securityGroup.enabled .Values.aws.securityGroup.id }}
       terminationGracePeriodSeconds: 120
       {{- end }}
       containers:
-        - name: {{ .Chart.Name }}
+        - name: {{ include "application.fullname" . }}
+          {{- with .Values.securityContext }}
           securityContext:
-            {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: Always
+          {{- with .Values.command }}
+          command:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.args }}
+          args:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.envs }}
           env:
-            {{- toYaml .Values.envs | nindent 12 }}
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
           {{- if .Values.port }}
           ports:
             - containerPort: {{ .Values.port }}
@@ -52,13 +62,13 @@ spec:
             {{- toYaml .Values.readinessProbe | nindent 12 }}
           {{- end }}
           resources:
-            {{- with $.Values.resource_requests }}
+            {{- with .Values.resourceRequests }}
             requests:
-              {{- toYaml $.Values.resource_requests | nindent 14 }}
+              {{- toYaml . | nindent 14 }}
             {{- end }}
-            {{- with $.Values.resource_limits }}
+            {{- with .Values.resourceLimits }}
             limits:
-              {{- toYaml $.Values.resource_limits | nindent 14 }}
+              {{- toYaml . | nindent 14 }}
             {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
