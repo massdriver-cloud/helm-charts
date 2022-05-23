@@ -1,6 +1,25 @@
 apiVersion: v1
 entries:
+  adhoc-job:
+  - apiVersion: v2
+    created: "2022-05-23T00:34:34.772113696Z"
+    description: A Helm chart for Kubernetes
+    digest: 4f9c9c13533a1b1e68c239f7e24fe57a87eae011415f8d7b3e86dbbba216912b
+    name: adhoc-job
+    type: application
+    urls:
+    - https://github.com/massdriver-cloud/helm-charts/releases/download/adhoc-job-0.1.0/adhoc-job-0.1.0.tgz
+    version: 0.1.0
   application:
+  - apiVersion: v2
+    created: "2022-05-23T00:34:34.911565734Z"
+    description: A Helm chart for Kubernetes
+    digest: d7533d804cec45d30e6e64b012359ddccbead0c18e7112da9f966202fda64587
+    name: application
+    type: application
+    urls:
+    - https://github.com/massdriver-cloud/helm-charts/releases/download/application-0.0.4/application-0.0.4.tgz
+    version: 0.0.4
   - apiVersion: v2
     appVersion: 0.0.3
     created: "2022-05-19T21:12:03.113935562Z"
@@ -31,4 +50,14 @@ entries:
     urls:
     - https://github.com/massdriver-cloud/helm-charts/releases/download/application-0.0.1/application-0.0.1.tgz
     version: 0.0.1
-generated: "2022-05-19T21:12:03.113951862Z"
+  scheduled-job:
+  - apiVersion: v2
+    created: "2022-05-23T00:34:35.127299695Z"
+    description: A Helm chart for Kubernetes
+    digest: 5d547e756de13d751baebaaa080dedf8e1050811c713081effbebbb10f41e29b
+    name: scheduled-job
+    type: application
+    urls:
+    - https://github.com/massdriver-cloud/helm-charts/releases/download/scheduled-job-0.1.0/scheduled-job-0.1.0.tgz
+    version: 0.1.0
+generated: "2022-05-23T00:34:35.127320895Z"
