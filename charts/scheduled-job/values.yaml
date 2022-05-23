@@ -1,3 +1,9 @@
+concurrencyPolicy:
+schedule:
+
+completions:
+parallelism:
+
 image:
   repository:
   tag:
@@ -6,7 +12,6 @@ command: []
 args: []
 
 envs: []
-port: 
 
 serviceAccount:
   annotations: {}
@@ -14,20 +19,6 @@ serviceAccount:
 
 resourceRequests: {}
 resourceLimits: {}
-
-replicaCount:
-autoscaling:
-  enabled: false
-  minReplicas:
-  maxReplicas:
-  targetCPUUtilizationPercentage:
-
-ingress:
-  annotations: {}
-  enabled: false
-  className:
-  host:
-  path:
 
 labels: {}
 
@@ -41,5 +32,3 @@ aws:
 # tolerations: []
 
 # affinity: {}
-
-
