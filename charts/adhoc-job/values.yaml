@@ -19,11 +19,6 @@ resourceLimits: {}
 
 labels: {}
 
-aws:
-  securityGroup:
-    enabled: false
-    id:
-
 # nodeSelector: {}
 
 # tolerations: []

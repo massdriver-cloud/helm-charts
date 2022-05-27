@@ -25,9 +25,6 @@ spec:
       securityContext:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- if and .Values.aws.securityGroup.enabled .Values.aws.securityGroup.id }}
-      terminationGracePeriodSeconds: 120
-      {{- end }}
       containers:
         - name: {{ include "application.fullname" . }}
           {{- with .Values.securityContext }}
