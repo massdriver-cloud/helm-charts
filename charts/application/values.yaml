@@ -5,8 +5,10 @@ image:
 command: []
 args: []
 
-envs: []
-port: 
+# specify your environment variables!
+# default this is commented-out in case you don't have any
+# envs: []
+port:
 
 serviceAccount:
   annotations: {}

@@ -44,9 +44,9 @@ spec:
           args:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-          {{- with .Values.envs }}
+          {{- if .Values.envs }}
           env:
-            {{- toYaml . | nindent 12 }}
+            {{- toYaml .Values.envs | nindent 12 }}
           {{- end }}
           {{- if .Values.port }}
           ports:
