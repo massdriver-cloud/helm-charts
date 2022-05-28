@@ -36,13 +36,13 @@ spec:
           {{- end }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: Always
-          {{- with .Values.command }}
+          {{ if .Values.entrypoint }}
           command:
-            {{- toYaml . | nindent 12 }}
+            {{- toYaml .Values.entrypoint | nindent 12 }}
           {{- end }}
-          {{- with .Values.args }}
+          {{- if .Values.cmd }}
           args:
-            {{- toYaml . | nindent 12 }}
+            {{- toYaml .Values.cmd | nindent 12 }}
           {{- end }}
           {{- with .Values.envs }}
           env:

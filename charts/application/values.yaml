@@ -2,11 +2,15 @@ image:
   repository:
   tag:
 
-command: []
-args: []
+# k8s uses 'command' but Docker images call this ENTRYPOINT
+# k8s uses 'args' but Docker images call this CMD
+# both are commented out so the
+# container ENTRYPOINT / CMD is used by default
+# entrypoint: []
+# cmd: []
 
 envs: []
-port: 
+port:
 
 serviceAccount:
   annotations: {}
