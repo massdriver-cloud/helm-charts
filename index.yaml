@@ -2,6 +2,15 @@ apiVersion: v1
 entries:
   adhoc-job:
   - apiVersion: v2
+    created: "2022-05-30T19:01:55.353386678Z"
+    description: A Helm chart for Kubernetes
+    digest: c0f801a72bdacfabcca1c5bded16d591465841e22e231281401426f011bbba9d
+    name: adhoc-job
+    type: application
+    urls:
+    - https://github.com/massdriver-cloud/helm-charts/releases/download/adhoc-job-0.1.1/adhoc-job-0.1.1.tgz
+    version: 0.1.1
+  - apiVersion: v2
     created: "2022-05-23T00:34:34.772113696Z"
     description: A Helm chart for Kubernetes
     digest: 4f9c9c13533a1b1e68c239f7e24fe57a87eae011415f8d7b3e86dbbba216912b
@@ -11,6 +20,15 @@ entries:
     - https://github.com/massdriver-cloud/helm-charts/releases/download/adhoc-job-0.1.0/adhoc-job-0.1.0.tgz
     version: 0.1.0
   application:
+  - apiVersion: v2
+    created: "2022-05-30T19:01:55.472223259Z"
+    description: A Helm chart for Kubernetes
+    digest: cb6e13f8df28ac61c543c22c171d7f533dd7d81cd1ce4533d0c607829b18a364
+    name: application
+    type: application
+    urls:
+    - https://github.com/massdriver-cloud/helm-charts/releases/download/application-0.0.5/application-0.0.5.tgz
+    version: 0.0.5
   - apiVersion: v2
     created: "2022-05-23T00:34:34.911565734Z"
     description: A Helm chart for Kubernetes
@@ -52,6 +70,15 @@ entries:
     version: 0.0.1
   scheduled-job:
   - apiVersion: v2
+    created: "2022-05-30T19:01:55.585430727Z"
+    description: A Helm chart for Kubernetes
+    digest: 8c940023e4660969d14bef8071f8163e886b3c0b2f5b7e919976a83fa2e0b20c
+    name: scheduled-job
+    type: application
+    urls:
+    - https://github.com/massdriver-cloud/helm-charts/releases/download/scheduled-job-0.1.1/scheduled-job-0.1.1.tgz
+    version: 0.1.1
+  - apiVersion: v2
     created: "2022-05-23T00:34:35.127299695Z"
     description: A Helm chart for Kubernetes
     digest: 5d547e756de13d751baebaaa080dedf8e1050811c713081effbebbb10f41e29b
@@ -60,4 +87,4 @@ entries:
     urls:
     - https://github.com/massdriver-cloud/helm-charts/releases/download/scheduled-job-0.1.0/scheduled-job-0.1.0.tgz
     version: 0.1.0
-generated: "2022-05-23T00:34:35.127320895Z"
+generated: "2022-05-30T19:01:55.585612827Z"
