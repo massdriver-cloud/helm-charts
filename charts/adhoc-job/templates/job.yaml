@@ -8,14 +8,12 @@ spec:
   completions: {{ .Values.completions }}
   parallelism: {{ .Values.parallelism }}
   ttlSecondsAfterFinished: 300
-  selector:
-    matchLabels:
-      {{- include "adhoc-job.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       labels:
         {{- include "adhoc-job.selectorLabels" . | nindent 8 }}
     spec:
+      restartPolicy: OnFailure
       serviceAccountName: {{ include "adhoc-job.fullname" . }}
       {{- with .Values.podSecurityContext }}
       securityContext:
