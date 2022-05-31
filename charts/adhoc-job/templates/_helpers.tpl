@@ -1,9 +1,9 @@
 {{/*
-Since this is a generic chart, Release is the only field relevant to naming
+Since this is a template chart, the chart name will be filled in by the user and is the primary naming field.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 */}}
 {{- define "adhoc-job.fullname" -}}
-{{- .Release.Name | trunc 63 | trimSuffix "-" }}
+{{- .Chart.Name | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{- define "adhoc-job.timestamp" -}}
@@ -11,7 +11,7 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 {{- end }}
 
 {{- define "adhoc-job.timestamped-name" -}}
-{{- printf "%s-%s" .Release.Name (include "adhoc-job.timestamp" . ) | replace "+" "_" | trunc 63 | trimSuffix "-" }}
+{{- printf "%s-%s" .Chart.Name (include "adhoc-job.timestamp" . ) | replace "+" "_" | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
@@ -36,5 +36,5 @@ app.kubernetes.io/managed-by: massdriver.cloud
 Selector labels
 */}}
 {{- define "adhoc-job.selectorLabels" -}}
-app.kubernetes.io/name: {{ .Release.Name }}
+app.kubernetes.io/name: {{ .Chart.Name }}
 {{- end }}
