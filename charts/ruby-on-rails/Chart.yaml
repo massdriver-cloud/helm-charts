@@ -6,5 +6,4 @@ description: |
   This chart runs a kubernetes deployment, service and migration job.
 
 type: application
-version: 0.0.1
-appVersion: 0.0.1
+version: 0.0.2
