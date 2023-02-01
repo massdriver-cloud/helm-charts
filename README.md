@@ -30,3 +30,9 @@ To uninstall the chart:
 ```shell
 helm delete my-<chart-name>
 ```
+
+## Contributing
+
+A `gh-pages` branch is managed for publishing helm charts to artifact hub. This branch does not need to contain `./charts` as it is only maintained for artifact hub integration and generating the static repository.
+
+From time to time files need to be synced (artifacthub-repo.yml, README.md, .github). Please ensure that only the necessary files are added to this branch.
