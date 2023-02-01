@@ -1,19 +1,10 @@
 apiVersion: v2
 name: ruby-on-rails
-description: Ruby on Rails generic helm chart.
+description: |
+  A getting started helm chart for running a ruby-on-rails application.
 
-# A chart can be either an 'application' or a 'library' chart.
-#
-# Application charts are a collection of templates that can be packaged into versioned archives
-# to be deployed.
-#
-# Library charts provide useful utilities or functions for the chart developer. They're included as
-# a dependency of application charts to inject those utilities and functions into the rendering
-# pipeline. Library charts do not define any templates and therefore cannot be deployed.
+  This chart runs a kubernetes deployment, service and migration job.
+
 type: application
-
-# This is the chart version. This version number should be incremented each time you make changes
-# to the chart and its templates, including the app version.
-# Versions are expected to follow Semantic Versioning (https://semver.org/)
 version: 0.0.1
 appVersion: 0.0.1

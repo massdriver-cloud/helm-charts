@@ -35,7 +35,7 @@ spec:
           imagePullPolicy: Always
           envFrom:
             - secretRef:
-                name: {{ include "application.fullname" . }}          
+                name: {{ include "application.fullname" . }}     
           {{- with .Values.command }}
           command:
             {{- toYaml . | nindent 12 }}
