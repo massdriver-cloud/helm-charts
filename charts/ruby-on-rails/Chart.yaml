@@ -6,4 +6,21 @@ description: |
   This chart runs a kubernetes deployment, service and migration job.
 
 type: application
-version: 0.0.4
+version: 0.0.5
+icon: https://raw.githubusercontent.com/massdriver-cloud/helm-charts/main/charts/ruby-on-rails/icon.png
+maintainers:
+  - name: coryodaniel
+    email: cory@massdriver.cloud
+sources:
+  - https://github.com/massdriver-cloud/helm-charts
+kubeVersion: ">=1.16.0-0"
+home: https://github.com/massdriver-cloud/helm-charts
+keywords:
+  - ruby-on-rails
+  - ruby
+  - rails
+annotations:
+  "artifacthub.io/license": MIT License
+  "artifacthub.io/links": |
+    - name: Chart Source
+      url: https://github.com/massdriver-cloud/helm-charts
