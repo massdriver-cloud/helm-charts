@@ -2,7 +2,7 @@ image:
   repository:
   tag:
 
-command: ["bash", "-c"]
+command: ["./entrypoint.sh"]
 args: ["bundle", "exec", "rails", "server"]
 
 envs: []
