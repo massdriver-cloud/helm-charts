@@ -6,7 +6,7 @@ description: |
   This chart runs a kubernetes deployment, service and migration job.
 
 type: application
-version: 0.0.5
+version: 0.0.6
 icon: https://raw.githubusercontent.com/massdriver-cloud/helm-charts/main/charts/ruby-on-rails/icon.png
 maintainers:
   - name: coryodaniel
