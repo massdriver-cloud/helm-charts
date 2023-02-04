@@ -13,6 +13,7 @@ repositoryID: 01cd9a1d-2c1d-4260-bdf3-535ddc3e2e02
 owners:
   - name: coryodaniel
     email: cory@coryodaniel.com
+  - name: massdriver
 # ignore: # (optional, packages that should not be indexed by Artifact Hub)
 #   - name: package1
 #   - name: package2 # Exact match
