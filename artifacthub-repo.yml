@@ -1,5 +1,5 @@
 repositoryID: 01cd9a1d-2c1d-4260-bdf3-535ddc3e2e02
-# owners:
-# - name: coryodaniel
-#   email: cory@coryodaniel.com
-# - name: massdriver
+owners:
+  - name: coryodaniel
+    email: cory@coryodaniel.com
+  - name: massdriver
