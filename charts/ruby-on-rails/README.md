@@ -2,4 +2,40 @@
 
 A getting started helm chart for running a ruby-on-rails application.
 
-This chart runs a kubernetes deployment, service and migration job.
+## Kubernetes Resources
+
+This chart runs creates a number of Kubernetes resources:
+
+**deployment**
+
+This runs your application and controls the rollout strategy on deployment.
+
+**horizontal pod autoscaler**
+
+Controls horizontal scaling of your application based on resource requirements.
+
+**service & ingress**
+
+Exposes application over network and configures load balancer traffic ingress.
+
+**secret**
+
+All environment variables are mounted as a secret
+
+**serviceaccount**
+
+A Kubernetes service account for your application.
+
+**database migration job**
+
+Database migrations are run alongside your deployment and _should_ be backwards compatible since both versions of your application (old & new) may be running at the same time.
+
+## Entrypoint
+
+An `entrypoint.sh` is expected in your container image:
+
+```shell
+#!/bin/sh
+set -e
+exec "$@"
+```

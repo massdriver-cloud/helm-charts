@@ -35,6 +35,7 @@ pod:
   annotations: {}
 
 migration:
+  enabled: true
   command: ["bash", "-c"]
   args:
     [
