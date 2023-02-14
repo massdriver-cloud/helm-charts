@@ -1,0 +1,17 @@
+{{- if and .Values.epmd.enabled .Values.epmd.port -}}
+kind: Service
+apiVersion: v1
+metadata:
+  name: {{ include "application.fullname" . }}-epmd
+  labels:
+    {{- include "application.labels" . | nindent 4 }}  
+spec:
+  clusterIP: None
+  selector:
+    {{- include "application.selectorLabels" . | nindent 4 }}
+  ports:
+    - name: epmd
+      port: {{ .Values.epmd.port }}
+      targetPort: {{ .Values.epmd.port }}
+      protocol: TCP      
+{{- end }}
