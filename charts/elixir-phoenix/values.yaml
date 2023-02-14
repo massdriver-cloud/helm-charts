@@ -41,4 +41,4 @@ epmd:
 migration:
   enabled: true
   command: ["./entrypoint.sh"]
-  args: ["mix", "do", "ecto.create, ecto.migrate"]
+  args: ["mix", "do", "ecto.create,", "ecto.migrate"]
