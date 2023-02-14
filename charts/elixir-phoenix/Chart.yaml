@@ -1,0 +1,23 @@
+apiVersion: v2
+name: elixir-phoenix
+version: 0.1.0
+description: |
+  A getting started helm chart for running a Phoenix web application.
+
+type: application
+icon: https://raw.githubusercontent.com/massdriver-cloud/helm-charts/main/charts/elixir-phoenix/icon.png
+maintainers:
+  - name: coryodaniel
+    email: cory@massdriver.cloud
+sources:
+  - https://github.com/massdriver-cloud/helm-charts
+kubeVersion: ">=1.16.0-0"
+home: https://github.com/massdriver-cloud/helm-charts
+keywords:
+  - elixir
+  - phoenix
+annotations:
+  "artifacthub.io/license": MIT License
+  "artifacthub.io/links": |
+    - name: Chart Source
+      url: https://github.com/massdriver-cloud/helm-charts

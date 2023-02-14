@@ -1,0 +1,44 @@
+image:
+  repository:
+  tag:
+
+command: ["./entrypoint.sh"]
+args: ["mix", "phx.server"]
+
+envs: []
+port:
+
+serviceAccount:
+  annotations: {}
+  name:
+
+resourceRequests: {}
+resourceLimits: {}
+
+replicas:
+  autoscalingEnabled: false
+  replicaCount:
+  minReplicas:
+  maxReplicas:
+  targetCPUUtilizationPercentage:
+
+ingress:
+  annotations: {}
+  enabled: true
+  className:
+  host:
+  path:
+
+commonLabels: {}
+
+pod:
+  annotations: {}
+
+epmd:
+  enabled: false
+  port: 4369
+
+migration:
+  enabled: true
+  command: ["./entrypoint.sh"]
+  args: ["mix", "ecto.create", "&&", "mix", "ecto.migrate"]
