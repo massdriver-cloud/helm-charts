@@ -7,6 +7,31 @@ entries:
         - name: Chart Source
           url: https://github.com/massdriver-cloud/helm-charts
     apiVersion: v2
+    created: "2023-03-17T00:36:40.23562772Z"
+    description: 'A getting started helm chart for running a Phoenix web application. '
+    digest: 26a599d0dbd30910ed319f6553e04d41bf1459918beca857c2d47b09b4df7c6c
+    home: https://github.com/massdriver-cloud/helm-charts
+    icon: https://raw.githubusercontent.com/massdriver-cloud/helm-charts/main/charts/elixir-phoenix/icon.png
+    keywords:
+    - elixir
+    - phoenix
+    kubeVersion: '>=1.16.0-0'
+    maintainers:
+    - email: cory@massdriver.cloud
+      name: coryodaniel
+    name: elixir-phoenix
+    sources:
+    - https://github.com/massdriver-cloud/helm-charts
+    type: application
+    urls:
+    - https://github.com/massdriver-cloud/helm-charts/releases/download/elixir-phoenix-0.1.4/elixir-phoenix-0.1.4.tgz
+    version: 0.1.4
+  - annotations:
+      artifacthub.io/license: MIT License
+      artifacthub.io/links: |
+        - name: Chart Source
+          url: https://github.com/massdriver-cloud/helm-charts
+    apiVersion: v2
     created: "2023-02-14T23:39:59.116207219Z"
     description: 'A getting started helm chart for running a Phoenix web application. '
     digest: 78cddab64eecfeaffebc4bb25dd8304c57394d91f7bfdd5c062722f910f6bff3
@@ -77,6 +102,33 @@ entries:
     - https://github.com/massdriver-cloud/helm-charts/releases/download/elixir-phoenix-0.1.1/elixir-phoenix-0.1.1.tgz
     version: 0.1.1
   ruby-on-rails:
+  - annotations:
+      artifacthub.io/license: MIT License
+      artifacthub.io/links: |
+        - name: Chart Source
+          url: https://github.com/massdriver-cloud/helm-charts
+    apiVersion: v2
+    created: "2023-03-17T00:36:50.348093439Z"
+    description: 'A getting started helm chart for running a ruby-on-rails application.  This
+      chart runs a kubernetes deployment, service and migration job. '
+    digest: a9693981d841ffdc5c65594176a4180b0a1fb6546dc720b0cbd8113924d91d1c
+    home: https://github.com/massdriver-cloud/helm-charts
+    icon: https://raw.githubusercontent.com/massdriver-cloud/helm-charts/main/charts/ruby-on-rails/icon.png
+    keywords:
+    - ruby-on-rails
+    - ruby
+    - rails
+    kubeVersion: '>=1.16.0-0'
+    maintainers:
+    - email: cory@massdriver.cloud
+      name: coryodaniel
+    name: ruby-on-rails
+    sources:
+    - https://github.com/massdriver-cloud/helm-charts
+    type: application
+    urls:
+    - https://github.com/massdriver-cloud/helm-charts/releases/download/ruby-on-rails-0.2.3/ruby-on-rails-0.2.3.tgz
+    version: 0.2.3
   - annotations:
       artifacthub.io/license: MIT License
       artifacthub.io/links: |
@@ -158,4 +210,4 @@ entries:
     urls:
     - https://github.com/massdriver-cloud/helm-charts/releases/download/ruby-on-rails-0.2.0/ruby-on-rails-0.2.0.tgz
     version: 0.2.0
-generated: "2023-02-14T23:39:59.116222821Z"
+generated: "2023-03-17T00:36:50.348113339Z"
