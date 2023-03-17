@@ -30,12 +30,14 @@ A Kubernetes service account for your application.
 
 Database migrations are run alongside your deployment and _should_ be backwards compatible since both versions of your application (old & new) may be running at the same time.
 
-## Entrypoint
+## Sponsor
 
-An `entrypoint.sh` is expected in your container image:
+Massdriver charts can be installed as both normal Helm Charts or as Apps on [Massdriver Cloud](https://massdriver.cloud).
 
-```shell
-#!/bin/sh
-set -e
-exec "$@"
-```
+For more information about running your app on AKS, EKS, and GKE, please check the [docs](https://docs.massdriver.cloud/applications).
+
+This chart is not maintained by the upstream project and any issues with the chart should be raised [on our issues page](https://github.com/massdriver-cloud/helm-charts/issues).
+
+Massdriver is the easiest way for platform engineering teams to enable self-service with governance and guardrails for Ruby on Rails applications.
+
+All Rights Reserved - Massdriver, Inc.

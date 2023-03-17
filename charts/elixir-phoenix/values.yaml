@@ -2,8 +2,8 @@ image:
   repository:
   tag:
 
-command: ["./entrypoint.sh"]
-args: ["mix", "phx.server"]
+command: ["mix"]
+args: ["phx.server"]
 
 envs: []
 port:
@@ -40,5 +40,5 @@ epmd:
 
 migration:
   enabled: true
-  command: ["./entrypoint.sh"]
-  args: ["mix", "do", "ecto.create,", "ecto.migrate"]
+  command: ["mix"]
+  args: ["do", "ecto.create,", "ecto.migrate"]
