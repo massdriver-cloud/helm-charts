@@ -48,6 +48,10 @@ spec:
           ports:
             - containerPort: {{ .Values.port }}
               protocol: TCP
+            {{- if and .Values.epmd.enabled .Values.epmd.port -}}
+            - containerPort: {{ .Values.epmd.port }}
+              protocol: TCP
+            {{ end }}
           {{- end }}
           {{- with .Values.securityContext }}
           securityContext:
