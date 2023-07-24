@@ -1,0 +1,15 @@
+# these values will be populated at deployment time by Massdriver
+md_metadata:
+  name_prefix:
+  default_tags:
+  observability:
+    alarm_webhook_url:
+
+route:
+  groupBy: ['alertname']
+  groupWait: 30s
+  groupInterval: 5m
+  repeatInterval: 12h
+
+nameOverride: ""
+fullnameOverride: ""

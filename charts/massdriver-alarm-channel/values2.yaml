@@ -1,0 +1,9 @@
+md_metadata:
+  name_prefix: "foo-bar-0000"
+  default_tags:
+    md-package: "foo-bar-0000"
+    md-manifest: "bar"
+    md-project: "foo"
+    managed-by: "massdriver"
+  observability:
+    alarm_webhook_url: "www.example"

@@ -1,0 +1,17 @@
+apiVersion: monitoring.coreos.com/v1alpha1
+kind: AlertmanagerConfig
+metadata:
+  name: {{ include "massdriver-alarm-channel.fullname" . }}
+  labels:
+    {{- include "massdriver-alarm-channel.labels" . | nindent 4 }}
+spec:
+  route:
+    {{- toYaml .Values.route | nindent 4 }}
+    receiver: {{ include "massdriver-alarm-channel.fullname" . }}
+    matcher:
+      - md_package={{ index .Values.md_metadata.default_tags "md-package" }}
+  receivers:
+  - name: {{ include "massdriver-alarm-channel.fullname" . }}
+    webhookConfigs:
+    - url: {{ .Values.md_metadata.observability.alarm_webhook_url }}
+      sendResolved: true

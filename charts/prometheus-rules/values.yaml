@@ -1,0 +1,124 @@
+# these values will be populated at deployment time by Massdriver
+md_metadata:
+  name_prefix: "a"
+  default_tags: {"a": "b"}
+  observability:
+    alarm_webhook_url: "www.example"
+
+
+fullnameOverride: ""
+
+defaultRules:
+  create: true
+  rules:
+    alertmanager: false
+    etcd: false
+    configReloaders: false
+    general: false
+    k8s: false
+    kubeApiserverAvailability: false
+    kubeApiserverBurnrate: false
+    kubeApiserverHistogram: false
+    kubeApiserverSlos: false
+    kubeControllerManager: false
+    kubelet: false
+    kubeProxy: false
+    kubePrometheusGeneral: false
+    kubePrometheusNodeRecording: false
+    kubernetesApps: true
+    kubernetesResources: false
+    kubernetesStorage: false
+    kubernetesSystem: false
+    kubeSchedulerAlerting: false
+    kubeSchedulerRecording: false
+    kubeStateMetrics: false
+    network: false
+    node: false
+    nodeExporterAlerting: false
+    nodeExporterRecording: false
+    prometheus: false
+    prometheusOperator: false
+    windows: true
+
+  ## Reduce app namespace alert scope
+  appNamespacesTarget: ".*"
+
+  ## Labels for default rules
+  labels: {}
+  ## Annotations for default rules
+  annotations: {}
+
+  ## Additional labels for PrometheusRule alerts
+  additionalRuleLabels:
+    md-package: "{{ $labels.label_md_package }}"
+
+  ## Additional annotations for PrometheusRule alerts
+  additionalRuleAnnotations: {}
+
+  ## Additional labels for specific PrometheusRule alert groups
+  additionalRuleGroupLabels:
+    alertmanager: {}
+    etcd: {}
+    configReloaders: {}
+    general: {}
+    k8s: {}
+    kubeApiserverAvailability: {}
+    kubeApiserverBurnrate: {}
+    kubeApiserverHistogram: {}
+    kubeApiserverSlos: {}
+    kubeControllerManager: {}
+    kubelet: {}
+    kubeProxy: {}
+    kubePrometheusGeneral: {}
+    kubePrometheusNodeRecording: {}
+    kubernetesApps: {}
+    kubernetesResources: {}
+    kubernetesStorage: {}
+    kubernetesSystem: {}
+    kubeSchedulerAlerting: {}
+    kubeSchedulerRecording: {}
+    kubeStateMetrics: {}
+    network: {}
+    node: {}
+    nodeExporterAlerting: {}
+    nodeExporterRecording: {}
+    prometheus: {}
+    prometheusOperator: {}
+
+  ## Additional annotations for specific PrometheusRule alerts groups
+  additionalRuleGroupAnnotations:
+    alertmanager: {}
+    etcd: {}
+    configReloaders: {}
+    general: {}
+    k8s: {}
+    kubeApiserverAvailability: {}
+    kubeApiserverBurnrate: {}
+    kubeApiserverHistogram: {}
+    kubeApiserverSlos: {}
+    kubeControllerManager: {}
+    kubelet: {}
+    kubeProxy: {}
+    kubePrometheusGeneral: {}
+    kubePrometheusNodeRecording: {}
+    kubernetesApps: {}
+    kubernetesResources: {}
+    kubernetesStorage: {}
+    kubernetesSystem: {}
+    kubeSchedulerAlerting: {}
+    kubeSchedulerRecording: {}
+    kubeStateMetrics: {}
+    network: {}
+    node: {}
+    nodeExporterAlerting: {}
+    nodeExporterRecording: {}
+    prometheus: {}
+    prometheusOperator: {}
+
+  ## Prefix for runbook URLs. Use this to override the first part of the runbookURLs that is common to all rules.
+  runbookUrl: "https://runbooks.prometheus-operator.dev/runbooks"
+
+  ## Disabled PrometheusRule alerts
+  disabled: {}
+  # KubeAPIDown: true
+  # NodeRAIDDegraded: true
