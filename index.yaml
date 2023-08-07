@@ -151,6 +151,32 @@ entries:
     urls:
     - https://github.com/massdriver-cloud/helm-charts/releases/download/elixir-phoenix-0.1.1/elixir-phoenix-0.1.1.tgz
     version: 0.1.1
+  massdriver-alarm-channel:
+  - apiVersion: v2
+    created: "2023-08-07T00:08:22.923309628Z"
+    description: Implements Massdriver's "alarm channel" concept by using the Prometheus
+      Operator's [AlertmanagerConfig](https://prometheus-operator.dev/docs/operator/design/#alertmanagerconfig)
+      to create a new route in AlertManager's routing tree for sending all alarms
+      with the proper label (`md_package=<massdriver package name>`) to the proper
+      package-scoped Massdriver webhook.
+    digest: f7d0ce0bc3d203a4cbddb28c9993ae8600f32ae30691658050b21cf484cb9424
+    name: massdriver-alarm-channel
+    type: application
+    urls:
+    - https://github.com/massdriver-cloud/helm-charts/releases/download/massdriver-alarm-channel-0.0.1/massdriver-alarm-channel-0.0.1.tgz
+    version: 0.0.1
+  massdriver-prometheus-rules:
+  - apiVersion: v2
+    created: "2023-08-07T00:08:23.073243163Z"
+    description: Contains a modified set of [Prometheus Rules](https://prometheus-operator.dev/docs/operator/design/#prometheusrule)
+      to provide general monitoring for Massdriver-provisioned Kubernetes clusters.
+      Requries the prometheus operator to be installed.
+    digest: b95a841661ced243f4e9046814ed20298367f8dfd4030546c41ebfb89e04967c
+    name: massdriver-prometheus-rules
+    type: application
+    urls:
+    - https://github.com/massdriver-cloud/helm-charts/releases/download/massdriver-prometheus-rules-0.0.1/massdriver-prometheus-rules-0.0.1.tgz
+    version: 0.0.1
   ruby-on-rails:
   - annotations:
       artifacthub.io/license: MIT License
@@ -287,4 +313,4 @@ entries:
     urls:
     - https://github.com/massdriver-cloud/helm-charts/releases/download/ruby-on-rails-0.2.0/ruby-on-rails-0.2.0.tgz
     version: 0.2.0
-generated: "2023-06-05T17:44:03.645665264Z"
+generated: "2023-08-07T00:08:23.073367064Z"
