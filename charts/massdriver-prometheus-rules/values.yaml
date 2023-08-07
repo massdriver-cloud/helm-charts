@@ -1,9 +1,9 @@
 # these values will be populated at deployment time by Massdriver
 md_metadata:
-  name_prefix: "a"
-  default_tags: {"a": "b"}
+  name_prefix:
+  default_tags:
   observability:
-    alarm_webhook_url: "www.example"
+    alarm_webhook_url:
 
 
 fullnameOverride: ""
@@ -12,16 +12,17 @@ defaultRules:
   create: true
   rules:
     alertmanager: false
+    clusterAutoscaler: true
     etcd: false
     configReloaders: false
     general: false
-    k8s: false
+    k8s: true
     kubeApiserverAvailability: false
     kubeApiserverBurnrate: false
     kubeApiserverHistogram: false
     kubeApiserverSlos: false
     kubeControllerManager: false
-    kubelet: false
+    kubelet: true
     kubeProxy: false
     kubePrometheusGeneral: false
     kubePrometheusNodeRecording: false
@@ -33,12 +34,12 @@ defaultRules:
     kubeSchedulerRecording: false
     kubeStateMetrics: false
     network: false
-    node: false
+    node: true
     nodeExporterAlerting: false
     nodeExporterRecording: false
     prometheus: false
     prometheusOperator: false
-    windows: true
+    windows: false
 
   ## Reduce app namespace alert scope
   appNamespacesTarget: ".*"
@@ -49,8 +50,7 @@ defaultRules:
   annotations: {}
 
   ## Additional labels for PrometheusRule alerts
-  additionalRuleLabels:
-    md-package: "{{ $labels.label_md_package }}"
+  additionalRuleLabels: {}
 
   ## Additional annotations for PrometheusRule alerts
   additionalRuleAnnotations: {}
@@ -58,6 +58,7 @@ defaultRules:
   ## Additional labels for specific PrometheusRule alert groups
   additionalRuleGroupLabels:
     alertmanager: {}
+    clusterAutoscaler: {}
     etcd: {}
     configReloaders: {}
     general: {}
@@ -71,7 +72,8 @@ defaultRules:
     kubeProxy: {}
     kubePrometheusGeneral: {}
     kubePrometheusNodeRecording: {}
-    kubernetesApps: {}
+    kubernetesApps:
+      md_package: "{{ $labels.label_md_package }}"
     kubernetesResources: {}
     kubernetesStorage: {}
     kubernetesSystem: {}
@@ -88,6 +90,7 @@ defaultRules:
   ## Additional annotations for specific PrometheusRule alerts groups
   additionalRuleGroupAnnotations:
     alertmanager: {}
+    clusterAutoscaler: {}
     etcd: {}
     configReloaders: {}
     general: {}

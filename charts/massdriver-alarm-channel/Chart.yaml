@@ -1,6 +1,6 @@
 apiVersion: v2
 name: massdriver-alarm-channel
-description: A Helm chart for Kubernetes
+description: Implements Massdriver's "alarm channel" concept by using the Prometheus Operator's [AlertmanagerConfig](https://prometheus-operator.dev/docs/operator/design/#alertmanagerconfig) to create a new route in AlertManager's routing tree for sending all alarms with the proper label (`md_package=<massdriver package name>`) to the proper package-scoped Massdriver webhook.
 
 # A chart can be either an 'application' or a 'library' chart.
 #
@@ -15,4 +15,4 @@ type: application
 # This is the chart version. This version number should be incremented each time you make changes
 # to the chart and its templates, including the app version.
 # Versions are expected to follow Semantic Versioning (https://semver.org/)
-version: 0.1.0
+version: 0.0.1

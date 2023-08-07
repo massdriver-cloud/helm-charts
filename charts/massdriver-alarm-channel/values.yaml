@@ -6,7 +6,8 @@ md_metadata:
     alarm_webhook_url:
 
 route:
-  groupBy: ['alertname']
+  groupBy:
+  - 'alertname'
   groupWait: 30s
   groupInterval: 5m
   repeatInterval: 12h
