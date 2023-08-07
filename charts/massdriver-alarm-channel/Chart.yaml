@@ -1,0 +1,18 @@
+apiVersion: v2
+name: massdriver-alarm-channel
+description: Implements Massdriver's "alarm channel" concept by using the Prometheus Operator's [AlertmanagerConfig](https://prometheus-operator.dev/docs/operator/design/#alertmanagerconfig) to create a new route in AlertManager's routing tree for sending all alarms with the proper label (`md_package=<massdriver package name>`) to the proper package-scoped Massdriver webhook.
+
+# A chart can be either an 'application' or a 'library' chart.
+#
+# Application charts are a collection of templates that can be packaged into versioned archives
+# to be deployed.
+#
+# Library charts provide useful utilities or functions for the chart developer. They're included as
+# a dependency of application charts to inject those utilities and functions into the rendering
+# pipeline. Library charts do not define any templates and therefore cannot be deployed.
+type: application
+
+# This is the chart version. This version number should be incremented each time you make changes
+# to the chart and its templates, including the app version.
+# Versions are expected to follow Semantic Versioning (https://semver.org/)
+version: 0.0.1

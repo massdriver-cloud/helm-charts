@@ -1,0 +1,124 @@
+{{- $kubeTargetVersion := default .Capabilities.KubeVersion.GitVersion .Values.kubeTargetVersionOverride }}
+{{- if and (semverCompare ">=1.14.0-0" $kubeTargetVersion) (semverCompare "<9.9.9-9" $kubeTargetVersion) .Values.defaultRules.create .Values.defaultRules.rules.clusterAutoscaler }}
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: {{ printf "%s-%s" (include "prometheus-rules.fullname" .) "cluster-autoscaler" | trunc 63 | trimSuffix "-" }}
+  labels:
+{{ include "prometheus-rules.labels" . | indent 4 }}
+{{- if .Values.defaultRules.labels }}
+{{ toYaml .Values.defaultRules.labels | indent 4 }}
+{{- end }}
+{{- if .Values.defaultRules.annotations }}
+  annotations:
+{{ toYaml .Values.defaultRules.annotations | indent 4 }}
+{{- end }}
+spec:
+  groups:
+  - name: cluster-autoscaler
+    rules:
+{{- if not (.Values.defaultRules.disabled.ClusterAutoscalerUnschedulablePods | default false) }}
+    - alert: ClusterAutoscalerUnschedulablePods
+      annotations:
+{{- if .Values.defaultRules.additionalRuleAnnotations }}
+{{ toYaml .Values.defaultRules.additionalRuleAnnotations | indent 8 }}
+{{- end }}
+{{- if .Values.defaultRules.additionalRuleGroupAnnotations.clusterAutoscaler }}
+{{ toYaml .Values.defaultRules.additionalRuleGroupAnnotations.clusterAutoscaler | indent 8 }}
+{{- end }}
+        description: The cluster autoscaler is unable to scale up and is alerting that there are unschedulable pods because of this condition. This may be caused by the cluster autoscaler reaching its resources limits, or by Kubernetes waiting for new nodes to become ready.
+        runbook_url: {{ .Values.defaultRules.runbookUrl }}/kubernetes/ClusterAutoscalerUnschedulablePods
+        summary: 'Cluster Autoscaler has {{`{{`}} $value {{`}}`}} unschedulable pods'
+      expr: cluster_autoscaler_unschedulable_pods_count > 0
+      for: 5m
+      labels:
+        md_package: {{ .Values.md_metadata.name_prefix }}
+        severity: warning
+      {{- if or .Values.defaultRules.additionalRuleLabels .Values.defaultRules.additionalRuleGroupLabels.clusterAutoscaler }}
+        {{- with .Values.defaultRules.additionalRuleLabels }}
+          {{- toYaml . | nindent 8 }}
+        {{- end }}
+        {{- with .Values.defaultRules.additionalRuleGroupLabels.clusterAutoscaler }}
+          {{- toYaml . | nindent 8 }}
+        {{- end }}
+      {{- end }}
+{{- end }}
+{{- if not (.Values.defaultRules.disabled.ClusterAutoscalerNotSafeToScale | default false) }}
+    - alert: ClusterAutoscalerNotSafeToScale
+      annotations:
+{{- if .Values.defaultRules.additionalRuleAnnotations }}
+{{ toYaml .Values.defaultRules.additionalRuleAnnotations | indent 8 }}
+{{- end }}
+{{- if .Values.defaultRules.additionalRuleGroupAnnotations.clusterAutoscaler }}
+{{ toYaml .Values.defaultRules.additionalRuleGroupAnnotations.clusterAutoscaler | indent 8 }}
+{{- end }}
+        description: The cluster autoscaler has detected that the number of unready nodes is too high and it is not safe to continute scaling operations. It makes this determination by checking that the number of ready nodes is greater than the minimum ready count (default of 3) and the ratio of unready to ready nodes is less than the maximum unready node percentage (default of 45%). If either of those conditions are not true then the cluster autoscaler will enter an unsafe to scale state until the conditions change.
+        runbook_url: {{ .Values.defaultRules.runbookUrl }}/kubernetes/ClusterAutoscalerNotSafeToScale
+        summary: Cluster Autoscaler is reporting that the cluster is not ready for scaling
+      expr: cluster_autoscaler_cluster_safe_to_autoscale != 1
+      for: 15m
+      labels:
+        md_package: {{ .Values.md_metadata.name_prefix }}
+        severity: warning
+      {{- if or .Values.defaultRules.additionalRuleLabels .Values.defaultRules.additionalRuleGroupLabels.clusterAutoscaler }}
+        {{- with .Values.defaultRules.additionalRuleLabels }}
+          {{- toYaml . | nindent 8 }}
+        {{- end }}
+        {{- with .Values.defaultRules.additionalRuleGroupLabels.clusterAutoscaler }}
+          {{- toYaml . | nindent 8 }}
+        {{- end }}
+      {{- end }}
+{{- end }}
+{{- if not (.Values.defaultRules.disabled.ClusterAutoscalerUnableToScaleCPULimitReached | default false) }}
+    - alert: ClusterAutoscalerUnableToScaleCPULimitReached
+      annotations:
+{{- if .Values.defaultRules.additionalRuleAnnotations }}
+{{ toYaml .Values.defaultRules.additionalRuleAnnotations | indent 8 }}
+{{- end }}
+{{- if .Values.defaultRules.additionalRuleGroupAnnotations.clusterAutoscaler }}
+{{ toYaml .Values.defaultRules.additionalRuleGroupAnnotations.clusterAutoscaler | indent 8 }}
+{{- end }}
+        description: The number of total cores in the cluster has exceeded the maximum number set on the cluster autoscaler. This is calculated by summing the cpu capacity for all nodes in the cluster and comparing that number against the maximum cores value set for the cluster autoscaler (default 320000 cores).
+        runbook_url: {{ .Values.defaultRules.runbookUrl }}/kubernetes/ClusterAutoscalerUnableToScaleCPULimitReached
+        summary: Cluster Autoscaler has reached its CPU core limit and is unable to scale out
+      expr: cluster_autoscaler_cluster_cpu_current_cores >= cluster_autoscaler_cpu_limits_cores{direction="maximum"}
+      for: 15m
+      labels:
+        md_package: {{ .Values.md_metadata.name_prefix }}
+        severity: warning
+      {{- if or .Values.defaultRules.additionalRuleLabels .Values.defaultRules.additionalRuleGroupLabels.clusterAutoscaler }}
+        {{- with .Values.defaultRules.additionalRuleLabels }}
+          {{- toYaml . | nindent 8 }}
+        {{- end }}
+        {{- with .Values.defaultRules.additionalRuleGroupLabels.clusterAutoscaler }}
+          {{- toYaml . | nindent 8 }}
+        {{- end }}
+      {{- end }}
+{{- end }}
+{{- if not (.Values.defaultRules.disabled.ClusterAutoscalerUnableToScaleMemoryLimitReached | default false) }}
+    - alert: ClusterAutoscalerUnableToScaleMemoryLimitReached
+      annotations:
+{{- if .Values.defaultRules.additionalRuleAnnotations }}
+{{ toYaml .Values.defaultRules.additionalRuleAnnotations | indent 8 }}
+{{- end }}
+{{- if .Values.defaultRules.additionalRuleGroupAnnotations.clusterAutoscaler }}
+{{ toYaml .Values.defaultRules.additionalRuleGroupAnnotations.clusterAutoscaler | indent 8 }}
+{{- end }}
+        description: The number of total bytes of RAM in the cluster has exceeded the maximum number set on the cluster autoscaler. This is calculated by summing the memory capacity for all nodes in the cluster and comparing that number against the maximum memory bytes value set for the cluster autoscaler (default 6400000 gigabytes).
+        runbook_url: {{ .Values.defaultRules.runbookUrl }}/kubernetes/ClusterAutoscalerUnableToScaleMemoryLimitReached
+        summary: Cluster Autoscaler has reached its Memory bytes limit and is unable to scale out
+      expr: cluster_autoscaler_cluster_memory_current_bytes >= cluster_autoscaler_memory_limits_bytes{direction="maximum"}
+      for: 15m
+      labels:
+        md_package: {{ .Values.md_metadata.name_prefix }}
+        severity: warning
+      {{- if or .Values.defaultRules.additionalRuleLabels .Values.defaultRules.additionalRuleGroupLabels.clusterAutoscaler }}
+        {{- with .Values.defaultRules.additionalRuleLabels }}
+          {{- toYaml . | nindent 8 }}
+        {{- end }}
+        {{- with .Values.defaultRules.additionalRuleGroupLabels.clusterAutoscaler }}
+          {{- toYaml . | nindent 8 }}
+        {{- end }}
+      {{- end }}
+{{- end }}
+{{- end }}
