@@ -167,6 +167,17 @@ entries:
     version: 0.0.1
   massdriver-prometheus-rules:
   - apiVersion: v2
+    created: "2023-08-10T05:44:32.737590702Z"
+    description: Contains a modified set of [Prometheus Rules](https://prometheus-operator.dev/docs/operator/design/#prometheusrule)
+      to provide general monitoring for Massdriver-provisioned Kubernetes clusters.
+      Requries the prometheus operator to be installed.
+    digest: f6c9ca72b69e30d4c79c48100de869286f66937e2a3a2cea09f7276ae2765c41
+    name: massdriver-prometheus-rules
+    type: application
+    urls:
+    - https://github.com/massdriver-cloud/helm-charts/releases/download/massdriver-prometheus-rules-0.0.2/massdriver-prometheus-rules-0.0.2.tgz
+    version: 0.0.2
+  - apiVersion: v2
     created: "2023-08-07T00:08:23.073243163Z"
     description: Contains a modified set of [Prometheus Rules](https://prometheus-operator.dev/docs/operator/design/#prometheusrule)
       to provide general monitoring for Massdriver-provisioned Kubernetes clusters.
@@ -313,4 +324,4 @@ entries:
     urls:
     - https://github.com/massdriver-cloud/helm-charts/releases/download/ruby-on-rails-0.2.0/ruby-on-rails-0.2.0.tgz
     version: 0.2.0
-generated: "2023-08-07T00:08:23.073367064Z"
+generated: "2023-08-10T05:44:32.737617103Z"
