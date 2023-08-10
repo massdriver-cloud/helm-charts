@@ -56,7 +56,7 @@ spec:
         runbook_url: {{ .Values.defaultRules.runbookUrl }}/kubernetes/ClusterAutoscalerNotSafeToScale
         summary: Cluster Autoscaler is reporting that the cluster is not ready for scaling
       expr: cluster_autoscaler_cluster_safe_to_autoscale != 1
-      for: 15m
+      for: 5m
       labels:
         md_package: {{ .Values.md_metadata.name_prefix }}
         severity: warning
@@ -82,7 +82,7 @@ spec:
         runbook_url: {{ .Values.defaultRules.runbookUrl }}/kubernetes/ClusterAutoscalerUnableToScaleCPULimitReached
         summary: Cluster Autoscaler has reached its CPU core limit and is unable to scale out
       expr: cluster_autoscaler_cluster_cpu_current_cores >= cluster_autoscaler_cpu_limits_cores{direction="maximum"}
-      for: 15m
+      for: 5m
       labels:
         md_package: {{ .Values.md_metadata.name_prefix }}
         severity: warning
@@ -108,7 +108,7 @@ spec:
         runbook_url: {{ .Values.defaultRules.runbookUrl }}/kubernetes/ClusterAutoscalerUnableToScaleMemoryLimitReached
         summary: Cluster Autoscaler has reached its Memory bytes limit and is unable to scale out
       expr: cluster_autoscaler_cluster_memory_current_bytes >= cluster_autoscaler_memory_limits_bytes{direction="maximum"}
-      for: 15m
+      for: 5m
       labels:
         md_package: {{ .Values.md_metadata.name_prefix }}
         severity: warning

@@ -12,7 +12,7 @@ defaultRules:
   create: true
   rules:
     alertmanager: false
-    clusterAutoscaler: true
+    clusterAutoscaler: false
     etcd: false
     configReloaders: false
     general: false
@@ -24,8 +24,8 @@ defaultRules:
     kubeControllerManager: false
     kubelet: true
     kubeProxy: false
-    kubePrometheusGeneral: false
-    kubePrometheusNodeRecording: false
+    kubePrometheusGeneral: true
+    kubePrometheusNodeRecording: true
     kubernetesApps: true
     kubernetesResources: false
     kubernetesStorage: false
@@ -36,7 +36,7 @@ defaultRules:
     network: false
     node: true
     nodeExporterAlerting: false
-    nodeExporterRecording: false
+    nodeExporterRecording: true
     prometheus: false
     prometheusOperator: false
     windows: false
