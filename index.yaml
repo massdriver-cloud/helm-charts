@@ -153,6 +153,19 @@ entries:
     version: 0.1.1
   massdriver-alarm-channel:
   - apiVersion: v2
+    created: "2023-08-19T20:52:56.383516283Z"
+    description: Implements Massdriver's "alarm channel" concept by using the Prometheus
+      Operator's [AlertmanagerConfig](https://prometheus-operator.dev/docs/operator/design/#alertmanagerconfig)
+      to create a new route in AlertManager's routing tree for sending all alarms
+      with the proper label (`md_package=<massdriver package name>`) to the proper
+      package-scoped Massdriver webhook.
+    digest: 60ee1c2de5346f6e2e9fe8af892dd6aee474698130184f0f62dd3b8ecd59a0d6
+    name: massdriver-alarm-channel
+    type: application
+    urls:
+    - https://github.com/massdriver-cloud/helm-charts/releases/download/massdriver-alarm-channel-0.0.2/massdriver-alarm-channel-0.0.2.tgz
+    version: 0.0.2
+  - apiVersion: v2
     created: "2023-08-07T00:08:22.923309628Z"
     description: Implements Massdriver's "alarm channel" concept by using the Prometheus
       Operator's [AlertmanagerConfig](https://prometheus-operator.dev/docs/operator/design/#alertmanagerconfig)
@@ -166,6 +179,17 @@ entries:
     - https://github.com/massdriver-cloud/helm-charts/releases/download/massdriver-alarm-channel-0.0.1/massdriver-alarm-channel-0.0.1.tgz
     version: 0.0.1
   massdriver-prometheus-rules:
+  - apiVersion: v2
+    created: "2023-08-19T20:52:56.59509419Z"
+    description: Contains a modified set of [Prometheus Rules](https://prometheus-operator.dev/docs/operator/design/#prometheusrule)
+      to provide general monitoring for Massdriver-provisioned Kubernetes clusters.
+      Requries the prometheus operator to be installed.
+    digest: 6884edf715958cf8cc12d64fc2acac5ce1f5119ad091df24e8086d8bdf1ced57
+    name: massdriver-prometheus-rules
+    type: application
+    urls:
+    - https://github.com/massdriver-cloud/helm-charts/releases/download/massdriver-prometheus-rules-0.0.3/massdriver-prometheus-rules-0.0.3.tgz
+    version: 0.0.3
   - apiVersion: v2
     created: "2023-08-10T05:44:32.737590702Z"
     description: Contains a modified set of [Prometheus Rules](https://prometheus-operator.dev/docs/operator/design/#prometheusrule)
@@ -324,4 +348,4 @@ entries:
     urls:
     - https://github.com/massdriver-cloud/helm-charts/releases/download/ruby-on-rails-0.2.0/ruby-on-rails-0.2.0.tgz
     version: 0.2.0
-generated: "2023-08-10T05:44:32.737617103Z"
+generated: "2023-08-19T20:52:56.59512709Z"
