@@ -14,5 +14,6 @@ spec:
   receivers:
   - name: {{ include "massdriver-alarm-channel.fullname" . }}
     webhookConfigs:
-    - url: {{ .Values.md_metadata.observability.alarm_webhook_url }}
+    - maxAlerts: 1
       sendResolved: true
+      url: {{ .Values.md_metadata.observability.alarm_webhook_url }}
