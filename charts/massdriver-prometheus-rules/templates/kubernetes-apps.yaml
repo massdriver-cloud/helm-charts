@@ -57,7 +57,7 @@ spec:
 {{- end }}
         description: Pod {{`{{`}} $labels.namespace {{`}}`}}/{{`{{`}} $labels.pod {{`}}`}} has been in a non-ready state for longer than 5 minutes.
         runbook_url: {{ .Values.defaultRules.runbookUrl }}/kubernetes/kubepodnotready
-        summary: Pod has been in a non-ready state for more than 15 minutes.
+        summary: Pod has been in a non-ready state for more than 5 minutes.
       expr: |-
         kube_pod_labels * on (pod, namespace) group_right(label_md_package) (
           sum by (namespace, pod, cluster) (
@@ -315,14 +315,14 @@ spec:
 {{- if .Values.defaultRules.additionalRuleGroupAnnotations.kubernetesApps }}
 {{ toYaml .Values.defaultRules.additionalRuleGroupAnnotations.kubernetesApps | indent 8 }}
 {{- end }}
-        description: pod/{{`{{`}} $labels.pod {{`}}`}} in namespace {{`{{`}} $labels.namespace {{`}}`}} on container {{`{{`}} $labels.container{{`}}`}} has been in waiting state for longer than 15 minutes.
+        description: pod/{{`{{`}} $labels.pod {{`}}`}} in namespace {{`{{`}} $labels.namespace {{`}}`}} on container {{`{{`}} $labels.container{{`}}`}} has been in waiting state for longer than 5 minutes.
         runbook_url: {{ .Values.defaultRules.runbookUrl }}/kubernetes/kubecontainerwaiting
-        summary: Pod container waiting longer than 15 minutes
+        summary: Pod container waiting longer than 5 minutes
       expr: |-
         kube_pod_labels * on (pod, namespace) group_right(label_md_package) (
           sum by (namespace, pod, container, cluster) (kube_pod_container_status_waiting_reason{job="kube-state-metrics", namespace=~"{{ $targetNamespace }}"}) > 0
         )
-      for: 15m
+      for: 5m
       labels:
         severity: warning
       {{- if or .Values.defaultRules.additionalRuleLabels .Values.defaultRules.additionalRuleGroupLabels.kubernetesApps }}
@@ -475,7 +475,7 @@ spec:
             <
           kube_horizontalpodautoscaler_spec_max_replicas{job="kube-state-metrics", namespace=~"{{ $targetNamespace }}"})
             and
-          changes(kube_horizontalpodautoscaler_status_current_replicas{job="kube-state-metrics", namespace=~"{{ $targetNamespace }}"}[15m]) == 0
+          changes(kube_horizontalpodautoscaler_status_current_replicas{job="kube-state-metrics", namespace=~"{{ $targetNamespace }}"}[5m]) == 0
         )
       for: 5m
       labels:
