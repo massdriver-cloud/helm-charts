@@ -40,3 +40,6 @@ migration:
   args:
     - bundle exec rails db:create;
       bundle exec rails db:migrate;
+
+massdriver-alarm-channel:
+  enabled: false
