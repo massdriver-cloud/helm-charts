@@ -219,6 +219,33 @@ entries:
         - name: Chart Source
           url: https://github.com/massdriver-cloud/helm-charts
     apiVersion: v2
+    created: "2023-08-22T23:56:39.922067455Z"
+    description: 'A getting started helm chart for running a ruby-on-rails application.  This
+      chart runs a kubernetes deployment, service and migration job. '
+    digest: 97916ba0b9aa19a3476276811d54f1af25648093cd91ff839457d845c5b7d39f
+    home: https://github.com/massdriver-cloud/helm-charts
+    icon: https://raw.githubusercontent.com/massdriver-cloud/helm-charts/main/charts/ruby-on-rails/icon.png
+    keywords:
+    - ruby-on-rails
+    - ruby
+    - rails
+    kubeVersion: '>=1.16.0-0'
+    maintainers:
+    - email: cory@massdriver.cloud
+      name: coryodaniel
+    name: ruby-on-rails
+    sources:
+    - https://github.com/massdriver-cloud/helm-charts
+    type: application
+    urls:
+    - https://github.com/massdriver-cloud/helm-charts/releases/download/ruby-on-rails-0.2.5/ruby-on-rails-0.2.5.tgz
+    version: 0.2.5
+  - annotations:
+      artifacthub.io/license: MIT License
+      artifacthub.io/links: |
+        - name: Chart Source
+          url: https://github.com/massdriver-cloud/helm-charts
+    apiVersion: v2
     created: "2023-05-27T03:04:40.158375995Z"
     description: 'A getting started helm chart for running a ruby-on-rails application.  This
       chart runs a kubernetes deployment, service and migration job. '
@@ -348,4 +375,4 @@ entries:
     urls:
     - https://github.com/massdriver-cloud/helm-charts/releases/download/ruby-on-rails-0.2.0/ruby-on-rails-0.2.0.tgz
     version: 0.2.0
-generated: "2023-08-19T20:52:56.59512709Z"
+generated: "2023-08-22T23:56:39.922116259Z"
