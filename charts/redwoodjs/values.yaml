@@ -1,0 +1,47 @@
+image:
+  repository:
+  tag:
+
+# command: ["node"]
+# args: ["node_modules/.bin/rw-server", "web"]
+
+envs: []
+port:
+
+serviceAccount:
+  annotations: {}
+  name:
+
+resourceRequests: {}
+resourceLimits: {}
+
+replicas:
+  autoscalingEnabled: false
+  replicaCount:
+  minReplicas:
+  maxReplicas:
+  targetCPUUtilizationPercentage:
+
+ingress:
+  annotations: {}
+  enabled: true
+  className:
+  host:
+  path:
+
+commonLabels: {}
+
+pod:
+  annotations: {}
+
+migration:
+  # TODO: expose the repo/tag & a method of seeding on first setup via operator.md
+  enabled: true
+  image:
+    repository: massdrivercloud/rw-console
+    tag: latest
+  command: ["bash", "-c"]
+  args:
+    - yarn rw prisma migrate deploy;
+  # yarn rw prisma generate;
+  # yarn rw exec seed;

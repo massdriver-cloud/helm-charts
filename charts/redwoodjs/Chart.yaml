@@ -1,0 +1,32 @@
+apiVersion: v2
+name: redwoodjs
+version: 0.1.0
+description: |
+  A getting started helm chart for running a RedwoodJS application.
+
+  This chart runs a kubernetes deployment for web, deployment for api, service for web, and migration job.
+
+type: application
+icon: https://raw.githubusercontent.com/massdriver-cloud/helm-charts/main/charts/redwoodjs/icon.png
+maintainers:
+  - name: coryodaniel
+    email: cory@massdriver.cloud
+sources:
+  - https://github.com/massdriver-cloud/helm-charts
+kubeVersion: ">=1.16.0-0"
+home: https://github.com/massdriver-cloud/helm-charts
+keywords:
+  - node
+  - nodejs
+  - redwood
+  - redwoodjs
+annotations:
+  "artifacthub.io/license": MIT License
+  "artifacthub.io/links": |
+    - name: Chart Source
+      url: https://github.com/massdriver-cloud/helm-charts
+
+dependencies:
+  - name: massdriver-alarm-channel
+    version: "0.0.2"
+    repository: "https://massdriver-cloud.github.io/helm-charts/"
