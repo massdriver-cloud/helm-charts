@@ -212,6 +212,36 @@ entries:
     urls:
     - https://github.com/massdriver-cloud/helm-charts/releases/download/massdriver-prometheus-rules-0.0.1/massdriver-prometheus-rules-0.0.1.tgz
     version: 0.0.1
+  redwoodjs:
+  - annotations:
+      artifacthub.io/license: MIT License
+      artifacthub.io/links: |
+        - name: Chart Source
+          url: https://github.com/massdriver-cloud/helm-charts
+    apiVersion: v2
+    created: "2023-09-20T00:33:25.701405165Z"
+    description: 'A getting started helm chart for running a RedwoodJS application.  This
+      chart runs a kubernetes deployment for web, deployment for api, service for
+      web, and migration job. '
+    digest: 4a527a824278a68c3c198232905aba65f64c5c925ab61eb2c38357ff488c09a6
+    home: https://github.com/massdriver-cloud/helm-charts
+    icon: https://raw.githubusercontent.com/massdriver-cloud/helm-charts/main/charts/redwoodjs/icon.png
+    keywords:
+    - node
+    - nodejs
+    - redwood
+    - redwoodjs
+    kubeVersion: '>=1.16.0-0'
+    maintainers:
+    - email: cory@massdriver.cloud
+      name: coryodaniel
+    name: redwoodjs
+    sources:
+    - https://github.com/massdriver-cloud/helm-charts
+    type: application
+    urls:
+    - https://github.com/massdriver-cloud/helm-charts/releases/download/redwoodjs-0.1.0/redwoodjs-0.1.0.tgz
+    version: 0.1.0
   ruby-on-rails:
   - annotations:
       artifacthub.io/license: MIT License
@@ -375,4 +405,4 @@ entries:
     urls:
     - https://github.com/massdriver-cloud/helm-charts/releases/download/ruby-on-rails-0.2.0/ruby-on-rails-0.2.0.tgz
     version: 0.2.0
-generated: "2023-08-22T23:56:39.922116259Z"
+generated: "2023-09-20T00:33:25.701438765Z"
