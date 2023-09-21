@@ -35,12 +35,12 @@ pod:
   annotations: {}
 
 migration:
-  enabled: true
+  enabled: false
   image:
-    repository: massdrivercloud/rw-console
-    tag: latest
-  command: ["bash", "-c"]
-  args:
-    - yarn rw prisma migrate deploy;
-  # yarn rw prisma generate;
-  # yarn rw exec seed;
+    repository:
+    tag:
+  # command: ["bash", "-c"]
+  # args:
+  #   - yarn rw prisma migrate deploy;
+  # # yarn rw prisma generate;
+  # # yarn rw exec seed;
