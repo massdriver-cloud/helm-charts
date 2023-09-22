@@ -42,6 +42,3 @@ migration:
   enabled: true
   command: ["mix"]
   args: ["do", "ecto.create,", "ecto.migrate"]
-
-massdriver-alarm-channel:
-  enabled: false

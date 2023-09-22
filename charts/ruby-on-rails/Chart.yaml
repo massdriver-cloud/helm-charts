@@ -24,9 +24,3 @@ annotations:
   "artifacthub.io/links": |
     - name: Chart Source
       url: https://github.com/massdriver-cloud/helm-charts
-
-dependencies:
-- condition: massdriver-alarm-channel.enabled
-  name: massdriver-alarm-channel
-  version: "0.0.2"
-  repository: "https://massdriver-cloud.github.io/helm-charts/"
