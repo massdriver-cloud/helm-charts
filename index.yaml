@@ -7,6 +7,31 @@ entries:
         - name: Chart Source
           url: https://github.com/massdriver-cloud/helm-charts
     apiVersion: v2
+    created: "2024-03-28T20:39:46.182817338Z"
+    description: 'A getting started helm chart for running a Phoenix web application. '
+    digest: 29ecf2e359560361111214378cee6468375b5abc693842298e5ccb25d9fabde9
+    home: https://github.com/massdriver-cloud/helm-charts
+    icon: https://raw.githubusercontent.com/massdriver-cloud/helm-charts/main/charts/elixir-phoenix/icon.png
+    keywords:
+    - elixir
+    - phoenix
+    kubeVersion: '>=1.16.0-0'
+    maintainers:
+    - email: cory@massdriver.cloud
+      name: coryodaniel
+    name: elixir-phoenix
+    sources:
+    - https://github.com/massdriver-cloud/helm-charts
+    type: application
+    urls:
+    - https://github.com/massdriver-cloud/helm-charts/releases/download/elixir-phoenix-0.1.7/elixir-phoenix-0.1.7.tgz
+    version: 0.1.7
+  - annotations:
+      artifacthub.io/license: MIT License
+      artifacthub.io/links: |
+        - name: Chart Source
+          url: https://github.com/massdriver-cloud/helm-charts
+    apiVersion: v2
     created: "2023-06-05T17:44:03.645634064Z"
     description: 'A getting started helm chart for running a Phoenix web application. '
     digest: b98a99a21f71c80f7ab7edc36bf67d9e1b3beb0d3cf37118b123c5fd2d2ef69f
@@ -463,4 +488,4 @@ entries:
     urls:
     - https://github.com/massdriver-cloud/helm-charts/releases/download/ruby-on-rails-0.2.0/ruby-on-rails-0.2.0.tgz
     version: 0.2.0
-generated: "2023-09-21T10:17:34.687318367Z"
+generated: "2024-03-28T20:39:46.18287175Z"
