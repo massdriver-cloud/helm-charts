@@ -1,6 +1,6 @@
 apiVersion: v2
 name: elixir-phoenix
-version: 0.1.6
+version: 0.1.7
 description: |
   A getting started helm chart for running a Phoenix web application.
 
