@@ -1,0 +1,111 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "massdriver.fullname" . }}-kratos
+  labels:
+    {{- include "massdriver.labels" . | nindent 4 }}
+    app.kubernetes.io/component: kratos
+spec:
+  replicas: {{ .Values.kratos.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "massdriver.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: kratos
+  template:
+    metadata:
+      {{- with .Values.kratos.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "massdriver.labels" . | nindent 8 }}
+        {{- with .Values.kratos.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+        app.kubernetes.io/component: kratos
+    spec:
+      {{- with .Values.kratos.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "massdriver.fullname" . }}-kratos
+      {{- with .Values.kratos.podSecurityContext }}
+      securityContext:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: kratos
+          command:
+            - kratos
+          args:
+            - serve
+            - -c
+            - /etc/config/kratos/kratos.yml
+          image: "{{ .Values.kratos.image.repository }}:{{ .Values.kratos.image.tag }}"
+          imagePullPolicy: {{ .Values.kratos.image.pullPolicy }}
+          envFrom:
+            - secretRef:
+                name: {{ include "massdriver.fullname" . }}-kratos-envs
+          ports:
+            - containerPort: 4433
+              name: kratos-public
+              protocol: TCP
+            - containerPort: 4434
+              name: kratos-admin
+              protocol: TCP
+          {{- with .Values.kratos.livenessProbe }}
+          livenessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.kratos.readinessProbe }}
+          readinessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.kratos.resources }}
+          resources:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.kratos.securityContext }}
+          securityContext:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          volumeMounts:
+            - mountPath: /etc/config/kratos
+              name: kratos-config
+        - name: mailer
+          command:
+            - kratos
+          args:
+            - courier
+            - watch
+            - -c
+            - /etc/config/kratos/kratos.yml
+          image: "{{ .Values.kratos.image.repository }}:{{ .Values.kratos.image.tag }}"
+          imagePullPolicy: {{ .Values.kratos.image.pullPolicy }}
+          envFrom:
+            - secretRef:
+                name: {{ include "massdriver.fullname" . }}-kratos-envs
+          # {{- with .Values.kratos.livenessProbe }}
+          # livenessProbe:
+          #   {{- toYaml . | nindent 12 }}
+          # {{- end }}
+          # {{- with .Values.kratos.readinessProbe }}
+          # readinessProbe:
+          #   {{- toYaml . | nindent 12 }}
+          # {{- end }}
+          {{- with .Values.kratos.resources }}
+          resources:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.kratos.securityContext }}
+          securityContext:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          volumeMounts:
+            - mountPath: /etc/config/kratos
+              name: kratos-config
+      volumes:
+        - configMap:
+            defaultMode: 420
+            name: {{ include "massdriver.fullname" . }}-kratos
+          name: kratos-config

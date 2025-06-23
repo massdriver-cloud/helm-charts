@@ -1,0 +1,52 @@
+{{- if .Values.massdriver.migration.enabled -}}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "massdriver.fullname" . }}-massdriver-migration-{{ .Release.Revision }}
+  labels:
+    {{- include "massdriver.labels" . | nindent 4 }}
+    app.kubernetes.io/component: massdriver
+spec:
+  template:
+    metadata:
+      {{- with .Values.massdriver.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "massdriver.labels" . | nindent 8 }}
+        {{- with .Values.massdriver.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+        app.kubernetes.io/component: massdriver
+    spec:
+      restartPolicy: Never
+      imagePullSecrets:
+      - name: {{ include "massdriver.fullname" . }}-dockerhub-access-token
+      serviceAccountName: {{ include "massdriver.fullname" . }}-massdriver
+      {{- with .Values.massdriver.podSecurityContext }}
+      securityContext:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: massdriver
+          image: "{{ .Values.massdriver.image.repository }}:{{ .Values.massdriver.image.tag }}"
+          imagePullPolicy: {{ .Values.massdriver.image.pullPolicy }}
+          envFrom:
+            - configMapRef:
+                name: {{ include "massdriver.fullname" . }}-massdriver-envs
+            - secretRef:
+                name: {{ include "massdriver.fullname" . }}-massdriver-envs
+            - secretRef:
+                name: {{ include "massdriver.fullname" . }}-massdriver-kratos-auth
+            - secretRef:
+                name: {{ include "massdriver.fullname" . }}-massdriver-minio-auth
+          {{- with .Values.massdriver.migration.args }}
+          args:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.securityContext }}
+          securityContext:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+{{- end }}
