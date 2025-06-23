@@ -176,6 +176,24 @@ entries:
     urls:
     - https://github.com/massdriver-cloud/helm-charts/releases/download/elixir-phoenix-0.1.1/elixir-phoenix-0.1.1.tgz
     version: 0.1.1
+  massdriver:
+  - apiVersion: v2
+    appVersion: 1.0.1
+    created: "2025-06-23T19:58:01.020137352Z"
+    dependencies:
+    - name: argo-workflows
+      repository: https://argoproj.github.io/argo-helm
+      version: 0.45.14
+    - name: minio
+      repository: https://charts.min.io/
+      version: 5.4.0
+    description: Helm chart for deploying Massdriver
+    digest: b87e82f913075b04406bd232108c99424e7700ca5c64a521ed22b92ed02439f9
+    name: massdriver
+    type: application
+    urls:
+    - https://github.com/massdriver-cloud/helm-charts/releases/download/massdriver-0.0.1/massdriver-0.0.1.tgz
+    version: 0.0.1
   massdriver-alarm-channel:
   - apiVersion: v2
     created: "2023-08-19T20:52:56.383516283Z"
@@ -515,4 +533,4 @@ entries:
     urls:
     - https://github.com/massdriver-cloud/helm-charts/releases/download/ruby-on-rails-0.2.0/ruby-on-rails-0.2.0.tgz
     version: 0.2.0
-generated: "2025-06-16T07:56:45.615005901Z"
+generated: "2025-06-23T19:58:01.020194399Z"
