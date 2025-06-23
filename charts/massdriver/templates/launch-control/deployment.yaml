@@ -1,0 +1,76 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "massdriver.fullname" . }}-launch-control
+  labels:
+    {{- include "massdriver.labels" . | nindent 4 }}
+    app.kubernetes.io/component: launch-control
+spec:
+  replicas: {{ .Values.launchControl.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "massdriver.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: launch-control
+  template:
+    metadata:
+      {{- with .Values.launchControl.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "massdriver.labels" . | nindent 8 }}
+        {{- with .Values.launchControl.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+        app.kubernetes.io/component: launch-control
+    spec:
+      imagePullSecrets:
+      - name: {{ include "massdriver.fullname" . }}-dockerhub-access-token
+      serviceAccountName: {{ include "massdriver.fullname" . }}-launch-control
+      {{- with .Values.launchControl.podSecurityContext }}
+      securityContext:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: launch-control
+          args:
+            - listen
+            - --port
+            - "{{ .Values.launchControl.port }}"
+          image: "{{ .Values.launchControl.image.repository }}:{{ .Values.launchControl.image.tag }}"
+          imagePullPolicy: {{ .Values.launchControl.image.pullPolicy }}
+          envFrom:
+            - configMapRef:
+                name: {{ include "massdriver.fullname" . }}-launch-control-envs
+          ports:
+            - name: http
+              containerPort: {{ .Values.launchControl.port }}
+              protocol: TCP
+          {{- with .Values.launchControl.livenessProbe }}
+          livenessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.launchControl.readinessProbe }}
+          readinessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.launchControl.resources }}
+          resources:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.launchControl.securityContext }}
+          securityContext:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+      {{- with .Values.launchControl.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.launchControl.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.launchControl.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

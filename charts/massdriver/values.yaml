@@ -1,0 +1,326 @@
+# Default values for massdriver.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# Global variables
+nameOverride: ""
+fullnameOverride: ""
+
+postgres:
+  username: 
+  password: 
+  hostname: 
+  port: 5432
+
+smtp:
+  username: 
+  password: 
+  hostname: 
+  port: 587
+  from: 
+
+domain: 
+
+# Massdriver Variables
+massdriver:
+  logLevel: info
+
+  podAnnotations: {}
+
+  podLabels: {}
+
+  replicaCount: 2
+
+  image:
+    repository: massdrivercloud/massdriver
+    tag: "1.0.1"
+
+  imagePullSecrets: []
+
+  port: 4000
+
+  resources:
+    limits:
+      cpu: 1
+      memory: 1Gi
+    requests:
+      cpu: 100m
+      memory: 256Mi
+  
+  livenessProbe: {}
+    # httpGet:
+    #   path: /
+    #   port: http
+  readinessProbe: 
+    failureThreshold: 3
+    httpGet:
+      path: /_health
+      port: http
+      scheme: HTTP
+    periodSeconds: 10
+    successThreshold: 2
+    timeoutSeconds: 1
+
+  podSecurityContext: {}
+    # fsGroup: 10001
+
+  securityContext: {}
+    # capabilities:
+    #   drop:
+    #   - ALL
+    # readOnlyRootFilesystem: true
+    # runAsNonRoot: true
+    # runAsUser: 10001
+    
+  nodeSelector: {}
+
+  tolerations: []
+
+  affinity: {}
+
+  serviceAccount:
+    create: true
+    automount: true
+    annotations: {}
+  
+  service:
+    port: 80
+
+  ingress:
+    enabled: false
+    ingressClassName: ""
+    annotations: {}
+      # cert-manager.io/cluster-issuer: letsencrypt-prod
+      # nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+      # nginx.ingress.kubernetes.io/proxy-body-size: 20m
+    tls:
+      enabled: true
+
+  epmd:
+    port: 4369
+
+  migration:
+    enabled: true
+    args: ["eval", "Massdriver.Release.migrate"]
+
+
+# Launch Control Variables
+launchControl:
+
+  podAnnotations: {}
+
+  podLabels: {}
+
+  replicaCount: 2
+
+  image:
+    repository: massdrivercloud/launch-control
+    pullPolicy: IfNotPresent
+    tag: "1.0.0"
+
+  imagePullSecrets: []
+
+  port: 8080
+
+  resources:
+    limits:
+      cpu: 100m
+      memory: 128Mi
+    requests:
+      cpu: 50m
+      memory: 64Mi
+  
+  livenessProbe: {}
+    # httpGet:
+    #   path: /
+    #   port: http
+  readinessProbe: 
+    failureThreshold: 3
+    httpGet:
+      path: /healthz
+      port: http
+      scheme: HTTP
+    periodSeconds: 10
+    successThreshold: 2
+    timeoutSeconds: 1
+
+  podSecurityContext:
+    fsGroup: 10001
+
+  securityContext:
+    capabilities:
+      drop:
+      - ALL
+    readOnlyRootFilesystem: true
+    runAsNonRoot: true
+    runAsUser: 10001
+    
+  nodeSelector: {}
+
+  tolerations: []
+
+  affinity: {}
+
+  serviceAccount:
+    create: true
+    automount: true
+    annotations: {}
+  
+  service:
+    port: 80
+
+
+# Provisioner Variables
+provisioner:
+  serviceAccount:
+    create: true
+    automount: true
+    annotations: {}
+
+ui:
+  podAnnotations: {}
+
+  podLabels: {}
+
+  replicaCount: 2
+
+  image:
+    repository: massdrivercloud/massdriver-ui
+    pullPolicy: IfNotPresent
+    tag: "1.0.0"
+
+  imagePullSecrets: []
+
+  port: 3000
+
+  resources:
+    limits:
+      cpu: 1
+      memory: 1Gi
+    requests:
+      cpu: 400m
+      memory: 512Mi
+  
+  livenessProbe: {}
+    # httpGet:
+    #   path: /
+    #   port: http
+  readinessProbe: {}
+
+  podSecurityContext: {}
+    # fsGroup: 10001
+
+  securityContext: {}
+    # capabilities:
+    #   drop:
+    #   - ALL
+    # readOnlyRootFilesystem: true
+    # runAsNonRoot: true
+    # runAsUser: 10001
+  
+  service:
+    port: 8080
+
+
+# Kratos Variables
+kratos:
+
+  username: kratos_basic_auth
+  # if you don't set this, it will be generated randomly
+  password:
+
+  podAnnotations: {}
+
+  podLabels: {}
+
+  replicaCount: 1
+
+  image:
+    repository: oryd/kratos
+    pullPolicy: IfNotPresent
+    tag: "v0.10.1"
+
+  imagePullSecrets: []
+
+  resources:
+    limits:
+      cpu: 100m
+      memory: 128Mi
+    requests:
+      cpu: 50m
+      memory: 64Mi
+  
+  livenessProbe: {}
+    # httpGet:
+    #   path: /
+    #   port: http
+  readinessProbe: {}
+    # httpGet:
+    #   path: /
+    #   port: http
+
+  podSecurityContext: {}
+    # fsGroup: 10001
+
+  securityContext: {}
+    # capabilities:
+    #   drop:
+    #   - ALL
+    # readOnlyRootFilesystem: true
+    # runAsNonRoot: true
+    # runAsUser: 10001
+
+  serviceAccount:
+    create: true
+    automount: true
+    annotations: {}
+  
+  migration:
+    enabled: true
+
+argo-workflows:
+  server:
+    authModes:
+      - "server"
+  artifactRepository:
+    s3:
+      bucket: argo
+      # this assumes that the release name is "massdriver". This value will need to be changed if the release name is different.
+      endpoint: massdriver-minio.massdriver.svc:9000
+      insecure: true
+      # these both assume that the release name is "massdriver" (for the secret name). This value will need to be changed if the release name is different.
+      accessKeySecret:
+        name: massdriver-minio
+        key: rootUser
+      secretKeySecret:
+        name: massdriver-minio
+        key: rootPassword
+
+minio:
+  # this assumes that the release name is "massdriver". This value will need to be changed if the release name is different.
+  existingSecret: massdriver-minio
+
+  replicas: 2
+  resources:
+    requests:
+      memory: 500Mi
+  
+  persistence:
+    size: 500Gi
+
+  buckets:
+  - name: massdriver
+    policy: none
+    purge: false
+    versioning: false
+    objectlocking: false
+  - name: state
+    policy: none
+    purge: false
+    versioning: false
+    objectlocking: false
+  - name: argo
+    policy: none
+    purge: false
+    versioning: false
+    objectlocking: false

@@ -1,0 +1,6 @@
+/charts/*/charts
+.idea
+.vscode
+.DS_Store
+
+Chart.lock

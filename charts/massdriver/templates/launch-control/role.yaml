@@ -1,0 +1,11 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: {{ include "massdriver.fullname" . }}-launch-control
+  labels:
+    {{- include "massdriver.labels" . | nindent 4 }}
+    app.kubernetes.io/component: launch-control
+rules:
+- apiGroups: ["argoproj.io"]
+  resources: ["workflows"]
+  verbs: ["create", "get", "list", "watch"]

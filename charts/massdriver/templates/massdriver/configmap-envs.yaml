@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: ConfigMap
+metadata: 
+  name: {{ include "massdriver.fullname" . }}-massdriver-envs
+  labels:
+    {{- include "massdriver.labels" . | nindent 4 }}
+    app.kubernetes.io/component: massdriver
+data:
+  BLOB_STORAGE_HOST: "{{ include "massdriver.fullname" . }}-minio.{{ .Release.Namespace }}.svc"
+  BLOB_STORAGE_PORT: "{{ toString .Values.minio.service.port }}"
+  BLOB_STORAGE_SCHEME: http
+  DATABASE_SSL: "true"
+  FORCE_V2_LOGGING: "true"
+  LOG_LEVEL: {{ .Values.massdriver.logLevel | quote }}
+  MD_DEPLOYMENT_QUEUE_API_URL: "http://{{ include "massdriver.fullname" . }}-launch-control.{{ .Release.Namespace }}.svc:{{ toString .Values.launchControl.service.port }}"
+  MD_EPMD_CLUSTER_SERVICE: {{ include "massdriver.fullname" . }}-massdriver-epmd.{{ .Release.Namespace }}.svc
+  MD_FRONTEND_URL: https://app.{{ .Values.domain }}
+  MD_KRATOS_URL: https://identity.{{ .Values.domain }}/sessions/whoami
+  MD_REPOSITORY_BUCKET: massdriver
+  MIX_ENV: prod
+  OTEL_RESOURCE_ATTRIBUTES: service.name=massdriver
+  PHX_CHECK_ORIGIN: //api.{{ .Values.domain }},//app.{{ .Values.domain }}
+  PHX_CORS_ORIGINS: https://www.{{ .Values.domain }},https://api.{{ .Values.domain }},https://app.{{ .Values.domain }}
+  PHX_HTTP_PORT: {{ .Values.massdriver.port | toString | quote }}
+  PHX_SERVER: "true"
+  PHX_URL_HOST: api.{{ .Values.domain }}
+  PHX_URL_PORT: "443"
+  PHX_URL_SCHEME: https
+  TERRAFORM_STATE_BUCKET_NAME: state

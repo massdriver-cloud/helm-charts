@@ -1,0 +1,14 @@
+apiVersion: v2
+name: massdriver
+description: Helm chart for deploying Massdriver
+type: application
+version: 0.0.1
+appVersion: 1.0.1
+
+dependencies:
+  - name: argo-workflows
+    version: 0.45.14
+    repository: https://argoproj.github.io/argo-helm
+  - name: minio
+    version: 5.4.0
+    repository: https://charts.min.io/

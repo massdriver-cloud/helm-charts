@@ -1,0 +1,17 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: {{ include "massdriver.fullname" . }}-massdriver-epmd
+  labels:
+    {{- include "massdriver.labels" . | nindent 4 }}
+    app.kubernetes.io/component: massdriver
+spec:
+  clusterIP: None
+  ports:
+    - name: epmd
+      port: {{ .Values.massdriver.epmd.port }}
+      targetPort: epmd
+      protocol: TCP
+  selector:
+    {{- include "massdriver.selectorLabels" . | nindent 4 }}
+    app.kubernetes.io/component: massdriver
