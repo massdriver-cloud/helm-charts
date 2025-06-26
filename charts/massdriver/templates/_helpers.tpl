@@ -51,6 +51,14 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
+TLS Secret Name
+*/}}
+{{- define "massdriver.tlsSecretName" -}}
+  {{- $default := printf "%s-massdriver-tls" (include "massdriver.fullname" .) -}}
+  {{- default $default .Values.massdriver.ingress.tls.secretName -}}
+{{- end }}
+
+{{/*
 Returns the available value for certain key in an existing secret (if it exists),
 otherwise it generates a random value.
 */}}

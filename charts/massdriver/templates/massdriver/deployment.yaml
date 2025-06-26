@@ -25,7 +25,7 @@ spec:
         app.kubernetes.io/component: massdriver
     spec:
       imagePullSecrets:
-      - name: {{ include "massdriver.fullname" . }}-dockerhub-access-token
+        - name: {{ include "massdriver.fullname" . }}-dockerhub
       serviceAccountName: {{ include "massdriver.fullname" . }}-massdriver
       {{- with .Values.massdriver.podSecurityContext }}
       securityContext:

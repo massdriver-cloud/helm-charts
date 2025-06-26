@@ -25,7 +25,7 @@ spec:
         app.kubernetes.io/component: launch-control
     spec:
       imagePullSecrets:
-      - name: {{ include "massdriver.fullname" . }}-dockerhub-access-token
+        - name: {{ include "massdriver.fullname" . }}-dockerhub
       serviceAccountName: {{ include "massdriver.fullname" . }}-launch-control
       {{- with .Values.launchControl.podSecurityContext }}
       securityContext:
