@@ -24,10 +24,6 @@ spec:
         {{- end }}
         app.kubernetes.io/component: kratos
     spec:
-      {{- with .Values.kratos.imagePullSecrets }}
-      imagePullSecrets:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
       serviceAccountName: {{ include "massdriver.fullname" . }}-kratos
       {{- with .Values.kratos.podSecurityContext }}
       securityContext:

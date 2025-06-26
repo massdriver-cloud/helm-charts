@@ -1,10 +1,4 @@
-# Default values for massdriver.
-# This is a YAML-formatted file.
-# Declare variables to be passed into your templates.
-
-# Global variables
-nameOverride: ""
-fullnameOverride: ""
+# Mandatory values. You must set these values before deploying the chart.
 
 postgres:
   username: 
@@ -21,6 +15,17 @@ smtp:
 
 domain: 
 
+dockerhub:
+  username: massdrivercloud
+  accessToken:
+
+
+# Global variables
+nameOverride: ""
+fullnameOverride: ""
+
+# End of mandatory values
+
 # Massdriver Variables
 massdriver:
   logLevel: info
@@ -33,9 +38,7 @@ massdriver:
 
   image:
     repository: massdrivercloud/massdriver
-    tag: "1.0.1"
-
-  imagePullSecrets: []
+    tag: "1.0.2"
 
   port: 4000
 
@@ -94,14 +97,24 @@ massdriver:
       # nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
       # nginx.ingress.kubernetes.io/proxy-body-size: 20m
     tls:
-      enabled: true
+      # if secretName is unspecified the default secret name will be <release-name>-massdriver-tls
+      secretName:
+      # if you want helm to create the secret for you, set this to true and uncomment and provide the cert and key values below
+      createSecret: true
+      # cert: |-
+      #   -----BEGIN CERTIFICATE-----
+      #   ...
+      #   -----END CERTIFICATE-----
+      # key: |-
+      #   -----BEGIN RSA PRIVATE KEY-----
+      #   ...
+      #   -----END RSA PRIVATE KEY-----
 
   epmd:
     port: 4369
 
   migration:
     enabled: true
-    args: ["eval", "Massdriver.Release.migrate"]
 
 
 # Launch Control Variables
@@ -117,8 +130,6 @@ launchControl:
     repository: massdrivercloud/launch-control
     pullPolicy: IfNotPresent
     tag: "1.0.0"
-
-  imagePullSecrets: []
 
   port: 8080
 
@@ -187,9 +198,7 @@ ui:
   image:
     repository: massdrivercloud/massdriver-ui
     pullPolicy: IfNotPresent
-    tag: "1.0.0"
-
-  imagePullSecrets: []
+    tag: "1.0.1"
 
   port: 3000
 
@@ -240,8 +249,6 @@ kratos:
     pullPolicy: IfNotPresent
     tag: "v0.10.1"
 
-  imagePullSecrets: []
-
   resources:
     limits:
       cpu: 100m
@@ -285,7 +292,7 @@ argo-workflows:
   artifactRepository:
     s3:
       bucket: argo
-      # this assumes that the release name is "massdriver". This value will need to be changed if the release name is different.
+      # this endpoint assumes that the release name is "massdriver". This value will need to be changed if the release name is different.
       endpoint: massdriver-minio.massdriver.svc:9000
       insecure: true
       # these both assume that the release name is "massdriver" (for the secret name). This value will need to be changed if the release name is different.

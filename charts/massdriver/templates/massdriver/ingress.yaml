@@ -14,14 +14,12 @@ spec:
   {{- with .Values.massdriver.ingress.ingressClassName }}
   ingressClassName: {{ . }}
   {{- end }}
-  {{- if .Values.massdriver.ingress.tls.enabled }}
   tls:
     - hosts:
         - api.{{ .Values.domain }}
         - app.{{ .Values.domain }}
         - identity.{{ .Values.domain }}
-      secretName: {{ include "massdriver.fullname" . }}-massdriver-tls
-  {{- end }}
+      secretName: {{ include "massdriver.tlsSecretName" . }}
   rules:
     - host: api.{{ .Values.domain }}
       http:
