@@ -1,0 +1,48 @@
+# This file is maintained for convenience, but it is not used by the Helm chart.
+# It maintains the values that you must (or should) set before deploying the chart.
+
+# BEGIN Mandatory values
+# You must set these values before deploying the chart.
+postgres:
+  username: 
+  password: 
+  hostname: 
+  port: 5432
+
+smtp:
+  username: 
+  password: 
+  hostname: 
+  port: 587
+  from: 
+
+domain: 
+
+dockerhub:
+  username: massdrivercloud
+  accessToken:
+
+licenseKey:
+# END Mandatory values
+
+massdriver:
+  ingress:
+    enabled: true
+    ingressClassName: ""
+    annotations: {}
+      # cert-manager.io/cluster-issuer: letsencrypt-prod
+      # nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+      # nginx.ingress.kubernetes.io/proxy-body-size: 20m
+    tls:
+      # if secretName is unspecified the default secret name will be <release-name>-massdriver-tls
+      secretName:
+      # if you want helm to create the secret for you, set this to true and uncomment and provide the cert and key values below
+      createSecret: true
+      # cert: |-
+      #   -----BEGIN CERTIFICATE-----
+      #   ...
+      #   -----END CERTIFICATE-----
+      # key: |-
+      #   -----BEGIN RSA PRIVATE KEY-----
+      #   ...
+      #   -----END RSA PRIVATE KEY-----
