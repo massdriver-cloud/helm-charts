@@ -46,8 +46,6 @@ spec:
             - secretRef:
                 name: {{ include "massdriver.fullname" . }}-massdriver-envs
             - secretRef:
-                name: {{ include "massdriver.fullname" . }}-massdriver-kratos-auth
-            - secretRef:
                 name: {{ include "massdriver.fullname" . }}-massdriver-minio-auth
           ports:
             - name: http

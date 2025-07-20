@@ -7,6 +7,5 @@ metadata:
     app.kubernetes.io/component: ui
 data:
   env: |-
-    NEXT_PUBLIC_MASSDRIVER_URL=https://api.{{ .Values.domain }}
-    NEXT_PUBLIC_MASSDRIVER_WS_URL=wss://api.{{ .Values.domain }}
-    NEXT_PUBLIC_ORY_KRATOS_PUBLIC=https://identity.{{ .Values.domain }}
+    NEXT_PUBLIC_MASSDRIVER_URL={{ include "massdriver.protocol" . }}://api.{{ .Values.domain }}
+    NEXT_PUBLIC_MASSDRIVER_WS_URL={{ include "massdriver.websocketProtocol" . }}://api.{{ .Values.domain }}

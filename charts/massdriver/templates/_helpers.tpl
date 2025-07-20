@@ -59,6 +59,28 @@ TLS Secret Name
 {{- end }}
 
 {{/*
+Protocol to use for links (http or https)
+*/}}
+{{- define "massdriver.protocol" -}}
+  {{- if .Values.massdriver.ingress.tls.enabled }}
+  {{- printf "https" }}
+  {{- else }}
+  {{- printf "http" }}
+  {{- end }}
+{{- end }}
+
+{{/*
+Websocket protocol to use (ws or wss)
+*/}}
+{{- define "massdriver.websocketProtocol" -}}
+  {{- if .Values.massdriver.ingress.tls.enabled }}
+  {{- printf "wss" }}
+  {{- else }}
+  {{- printf "ws" }}
+  {{- end }}
+{{- end }}
+
+{{/*
 Returns the available value for certain key in an existing secret (if it exists),
 otherwise it generates a random value.
 */}}
@@ -71,18 +93,6 @@ otherwise it generates a random value.
     {{- randAlphaNum $len -}}
   {{- end -}}
 {{- end }}
-
-{{- define "massdriver.kratos.password" -}}
-  {{- if .Values.kratos.password }}
-    {{- .Values.kratos.password | toString }}
-  {{- else }}
-    {{- include "massdriver.getValueFromSecret" (dict "Namespace" .Release.Namespace "Name" (printf "%s-massdriver-kratos-auth" (include "massdriver.fullname" .)) "Length" 20 "Key" "KRATOS_BASIC_AUTH_PASSWORD") }}
-  {{- end }}
-{{- end -}}
-
-{{- define "massdriver.kratos.cookie" -}}
-  {{- include "massdriver.getValueFromSecret" (dict "Namespace" .Release.Namespace "Name" (printf "%s-kratos-envs" (include "massdriver.fullname" .)) "Length" 64 "Key" "SECRETS_COOKIE_0") }}
-{{- end -}}
 
 {{/*
 Cloak Key has it's own function because it is base64 encoded itself, 
