@@ -1,0 +1,83 @@
+{
+  "type": "object",
+  "required": ["dockerhub", "domain", "licenseKey", "postgres", "smtp"],
+  "properties": {
+    "dockerhub": {
+      "type": "object",
+      "description": "Docker Hub credentials for pulling images",
+      "required": ["username", "accessToken"],
+      "properties": {
+        "username": {
+          "type": "string",
+          "minLength": 1
+        },
+        "accessToken": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "domain": {
+      "type": "string",
+      "minLength": 1,
+      "description": "The domain for your Massdriver deployment, e.g., 'massdriver.cloud'"
+    },
+    "licenseKey": {
+      "type": "string",
+      "minLength": 1,
+      "description": "The license key for your Massdriver deployment"
+    },
+    "postgres": {
+      "type": "object",
+      "description": "PostgreSQL database configuration",
+      "required": ["username", "password", "hostname", "port"],
+      "properties": {
+        "username": {
+          "type": "string",
+          "minLength": 1
+        },
+        "password": {
+          "type": "string",
+          "minLength": 1
+        },
+        "hostname": {
+          "type": "string",
+          "minLength": 1
+        },
+        "port": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 65535
+        }
+      }
+    },
+    "smtp": {
+      "type": "object",
+      "description": "SMTP server configuration for sending emails",
+      "required": ["hostname", "port", "username", "password", "from"],
+      "properties": {
+        "hostname": {
+          "type": "string",
+          "minLength": 1
+        },
+        "port": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 65535
+        },
+        "username": {
+          "type": "string",
+          "minLength": 1
+        },
+        "password": {
+          "type": "string",
+          "minLength": 1
+        },
+        "from": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
+  }
+}

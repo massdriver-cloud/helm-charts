@@ -25,6 +25,11 @@ dockerhub:
 licenseKey:
 # END Mandatory values
 
+# This creates a temporary user for quick access before OIDC is setup
+quickstart:
+  email: 
+  password: 
+
 massdriver:
   ingress:
     enabled: true
@@ -34,6 +39,8 @@ massdriver:
       # nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
       # nginx.ingress.kubernetes.io/proxy-body-size: 20m
     tls:
+      # Set this to false to run Massdriver without TLS (only HTTP). This is NOT recommended for production.
+      enabled: true
       # if secretName is unspecified the default secret name will be <release-name>-massdriver-tls
       secretName:
       # if you want helm to create the secret for you, set this to true and uncomment and provide the cert and key values below

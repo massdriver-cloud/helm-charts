@@ -14,12 +14,13 @@ spec:
   {{- with .Values.massdriver.ingress.ingressClassName }}
   ingressClassName: {{ . }}
   {{- end }}
+  {{- if .Values.massdriver.ingress.tls.enabled }}
   tls:
     - hosts:
         - api.{{ .Values.domain }}
         - app.{{ .Values.domain }}
-        - identity.{{ .Values.domain }}
       secretName: {{ include "massdriver.tlsSecretName" . }}
+  {{- end }}
   rules:
     - host: api.{{ .Values.domain }}
       http:
@@ -41,14 +42,4 @@ spec:
                 name: {{ include "massdriver.fullname" . }}-massdriver
                 port:
                   name: ui
-    - host: identity.{{ .Values.domain }}
-      http:
-        paths:
-          - path: /
-            pathType: ImplementationSpecific
-            backend:
-              service:
-                name: {{ include "massdriver.fullname" . }}-kratos
-                port:
-                  name: kratos-public
 {{- end }}

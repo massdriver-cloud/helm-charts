@@ -22,12 +22,13 @@ dockerhub:
 licenseKey:
 # END Mandatory values
 
+# This creates a temporary user for quick access before OIDC is setup
+quickstart:
+  email: 
+  password: 
 
-# Global variables
 nameOverride: ""
 fullnameOverride: ""
-
-# End of mandatory values
 
 # Massdriver Variables
 massdriver:
@@ -41,7 +42,7 @@ massdriver:
 
   image:
     repository: massdrivercloud/massdriver
-    tag: "1.0.4"
+    tag: "1.0.5"
 
   port: 4000
 
@@ -100,6 +101,8 @@ massdriver:
       # nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
       # nginx.ingress.kubernetes.io/proxy-body-size: 20m
     tls:
+      # Set this to false to run Massdriver without TLS (only HTTP). This is NOT recommended for production.
+      enabled: true
       # if secretName is unspecified the default secret name will be <release-name>-massdriver-tls
       secretName:
       # if you want helm to create the secret for you, set this to true and uncomment and provide the cert and key values below
@@ -132,7 +135,7 @@ launchControl:
   image:
     repository: massdrivercloud/launch-control
     pullPolicy: IfNotPresent
-    tag: "1.0.0"
+    tag: "1.0.1"
 
   port: 8080
 
@@ -201,7 +204,7 @@ ui:
   image:
     repository: massdrivercloud/massdriver-ui
     pullPolicy: IfNotPresent
-    tag: "1.0.2"
+    tag: "1.0.3"
 
   port: 3000
 
@@ -233,60 +236,6 @@ ui:
   service:
     port: 8080
 
-
-# Kratos Variables
-kratos:
-
-  username: kratos_basic_auth
-  # if you don't set this, it will be generated randomly
-  password:
-
-  podAnnotations: {}
-
-  podLabels: {}
-
-  replicaCount: 1
-
-  image:
-    repository: oryd/kratos
-    pullPolicy: IfNotPresent
-    tag: "v0.10.1"
-
-  resources:
-    limits:
-      cpu: 100m
-      memory: 128Mi
-    requests:
-      cpu: 50m
-      memory: 64Mi
-  
-  livenessProbe: {}
-    # httpGet:
-    #   path: /
-    #   port: http
-  readinessProbe: {}
-    # httpGet:
-    #   path: /
-    #   port: http
-
-  podSecurityContext: {}
-    # fsGroup: 10001
-
-  securityContext: {}
-    # capabilities:
-    #   drop:
-    #   - ALL
-    # readOnlyRootFilesystem: true
-    # runAsNonRoot: true
-    # runAsUser: 10001
-
-  serviceAccount:
-    create: true
-    automount: true
-    annotations: {}
-  
-  migration:
-    enabled: true
 
 argo-workflows:
   server:

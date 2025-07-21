@@ -9,4 +9,4 @@ data:
   LC_ARGO_NAMESPACE: {{ .Release.Namespace }}
   LC_PORT: "{{ .Values.launchControl.port }}"
   LC_WORKFLOW_SERVICE_ACCOUNT_NAME: {{ include "massdriver.fullname" . }}-provisioner
-  MASSDRIVER_URL: https://api.{{ .Values.domain }}
+  MASSDRIVER_URL: "http://{{ include "massdriver.fullname" . }}-massdriver.{{ .Release.Namespace }}.svc:{{ toString .Values.massdriver.service.port }}"

@@ -14,16 +14,15 @@ data:
   LOG_LEVEL: {{ .Values.massdriver.logLevel | quote }}
   MD_DEPLOYMENT_QUEUE_API_URL: "http://{{ include "massdriver.fullname" . }}-launch-control.{{ .Release.Namespace }}.svc:{{ toString .Values.launchControl.service.port }}"
   MD_EPMD_CLUSTER_SERVICE: {{ include "massdriver.fullname" . }}-massdriver-epmd.{{ .Release.Namespace }}.svc
-  MD_FRONTEND_URL: https://app.{{ .Values.domain }}
-  MD_KRATOS_URL: https://identity.{{ .Values.domain }}/sessions/whoami
+  MD_FRONTEND_URL: {{ include "massdriver.protocol" . }}://app.{{ .Values.domain }}
   MD_REPOSITORY_BUCKET: massdriver
   MIX_ENV: prod
   OTEL_RESOURCE_ATTRIBUTES: service.name=massdriver
   PHX_CHECK_ORIGIN: //api.{{ .Values.domain }},//app.{{ .Values.domain }}
-  PHX_CORS_ORIGINS: https://www.{{ .Values.domain }},https://api.{{ .Values.domain }},https://app.{{ .Values.domain }}
+  PHX_CORS_ORIGINS: {{ include "massdriver.protocol" . }}://www.{{ .Values.domain }},{{ include "massdriver.protocol" . }}://api.{{ .Values.domain }},{{ include "massdriver.protocol" . }}://app.{{ .Values.domain }}
   PHX_HTTP_PORT: {{ .Values.massdriver.port | toString | quote }}
   PHX_SERVER: "true"
   PHX_URL_HOST: api.{{ .Values.domain }}
-  PHX_URL_PORT: "443"
-  PHX_URL_SCHEME: https
+  PHX_URL_PORT: "{{ if .Values.massdriver.ingress.tls.enabled }}443{{ else }}80{{ end }}"
+  PHX_URL_SCHEME: {{ include "massdriver.protocol" . }}
   TERRAFORM_STATE_BUCKET_NAME: state
