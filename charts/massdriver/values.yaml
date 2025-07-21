@@ -42,7 +42,7 @@ massdriver:
 
   image:
     repository: massdrivercloud/massdriver
-    tag: "1.0.4"
+    tag: "1.0.5"
 
   port: 4000
 
@@ -135,7 +135,7 @@ launchControl:
   image:
     repository: massdrivercloud/launch-control
     pullPolicy: IfNotPresent
-    tag: "1.0.0"
+    tag: "1.0.1"
 
   port: 8080
 
@@ -204,7 +204,7 @@ ui:
   image:
     repository: massdrivercloud/massdriver-ui
     pullPolicy: IfNotPresent
-    tag: "1.0.2"
+    tag: "1.0.3"
 
   port: 3000
 
