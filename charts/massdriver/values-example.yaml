@@ -25,6 +25,7 @@ dockerhub:
 licenseKey:
 # END Mandatory values
 
+# This creates a temporary user for quick access before OIDC is setup
 quickstart:
   email: 
   password: 
