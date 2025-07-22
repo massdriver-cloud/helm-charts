@@ -27,6 +27,42 @@
       "minLength": 1,
       "description": "The license key for your Massdriver deployment"
     },
+    "oidc": {
+      "type": "array",
+      "description": "OpenID Connect configurations for authentication",
+      "items": {
+        "type": "object",
+        "required": ["name", "authorizeUrl", "tokenUrl", "clientId", "clientSecret"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The name of the OIDC provider",
+            "pattern": "^[a-zA-Z0-9]+$"
+          },
+          "authorizeUrl": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The authorization URL for the OIDC provider"
+          },
+          "tokenUrl": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The token URL for the OIDC provider"
+          },
+          "clientId": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The client ID for the OIDC provider"
+          },
+          "clientSecret": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The client secret for the OIDC provider"
+          }
+        }
+      }
+    },
     "postgres": {
       "type": "object",
       "description": "PostgreSQL database configuration",
