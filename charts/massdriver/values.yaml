@@ -237,6 +237,17 @@ ui:
     port: 8080
 
 
+# OIDC configuration
+oidc: []
+  # This is the OIDC configuration for Massdriver. Uncomment and fill in the values below to enable OIDC
+  # "name" must be upper/lower case alphanumeric characters. No spaces, dashes or underscores.
+  # - name: 
+  #   authorizeUrl:
+  #   tokenUrl:
+  #   clientId: 
+  #   clientSecret: 
+
+
 argo-workflows:
   server:
     authModes:
