@@ -101,6 +101,10 @@
             "minimum": 1,
             "maximum": 65535
         },
+        "server": {
+          "type": "string",
+          "minLength": 1
+        },
         "username": {
           "type": "string",
           "minLength": 1

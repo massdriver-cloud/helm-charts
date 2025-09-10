@@ -48,13 +48,14 @@ massdriver:
     stateBucket: state
 
     # Required if using "s3" for blobStorage.type
+    # NOTE: Be sure to update Argo Workflows artifact repository if you wish to S3 for Argo artifacts as well
     s3:
       endpoint: s3.amazonaws.com
       region: us-east-1
       # S3 access is better granted via IAM roles (IRSA for EKS) by setting the proper annotations on the service account
       # If you aren't running in EKS or prefer to use access keys, you can set them here
-      accessKey: ""
-      secretKey: ""
+      accessKeyId: ""
+      secretAccessKey: ""
 
   replicaCount: 2
 
