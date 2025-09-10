@@ -37,8 +37,6 @@ spec:
                 name: {{ include "massdriver.fullname" . }}-massdriver-envs
             - secretRef:
                 name: {{ include "massdriver.fullname" . }}-massdriver-envs
-            - secretRef:
-                name: {{ include "massdriver.fullname" . }}-massdriver-minio-auth
           args: 
             - eval
             - Massdriver.Release.migrate

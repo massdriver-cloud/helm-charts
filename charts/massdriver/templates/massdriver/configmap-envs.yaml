@@ -6,16 +6,23 @@ metadata:
     {{- include "massdriver.labels" . | nindent 4 }}
     app.kubernetes.io/component: massdriver
 data:
+  {{- if eq .Values.massdriver.blobStorage.type "minio" }}
   BLOB_STORAGE_HOST: "{{ include "massdriver.fullname" . }}-minio.{{ .Release.Namespace }}.svc"
   BLOB_STORAGE_PORT: "{{ toString .Values.minio.service.port }}"
   BLOB_STORAGE_SCHEME: http
+  {{- else if eq .Values.massdriver.blobStorage.type "s3" }}
+  AWS_REGION: {{ .Values.massdriver.blobStorage.s3.region }}
+  BLOB_STORAGE_HOST: "{{ printf "s3.%s.amazonaws.com" .Values.massdriver.blobStorage.s3.region }}"
+  BLOB_STORAGE_PORT: "443"
+  BLOB_STORAGE_SCHEME: "https"
+  {{- end }}
   DATABASE_SSL: "true"
   FORCE_V2_LOGGING: "true"
   LOG_LEVEL: {{ .Values.massdriver.logLevel | quote }}
   MD_DEPLOYMENT_QUEUE_API_URL: "http://{{ include "massdriver.fullname" . }}-launch-control.{{ .Release.Namespace }}.svc:{{ toString .Values.launchControl.service.port }}"
   MD_EPMD_CLUSTER_SERVICE: {{ include "massdriver.fullname" . }}-massdriver-epmd.{{ .Release.Namespace }}.svc
   MD_FRONTEND_URL: {{ include "massdriver.protocol" . }}://app.{{ .Values.domain }}
-  MD_REPOSITORY_BUCKET: massdriver
+  MD_REPOSITORY_BUCKET: {{ .Values.massdriver.blobStorage.massdriverBucket }}
   MIX_ENV: prod
   OTEL_RESOURCE_ATTRIBUTES: service.name=massdriver
   PHX_CHECK_ORIGIN: //api.{{ .Values.domain }},//app.{{ .Values.domain }}
@@ -25,4 +32,4 @@ data:
   PHX_URL_HOST: api.{{ .Values.domain }}
   PHX_URL_PORT: "{{ if .Values.massdriver.ingress.tls.enabled }}443{{ else }}80{{ end }}"
   PHX_URL_SCHEME: {{ include "massdriver.protocol" . }}
-  TERRAFORM_STATE_BUCKET_NAME: state
+  TERRAFORM_STATE_BUCKET_NAME: {{ .Values.massdriver.blobStorage.stateBucket }}

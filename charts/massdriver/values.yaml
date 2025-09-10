@@ -9,9 +9,10 @@ postgres:
 smtp:
   username: 
   password: 
-  hostname: 
+  hostname:    # eg. your-domain.com
+  server:      # eg. email.some-smtp-provider.com
   port: 587
-  from: 
+  fromAddress: # eg. no-reply@your-domain.com
 
 domain: 
 
@@ -34,15 +35,32 @@ fullnameOverride: ""
 massdriver:
   logLevel: info
 
-  podAnnotations: {}
+  # Configuration for blob storage
+  blobStorage:
+    # options are "minio" or "s3". If using "s3", make sure you set the correct bucket names and s3 values below
+    type: minio
 
-  podLabels: {}
+    # Bucket names for Massdriver to use. The default values will work with the included MinIO deployment.
+    # If you are using your own S3 buckets you will need to update the values.
+    # The massdriver bucket is used for bundle and OCI storage
+    massdriverBucket: massdriver
+    # The state bucket is used for OpenTofu/Terraform remote state storage
+    stateBucket: state
+
+    # Required if using "s3" for blobStorage.type
+    # NOTE: Be sure to update Argo Workflows artifact repository if you wish to S3 for Argo artifacts as well
+    s3:
+      region: us-east-1
+      # S3 access is better granted via IAM roles (IRSA for EKS) by setting the proper annotations on the service account
+      # If you aren't running in EKS or prefer to use access keys, you can set them here
+      accessKeyId: ""
+      secretAccessKey: ""
 
   replicaCount: 2
 
   image:
     repository: massdrivercloud/massdriver
-    tag: "1.0.6"
+    tag: "1.0.8"
 
   port: 4000
 
@@ -67,6 +85,10 @@ massdriver:
     periodSeconds: 10
     successThreshold: 2
     timeoutSeconds: 1
+
+  podAnnotations: {}
+
+  podLabels: {}
 
   podSecurityContext: {}
     # fsGroup: 10001
@@ -126,10 +148,6 @@ massdriver:
 # Launch Control Variables
 launchControl:
 
-  podAnnotations: {}
-
-  podLabels: {}
-
   replicaCount: 2
 
   image:
@@ -172,6 +190,10 @@ launchControl:
     runAsNonRoot: true
     runAsUser: 10001
     
+  podAnnotations: {}
+
+  podLabels: {}
+
   nodeSelector: {}
 
   tolerations: []
@@ -195,16 +217,10 @@ provisioner:
     annotations: {}
 
 ui:
-  podAnnotations: {}
-
-  podLabels: {}
-
-  replicaCount: 2
-
   image:
     repository: massdrivercloud/massdriver-ui
     pullPolicy: IfNotPresent
-    tag: "1.0.4"
+    tag: "1.0.6"
 
   port: 3000
 
@@ -221,9 +237,6 @@ ui:
     #   path: /
     #   port: http
   readinessProbe: {}
-
-  podSecurityContext: {}
-    # fsGroup: 10001
 
   securityContext: {}
     # capabilities:
@@ -248,7 +261,18 @@ oidc: []
   #   clientSecret: 
 
 
+# Extra manifests to deploy as an array of objects
+extraManifests: []
+  # - apiVersion: v1
+  #   kind: ConfigMap
+  #   metadata:
+  #     name: example-configmap
+  #   data:
+  #     key: value
+
+
 argo-workflows:
+  enabled: true
   server:
     authModes:
       - "server"
@@ -267,6 +291,7 @@ argo-workflows:
         key: rootPassword
 
 minio:
+  enabled: true
   # this assumes that the release name is "massdriver". This value will need to be changed if the release name is different.
   existingSecret: massdriver-minio
 
