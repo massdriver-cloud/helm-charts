@@ -38,7 +38,7 @@ massdriver:
   # Configuration for blob storage
   blobStorage:
     # options are "minio" or "s3". If using "s3", make sure you set the correct bucket names and s3 values below
-    type: minio 
+    type: minio
 
     # Bucket names for Massdriver to use. The default values will work with the included MinIO deployment.
     # If you are using your own S3 buckets you will need to update the values.
