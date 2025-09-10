@@ -50,7 +50,6 @@ massdriver:
     # Required if using "s3" for blobStorage.type
     # NOTE: Be sure to update Argo Workflows artifact repository if you wish to S3 for Argo artifacts as well
     s3:
-      endpoint: s3.amazonaws.com
       region: us-east-1
       # S3 access is better granted via IAM roles (IRSA for EKS) by setting the proper annotations on the service account
       # If you aren't running in EKS or prefer to use access keys, you can set them here
@@ -61,7 +60,7 @@ massdriver:
 
   image:
     repository: massdrivercloud/massdriver
-    tag: "1.0.6"
+    tag: "1.0.8"
 
   port: 4000
 
@@ -221,7 +220,7 @@ ui:
   image:
     repository: massdrivercloud/massdriver-ui
     pullPolicy: IfNotPresent
-    tag: "1.0.4"
+    tag: "1.0.6"
 
   port: 3000
 

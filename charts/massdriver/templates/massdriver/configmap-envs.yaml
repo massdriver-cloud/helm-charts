@@ -11,8 +11,8 @@ data:
   BLOB_STORAGE_PORT: "{{ toString .Values.minio.service.port }}"
   BLOB_STORAGE_SCHEME: http
   {{- else if eq .Values.massdriver.blobStorage.type "s3" }}
-  AWS_REGION: {{ .Values.massdriver.s3.region | quote }}
-  BLOB_STORAGE_HOST: "{{ .Values.massdriver.s3.endpoint | default "s3.amazonaws.com" }}"
+  AWS_REGION: {{ .Values.massdriver.blobStorage.s3.region }}
+  BLOB_STORAGE_HOST: "{{ printf "s3.%s.amazonaws.com" .Values.massdriver.blobStorage.s3.region }}"
   BLOB_STORAGE_PORT: "443"
   BLOB_STORAGE_SCHEME: "https"
   {{- end }}
