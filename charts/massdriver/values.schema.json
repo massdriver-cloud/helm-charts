@@ -90,7 +90,7 @@
     "smtp": {
       "type": "object",
       "description": "SMTP server configuration for sending emails",
-      "required": ["hostname", "port", "username", "password", "from"],
+      "required": ["hostname", "server", "port", "username", "password", "fromAddress"],
       "properties": {
         "hostname": {
           "type": "string",
@@ -109,7 +109,7 @@
           "type": "string",
           "minLength": 1
         },
-        "from": {
+        "fromAddress": {
           "type": "string",
           "minLength": 1
         }
