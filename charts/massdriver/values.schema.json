@@ -90,12 +90,8 @@
     "smtp": {
       "type": "object",
       "description": "SMTP server configuration for sending emails",
-      "required": ["hostname", "server", "port", "username", "password", "fromAddress"],
+      "required": ["server", "port", "username", "password", "fromAddress"],
       "properties": {
-        "hostname": {
-          "type": "string",
-          "minLength": 1
-        },
         "port": {
             "type": "integer",
             "minimum": 1,
