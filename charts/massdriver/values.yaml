@@ -9,10 +9,10 @@ postgres:
 smtp:
   username: 
   password: 
-  hostname: 
-  server: 
+  hostname:    # eg. your-domain.com
+  server:      # eg. email.some-smtp-provider.com
   port: 587
-  fromAddress: 
+  fromAddress: # eg. no-reply@your-domain.com
 
 domain: 
 
