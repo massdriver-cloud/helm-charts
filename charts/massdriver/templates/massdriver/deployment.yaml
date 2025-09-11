@@ -14,9 +14,9 @@ spec:
   template:
     metadata:
       annotations:
-      {{- with .Values.massdriver.podAnnotations }}
+        {{- with .Values.massdriver.podAnnotations }}
         {{- toYaml . | nindent 8 }}
-      {{- end }}
+        {{- end }}
         configmap.massdriver-envs/checksum: {{ include (print $.Template.BasePath "/massdriver/configmap-envs.yaml") . | sha256sum }}
         configmap.ui-envs/checksum: {{ include (print $.Template.BasePath "/massdriver/configmap-ui.yaml") . | sha256sum }}
         secret.massdriver-envs/checksum: {{ include (print $.Template.BasePath "/massdriver/secret-envs.yaml") . | sha256sum }}
