@@ -13,10 +13,11 @@ spec:
       app.kubernetes.io/component: launch-control
   template:
     metadata:
-      {{- with .Values.launchControl.podAnnotations }}
       annotations:
+        configmap.launch-control-envs/checksum: {{ include (print $.Template.BasePath "/launch-control/configmap-envs.yaml") . | sha256sum }}
+        {{- with .Values.launchControl.podAnnotations }}
         {{- toYaml . | nindent 8 }}
-      {{- end }}
+        {{- end }}
       labels:
         {{- include "massdriver.labels" . | nindent 8 }}
         {{- with .Values.launchControl.podLabels }}

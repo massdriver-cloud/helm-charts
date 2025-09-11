@@ -66,7 +66,7 @@
     "postgres": {
       "type": "object",
       "description": "PostgreSQL database configuration",
-      "required": ["username", "password", "hostname", "port"],
+      "required": ["username", "password", "hostname", "database", "port"],
       "properties": {
         "username": {
           "type": "string",
@@ -77,6 +77,10 @@
           "minLength": 1
         },
         "hostname": {
+          "type": "string",
+          "minLength": 1
+        },
+        "database": {
           "type": "string",
           "minLength": 1
         },

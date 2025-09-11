@@ -1,3 +1,4 @@
+{{- if .Values.massdriver.epmd.enabled }}
 kind: Service
 apiVersion: v1
 metadata:
@@ -15,3 +16,4 @@ spec:
   selector:
     {{- include "massdriver.selectorLabels" . | nindent 4 }}
     app.kubernetes.io/component: massdriver
+{{- end }}
