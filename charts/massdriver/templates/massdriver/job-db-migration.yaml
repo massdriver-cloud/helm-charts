@@ -44,4 +44,16 @@ spec:
           securityContext:
             {{- toYaml . | nindent 12 }}
           {{- end }}
+      {{- with .Values.massdriver.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.massdriver.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.massdriver.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
 {{- end }}

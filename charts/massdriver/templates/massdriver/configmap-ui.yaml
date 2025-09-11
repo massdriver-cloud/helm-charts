@@ -1,11 +1,11 @@
 apiVersion: v1
 kind: ConfigMap
 metadata: 
-  name: {{ include "massdriver.fullname" . }}-ui
+  name: {{ include "massdriver.fullname" . }}-ui-envs
   labels:
     {{- include "massdriver.labels" . | nindent 4 }}
     app.kubernetes.io/component: ui
 data:
   env: |-
-    NEXT_PUBLIC_MASSDRIVER_URL={{ include "massdriver.protocol" . }}://api.{{ .Values.domain }}
-    NEXT_PUBLIC_MASSDRIVER_WS_URL={{ include "massdriver.websocketProtocol" . }}://api.{{ .Values.domain }}
+    NEXT_PUBLIC_MASSDRIVER_URL={{ include "massdriver.protocol" . }}://{{ .Values.massdriver.apiSubdomain }}.{{ .Values.domain }}
+    NEXT_PUBLIC_MASSDRIVER_WS_URL={{ include "massdriver.websocketProtocol" . }}://{{ .Values.massdriver.apiSubdomain }}.{{ .Values.domain }}

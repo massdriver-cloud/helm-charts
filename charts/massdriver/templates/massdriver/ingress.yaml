@@ -17,12 +17,12 @@ spec:
   {{- if .Values.massdriver.ingress.tls.enabled }}
   tls:
     - hosts:
-        - api.{{ .Values.domain }}
-        - app.{{ .Values.domain }}
+        - {{ .Values.massdriver.apiSubdomain }}.{{ .Values.domain }}
+        - {{ .Values.massdriver.appSubdomain }}.{{ .Values.domain }}
       secretName: {{ include "massdriver.tlsSecretName" . }}
   {{- end }}
   rules:
-    - host: api.{{ .Values.domain }}
+    - host: {{ .Values.massdriver.apiSubdomain }}.{{ .Values.domain }}
       http:
         paths:
           - path: /
@@ -32,7 +32,7 @@ spec:
                 name: {{ include "massdriver.fullname" . }}-massdriver
                 port:
                   name: http
-    - host: app.{{ .Values.domain }}
+    - host: {{ .Values.massdriver.appSubdomain }}.{{ .Values.domain }}
       http:
         paths:
           - path: /

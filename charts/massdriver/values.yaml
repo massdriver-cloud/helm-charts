@@ -4,6 +4,7 @@ postgres:
   username: 
   password: 
   hostname: 
+  database: massdriver
   port: 5432
 
 smtp:
@@ -33,6 +34,10 @@ fullnameOverride: ""
 # Massdriver Variables
 massdriver:
   logLevel: info
+
+  # The subdomains to use for Massdriver. These will be used to construct URLs for the frontend and API.
+  apiSubdomain: api
+  appSubdomain: app
 
   # Configuration for blob storage
   blobStorage:
@@ -138,6 +143,7 @@ massdriver:
       #   -----END RSA PRIVATE KEY-----
 
   epmd:
+    enabled: true
     port: 4369
 
   migration:

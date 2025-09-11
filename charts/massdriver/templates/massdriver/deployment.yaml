@@ -13,10 +13,14 @@ spec:
       app.kubernetes.io/component: massdriver
   template:
     metadata:
-      {{- with .Values.massdriver.podAnnotations }}
       annotations:
+      {{- with .Values.massdriver.podAnnotations }}
         {{- toYaml . | nindent 8 }}
       {{- end }}
+        configmap.massdriver-envs/checksum: {{ include (print $.Template.BasePath "/massdriver/configmap-envs.yaml") . | sha256sum }}
+        configmap.ui-envs/checksum: {{ include (print $.Template.BasePath "/massdriver/configmap-ui.yaml") . | sha256sum }}
+        secret.massdriver-envs/checksum: {{ include (print $.Template.BasePath "/massdriver/secret-envs.yaml") . | sha256sum }}
+        secret.minio/checksum: {{ include (print $.Template.BasePath "/massdriver/secret-minio.yaml") . | sha256sum }}
       labels:
         {{- include "massdriver.labels" . | nindent 8 }}
         {{- with .Values.massdriver.podLabels }}
@@ -98,13 +102,13 @@ spec:
             {{- toYaml . | nindent 12 }}
           {{- end }}
           volumeMounts:
-            - name: ui
+            - name: ui-envs
               mountPath: /app/.env
               subPath: env
       volumes:
-        - name: ui
+        - name: ui-envs
           configMap:
-            name: {{ include "massdriver.fullname" . }}-ui
+            name: {{ include "massdriver.fullname" . }}-ui-envs
       {{- with .Values.massdriver.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
