@@ -64,7 +64,7 @@ massdriver:
 
   image:
     repository: massdrivercloud/massdriver
-    tag: "1.0.10"
+    tag: "1.0.11"
 
   port: 4000
 
@@ -73,8 +73,8 @@ massdriver:
       cpu: 1
       memory: 1Gi
     requests:
-      cpu: 100m
-      memory: 256Mi
+      cpu: 200m
+      memory: 300Mi
   
   livenessProbe: {}
     # httpGet:
@@ -164,11 +164,11 @@ launchControl:
 
   resources:
     limits:
-      cpu: 100m
-      memory: 128Mi
+      cpu: 500m
+      memory: 250Mi
     requests:
       cpu: 50m
-      memory: 64Mi
+      memory: 50Mi
   
   livenessProbe: {}
     # httpGet:
@@ -225,7 +225,7 @@ ui:
   image:
     repository: massdrivercloud/massdriver-ui
     pullPolicy: IfNotPresent
-    tag: "1.0.6"
+    tag: "1.0.7"
 
   port: 3000
 
@@ -234,8 +234,8 @@ ui:
       cpu: 1
       memory: 1Gi
     requests:
-      cpu: 400m
-      memory: 512Mi
+      cpu: 100m
+      memory: 200Mi
   
   livenessProbe: {}
     # httpGet:
@@ -264,6 +264,7 @@ oidc: []
   #   tokenUrl:
   #   clientId: 
   #   clientSecret: 
+  #   autojoinOrganization:  # The Massdriver organization to autojoin after OIDC authentication (optional)
 
 
 # Extra manifests to deploy as an array of objects
