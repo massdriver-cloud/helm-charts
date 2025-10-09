@@ -59,6 +59,10 @@
             "type": "string",
             "minLength": 1,
             "description": "The client secret for the OIDC provider"
+          },
+          "autojoinOrganization": {
+            "type": "string",
+            "description": "The Massdriver organization to autojoin after OIDC authentication (optional)"
           }
         }
       }
