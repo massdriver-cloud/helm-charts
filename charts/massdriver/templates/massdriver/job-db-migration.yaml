@@ -37,6 +37,10 @@ spec:
                 name: {{ include "massdriver.fullname" . }}-massdriver-envs
             - secretRef:
                 name: {{ include "massdriver.fullname" . }}-massdriver-envs
+            {{- if and .Values.minio.enabled (eq .Values.massdriver.blobStorage.type "minio") }}
+            - secretRef:
+                name: {{ include "massdriver.fullname" . }}-massdriver-minio-auth
+            {{- end }}
           args: 
             - eval
             - Massdriver.Release.migrate
