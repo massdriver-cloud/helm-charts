@@ -24,6 +24,8 @@ data:
   MD_EPMD_CLUSTER_SERVICE: {{ include "massdriver.fullname" . }}-massdriver-epmd.{{ .Release.Namespace }}.svc
   {{- end }}
   MD_FRONTEND_URL: {{ include "massdriver.protocol" . }}://{{ .Values.massdriver.appSubdomain }}.{{ .Values.domain }}
+  MD_METRICS_SERVER_ENABLED: "{{ .Values.massdriver.metrics.enabled }}"
+  MD_METRICS_SERVER_PORT: {{ .Values.massdriver.metrics.port | toString | quote }}
   MD_REPOSITORY_BUCKET: {{ .Values.massdriver.blobStorage.massdriverBucket }}
   MIX_ENV: prod
   OTEL_RESOURCE_ATTRIBUTES: service.name=massdriver

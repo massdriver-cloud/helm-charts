@@ -146,6 +146,16 @@ massdriver:
     enabled: true
     port: 4369
 
+  metrics:
+    enabled: true
+    port: 4021
+
+    serviceMonitor:
+      enabled: false
+      interval: 60s
+      scrapeTimeout: 15s
+      labels: {}
+
   migration:
     enabled: true
 
