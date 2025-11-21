@@ -64,7 +64,7 @@ massdriver:
 
   image:
     repository: massdrivercloud/massdriver
-    tag: "1.0.12"
+    tag: "1.1.0"
 
   port: 4000
 
@@ -146,6 +146,16 @@ massdriver:
     enabled: true
     port: 4369
 
+  metrics:
+    enabled: true
+    port: 4021
+
+    serviceMonitor:
+      enabled: false
+      interval: 60s
+      scrapeTimeout: 15s
+      labels: {}
+
   migration:
     enabled: true
 
@@ -158,7 +168,7 @@ launchControl:
   image:
     repository: massdrivercloud/launch-control
     pullPolicy: IfNotPresent
-    tag: "1.0.1"
+    tag: "1.0.2"
 
   port: 8080
 
@@ -225,7 +235,7 @@ ui:
   image:
     repository: massdrivercloud/massdriver-ui
     pullPolicy: IfNotPresent
-    tag: "1.0.8"
+    tag: "1.0.9"
 
   port: 3000
 

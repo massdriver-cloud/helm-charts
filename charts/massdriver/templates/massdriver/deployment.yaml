@@ -62,6 +62,11 @@ spec:
               containerPort: {{ .Values.massdriver.epmd.port }}
               protocol: TCP
             {{- end }}
+            {{- if .Values.massdriver.metrics.enabled }}
+            - name: metrics
+              containerPort: {{ .Values.massdriver.metrics.port }}
+              protocol: TCP
+            {{- end }}
           {{- with .Values.massdriver.livenessProbe }}
           livenessProbe:
             {{- toYaml . | nindent 12 }}

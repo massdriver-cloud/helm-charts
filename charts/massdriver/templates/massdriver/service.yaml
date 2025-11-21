@@ -16,6 +16,12 @@ spec:
       targetPort: ui
       protocol: TCP
       name: ui
+    {{- if .Values.massdriver.metrics.enabled }}
+    - port: {{ .Values.massdriver.metrics.port }}
+      targetPort: metrics
+      protocol: TCP
+      name: metrics
+    {{- end }}
   selector:
     {{- include "massdriver.selectorLabels" . | nindent 4 }}
     app.kubernetes.io/component: massdriver
