@@ -10,3 +10,14 @@ data:
   LC_PORT: "{{ .Values.launchControl.port }}"
   LC_WORKFLOW_SERVICE_ACCOUNT_NAME: {{ include "massdriver.fullname" . }}-provisioner
   MASSDRIVER_URL: "http://{{ include "massdriver.fullname" . }}-massdriver.{{ .Release.Namespace }}.svc:{{ toString .Values.massdriver.service.port }}"
+  {{- if .Values.otel.enabled }}
+  LC_PROVISIONER_OTEL_ENABLED: "{{ .Values.launchControl.provisionerOtelEnabled }}"
+  OTEL_RESOURCE_ATTRIBUTES: {{ .Values.otel.resourceAttributes | quote }}
+  OTEL_SERVICE_NAME: {{ .Values.otel.serviceName | quote }}
+  {{- if eq .Values.otel.exporter "otlp" }}
+  OTEL_TRACES_EXPORTER: otlp
+  OTEL_EXPORTER_OTLP_ENDPOINT: {{ .Values.otel.otlp.endpoint | quote }}
+  OTEL_EXPORTER_OTLP_HEADERS: {{ .Values.otel.otlp.headers | quote }}
+  OTEL_EXPORTER_OTLP_PROTOCOL: {{ .Values.otel.otlp.protocol | quote }}
+  {{- end }}
+  {{- end }}

@@ -5,7 +5,7 @@ metadata:
   name: {{ include "massdriver.fullname" . }}-massdriver-migration-{{ .Release.Revision }}
   labels:
     {{- include "massdriver.labels" . | nindent 4 }}
-    app.kubernetes.io/component: massdriver
+    app.kubernetes.io/component: migration
 spec:
   template:
     metadata:
@@ -18,7 +18,7 @@ spec:
         {{- with .Values.massdriver.podLabels }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
-        app.kubernetes.io/component: massdriver
+        app.kubernetes.io/component: migration
     spec:
       restartPolicy: Never
       imagePullSecrets:

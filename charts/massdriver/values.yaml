@@ -31,6 +31,16 @@ quickstart:
 nameOverride: ""
 fullnameOverride: ""
 
+otel:
+  enabled: false
+  serviceName: massdriver
+  exporter: otlp
+  resourceAttributes: "service.name=massdriver"
+  # otlp:
+  #   endpoint: 
+  #   headers:
+  #   protocol: grpc
+
 # Massdriver Variables
 massdriver:
   logLevel: info
@@ -64,7 +74,7 @@ massdriver:
 
   image:
     repository: massdrivercloud/massdriver
-    tag: "1.1.0"
+    tag: "1.1.1"
 
   port: 4000
 
@@ -78,7 +88,7 @@ massdriver:
   
   livenessProbe: {}
     # httpGet:
-    #   path: /
+    #   path: /_health
     #   port: http
   readinessProbe: 
     failureThreshold: 3
@@ -162,13 +172,14 @@ massdriver:
 
 # Launch Control Variables
 launchControl:
+  provisionerOtelEnabled: true
 
   replicaCount: 2
 
   image:
     repository: massdrivercloud/launch-control
     pullPolicy: IfNotPresent
-    tag: "1.0.2"
+    tag: "1.0.3"
 
   port: 8080
 
@@ -182,7 +193,7 @@ launchControl:
   
   livenessProbe: {}
     # httpGet:
-    #   path: /
+    #   path: /healthz
     #   port: http
   readinessProbe: 
     failureThreshold: 3
@@ -235,7 +246,7 @@ ui:
   image:
     repository: massdrivercloud/massdriver-ui
     pullPolicy: IfNotPresent
-    tag: "1.0.9"
+    tag: "1.0.10"
 
   port: 3000
 
@@ -249,9 +260,17 @@ ui:
   
   livenessProbe: {}
     # httpGet:
-    #   path: /
-    #   port: http
-  readinessProbe: {}
+    #   path: /health
+    #   port: ui
+  readinessProbe:
+    failureThreshold: 3
+    httpGet:
+      path: /health
+      port: ui
+      scheme: HTTP
+    periodSeconds: 10
+    successThreshold: 2
+    timeoutSeconds: 1
 
   securityContext: {}
     # capabilities:
