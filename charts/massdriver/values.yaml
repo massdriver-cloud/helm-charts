@@ -31,11 +31,17 @@ quickstart:
 nameOverride: ""
 fullnameOverride: ""
 
+# OpenTelemetry configuration for observability and tracing
 otel:
+  # Enable OpenTelemetry export
   enabled: false
+  # Service name for trace identification
   serviceName: massdriver
+  # Exporter type (otlp, jaeger, zipkin, etc.)
   exporter: otlp
+  # Resource attributes for trace metadata
   resourceAttributes: "service.name=massdriver"
+  # OTLP exporter configuration - these fields become environment variables
   # otlp:
   #   endpoint: 
   #   headers:
@@ -74,7 +80,7 @@ massdriver:
 
   image:
     repository: massdrivercloud/massdriver
-    tag: "1.1.1"
+    tag: "1.2.0"
 
   port: 4000
 
@@ -287,8 +293,8 @@ ui:
 # OIDC configuration
 oidc: []
   # This is the OIDC configuration for Massdriver. Uncomment and fill in the values below to enable OIDC
-  # "name" must consist of alphanumeric characters only (uppercase and lowercase letters, and numbers). No spaces, dashes, or underscores are allowed.
-  # - name: 
+  # Valid providers are "google", "github" and "microsoft"
+  # - provider: 
   #   authorizeUrl:
   #   tokenUrl:
   #   clientId: 
