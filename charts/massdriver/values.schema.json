@@ -32,13 +32,12 @@
       "description": "OpenID Connect configurations for authentication",
       "items": {
         "type": "object",
-        "required": ["name", "authorizeUrl", "tokenUrl", "clientId", "clientSecret"],
+        "required": ["provider", "authorizeUrl", "tokenUrl", "clientId", "clientSecret"],
         "properties": {
-          "name": {
+          "provider": {
             "type": "string",
-            "minLength": 1,
             "description": "The name of the OIDC provider",
-            "pattern": "^[a-zA-Z0-9]+$"
+            "enum": ["github", "google", "microsoft"]
           },
           "authorizeUrl": {
             "type": "string",

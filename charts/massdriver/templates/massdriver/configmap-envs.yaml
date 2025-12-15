@@ -28,7 +28,16 @@ data:
   MD_METRICS_SERVER_PORT: {{ .Values.massdriver.metrics.port | toString | quote }}
   MD_REPOSITORY_BUCKET: {{ .Values.massdriver.blobStorage.massdriverBucket }}
   MIX_ENV: prod
-  OTEL_RESOURCE_ATTRIBUTES: service.name=massdriver
+  {{- if .Values.otel.enabled }}
+  OTEL_RESOURCE_ATTRIBUTES: {{ .Values.otel.resourceAttributes | quote }}
+  OTEL_SERVICE_NAME: {{ .Values.otel.serviceName | quote }}
+  {{- if eq .Values.otel.exporter "otlp" }}
+  OTEL_TRACES_EXPORTER: otlp
+  OTEL_EXPORTER_OTLP_ENDPOINT: {{ .Values.otel.otlp.endpoint | quote }}
+  OTEL_EXPORTER_OTLP_HEADERS: {{ .Values.otel.otlp.headers | quote }}
+  OTEL_EXPORTER_OTLP_PROTOCOL: {{ .Values.otel.otlp.protocol | quote }}
+  {{- end }}
+  {{- end }}
   PHX_CHECK_ORIGIN: //{{ .Values.massdriver.apiSubdomain }}.{{ .Values.domain }},//{{ .Values.massdriver.appSubdomain }}.{{ .Values.domain }}
   PHX_CORS_ORIGINS: {{ include "massdriver.protocol" . }}://www.{{ .Values.domain }},{{ include "massdriver.protocol" . }}://{{ .Values.massdriver.apiSubdomain }}.{{ .Values.domain }},{{ include "massdriver.protocol" . }}://{{ .Values.massdriver.appSubdomain }}.{{ .Values.domain }}
   PHX_HTTP_PORT: {{ .Values.massdriver.port | toString | quote }}

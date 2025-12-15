@@ -31,6 +31,22 @@ quickstart:
 nameOverride: ""
 fullnameOverride: ""
 
+# OpenTelemetry configuration for observability and tracing
+otel:
+  # Enable OpenTelemetry export
+  enabled: false
+  # Service name for trace identification
+  serviceName: massdriver
+  # Exporter type (otlp, jaeger, zipkin, etc.)
+  exporter: otlp
+  # Resource attributes for trace metadata
+  resourceAttributes: "service.name=massdriver"
+  # OTLP exporter configuration - these fields become environment variables
+  # otlp:
+  #   endpoint: 
+  #   headers:
+  #   protocol: grpc
+
 # Massdriver Variables
 massdriver:
   logLevel: info
@@ -64,7 +80,7 @@ massdriver:
 
   image:
     repository: massdrivercloud/massdriver
-    tag: "1.1.0"
+    tag: "1.2.0"
 
   port: 4000
 
@@ -78,7 +94,7 @@ massdriver:
   
   livenessProbe: {}
     # httpGet:
-    #   path: /
+    #   path: /_health
     #   port: http
   readinessProbe: 
     failureThreshold: 3
@@ -162,13 +178,14 @@ massdriver:
 
 # Launch Control Variables
 launchControl:
+  provisionerOtelEnabled: true
 
   replicaCount: 2
 
   image:
     repository: massdrivercloud/launch-control
     pullPolicy: IfNotPresent
-    tag: "1.0.2"
+    tag: "1.0.3"
 
   port: 8080
 
@@ -182,7 +199,7 @@ launchControl:
   
   livenessProbe: {}
     # httpGet:
-    #   path: /
+    #   path: /healthz
     #   port: http
   readinessProbe: 
     failureThreshold: 3
@@ -235,7 +252,7 @@ ui:
   image:
     repository: massdrivercloud/massdriver-ui
     pullPolicy: IfNotPresent
-    tag: "1.0.9"
+    tag: "1.0.10"
 
   port: 3000
 
@@ -249,9 +266,17 @@ ui:
   
   livenessProbe: {}
     # httpGet:
-    #   path: /
-    #   port: http
-  readinessProbe: {}
+    #   path: /health
+    #   port: ui
+  readinessProbe:
+    failureThreshold: 3
+    httpGet:
+      path: /health
+      port: ui
+      scheme: HTTP
+    periodSeconds: 10
+    successThreshold: 2
+    timeoutSeconds: 1
 
   securityContext: {}
     # capabilities:
@@ -268,8 +293,8 @@ ui:
 # OIDC configuration
 oidc: []
   # This is the OIDC configuration for Massdriver. Uncomment and fill in the values below to enable OIDC
-  # "name" must consist of alphanumeric characters only (uppercase and lowercase letters, and numbers). No spaces, dashes, or underscores are allowed.
-  # - name: 
+  # Valid providers are "google", "github" and "microsoft"
+  # - provider: 
   #   authorizeUrl:
   #   tokenUrl:
   #   clientId: 
