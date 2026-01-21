@@ -20,7 +20,6 @@ spec:
         configmap.massdriver-envs/checksum: {{ include (print $.Template.BasePath "/massdriver/configmap-envs.yaml") . | sha256sum }}
         configmap.ui-envs/checksum: {{ include (print $.Template.BasePath "/massdriver/configmap-ui.yaml") . | sha256sum }}
         secret.massdriver-envs/checksum: {{ include (print $.Template.BasePath "/massdriver/secret-envs.yaml") . | sha256sum }}
-        secret.minio/checksum: {{ include (print $.Template.BasePath "/massdriver/secret-minio.yaml") . | sha256sum }}
       labels:
         {{- include "massdriver.labels" . | nindent 8 }}
         {{- with .Values.massdriver.podLabels }}
@@ -49,10 +48,6 @@ spec:
                 name: {{ include "massdriver.fullname" . }}-massdriver-envs
             - secretRef:
                 name: {{ include "massdriver.fullname" . }}-massdriver-envs
-            {{- if and .Values.minio.enabled (eq .Values.massdriver.blobStorage.type "minio") }}
-            - secretRef:
-                name: {{ include "massdriver.fullname" . }}-massdriver-minio-auth
-            {{- end }}
           ports:
             - name: http
               containerPort: {{ .Values.massdriver.port }}

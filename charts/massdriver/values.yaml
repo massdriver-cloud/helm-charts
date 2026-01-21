@@ -47,6 +47,18 @@ otel:
   #   headers:
   #   protocol: grpc
 
+# storage:
+#   # S3Proxy credentials for authenticated access
+#   username: massdriver
+#   password: s3proxypassword
+#   # Choose the backend for persistent storage: "minio", "s3", "gcs", or "azureblob"
+#   backend: minio
+
+#   minio:
+#     # If using MinIO as the storage backend, specify the access credentials
+#     username: minioaccesskey
+#     password: miniosecretkey
+
 # Massdriver Variables
 massdriver:
   logLevel: info
@@ -57,7 +69,11 @@ massdriver:
 
   # Configuration for blob storage
   blobStorage:
-    # options are "minio" or "s3". If using "s3", make sure you set the correct bucket names and s3 values below
+    # S3Proxy credentials for authenticated access
+    username: massdriver
+    password: s3proxypassword
+
+    # options are "minio", "s3", "gcs", or "azureblob". For whichever type you
     type: minio
 
     # Bucket names for Massdriver to use. The default values will work with the included MinIO deployment.
@@ -67,6 +83,11 @@ massdriver:
     # The state bucket is used for OpenTofu/Terraform remote state storage
     stateBucket: state
 
+    # Required if using "minio" for blobStorage.type
+    minio:
+      username: minioaccesskey
+      password: miniosecretkey
+
     # Required if using "s3" for blobStorage.type
     # NOTE: Be sure to update Argo Workflows artifact repository if you wish to S3 for Argo artifacts as well
     s3:
@@ -75,6 +96,23 @@ massdriver:
       # If you aren't running in EKS or prefer to use access keys, you can set them here
       accessKeyId: ""
       secretAccessKey: ""
+
+    # Required if using "s3" for blobStorage.type
+    # NOTE: Be sure to update Argo Workflows artifact repository if you wish to S3 for Argo artifacts as well
+    azureblob:
+      region: eastus
+      # S3 access is better granted via IAM roles (IRSA for EKS) by setting the proper annotations on the service account
+      # If you aren't running in EKS or prefer to use access keys, you can set them here
+      storageAccountName: ""
+
+      # You can authenticate with either storage account key or via service principal.
+      # If using storage account key, set that value and leave the service principal values blank.
+      storageAccountKey: ""
+      
+      # If using service principal authentication, leave storageAccountKey blank and set the values below
+      clientId: ""
+      clientSecret: ""
+      tenantId: ""
 
   replicaCount: 2
 

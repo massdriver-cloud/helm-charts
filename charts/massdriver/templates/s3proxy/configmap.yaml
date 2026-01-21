@@ -1,0 +1,50 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "massdriver.fullname" . }}-s3proxy-envs
+  labels:
+    {{- include "massdriver.labels" . | nindent 4 }}
+    app.kubernetes.io/component: s3proxy
+data:
+  # S3Proxy configuration
+  S3PROXY_ENDPOINT: "http://0.0.0.0:8080"
+  S3PROXY_AUTHORIZATION: "aws-v2-or-v4"
+  S3PROXY_IDENTITY: {{ .Values.massdriver.blobStorage.username | quote }}
+  S3PROXY_CREDENTIAL: {{ .Values.massdriver.blobStorage.password | quote }}
+  S3PROXY_VIRTUALHOST: ""
+  S3PROXY_IGNORE_UNKNOWN_HEADERS: "true"
+  S3PROXY_CORS_ALLOW_ALL: "false"
+  
+  {{- if eq .Values.massdriver.blobStorage.type "minio" }}
+  # MinIO backend configuration (using S3 provider)
+  JCLOUDS_PROVIDER: "aws-s3"
+  JCLOUDS_IDENTITY: {{ .Values.massdriver.blobStorage.minio.username | quote }}
+  JCLOUDS_CREDENTIAL: {{ .Values.massdriver.blobStorage.minio.password | quote }}
+  JCLOUDS_ENDPOINT: "http://{{ include "massdriver.fullname" . }}-minio.{{ .Release.Namespace }}.svc:{{ toString .Values.minio.service.port }}"
+  {{- else if eq .Values.massdriver.blobStorage.type "s3" }}
+  # AWS S3 Configuration
+  JCLOUDS_PROVIDER: "aws-s3"
+  JCLOUDS_IDENTITY: {{ .Values.massdriver.blobStorage.s3.accessKeyId | quote }}
+  JCLOUDS_CREDENTIAL: {{ .Values.massdriver.blobStorage.s3.secretAccessKey | quote }}
+  JCLOUDS_ENDPOINT: "{{ printf "https://s3.%s.amazonaws.com" .Values.massdriver.blobStorage.s3.region }}"
+  JCLOUDS_REGION: {{ .Values.massdriver.blobStorage.s3.region | quote }}
+  {{- else if eq .Values.massdriver.blobStorage.type "gcs" }}
+  # Google Cloud Storage Configuration
+  JCLOUDS_PROVIDER: "google-cloud-storage"
+  # JCLOUDS_IDENTITY: "<SERVICE_ACCOUNT_EMAIL>"
+  # JCLOUDS_CREDENTIAL: "<PRIVATE_KEY>"
+  {{- else if eq .Values.massdriver.blobStorage.type "azureblob" }}
+  # Azure Blob Storage Configuration
+  JCLOUDS_PROVIDER: "azureblob-sdk"
+  JCLOUDS_ENDPOINT: "https://{{ .Values.massdriver.blobStorage.azureblob.storageAccountName }}.blob.core.windows.net"
+  {{- if not (empty .Values.massdriver.blobStorage.azureblob.storageAccountKey) }}
+  JCLOUDS_IDENTITY: {{ .Values.massdriver.blobStorage.azureblob.storageAccountName | quote }}
+  JCLOUDS_CREDENTIAL: {{ .Values.massdriver.blobStorage.azureblob.storageAccountKey | quote }}
+  {{- else }}
+  JCLOUDS_IDENTITY: ""
+  JCLOUDS_CREDENTIAL: ""
+  AZURE_TENANT_ID: {{ .Values.massdriver.blobStorage.azureblob.tenantId | quote }}
+  AZURE_CLIENT_ID: {{ .Values.massdriver.blobStorage.azureblob.clientId | quote }}
+  AZURE_CLIENT_SECRET: {{ .Values.massdriver.blobStorage.azureblob.clientSecret | quote }}
+  {{- end }}
+  {{- end }}

@@ -127,11 +127,3 @@ so we have to handle the "double" base64 encoding gracefully
 {{- define "massdriver.phxSigningSalt" -}}
   {{- include "massdriver.getValueFromSecret" (dict "Namespace" .Release.Namespace "Name" (printf "%s-massdriver-envs" (include "massdriver.fullname" .)) "Length" 20 "Key" "PHX_SIGNING_SALT") }}
 {{- end -}}
-
-{{- define "massdriver.minio.password" -}}
-  {{ include "massdriver.getValueFromSecret" (dict "Namespace" .Release.Namespace "Name" (printf "%s-minio" (include "massdriver.fullname" .)) "Length" 40 "Key" "rootPassword") }}
-{{- end }}
-
-{{- define "massdriver.minio.username" -}}
-  {{ include "massdriver.getValueFromSecret" (dict "Namespace" .Release.Namespace "Name" (printf "%s-minio" (include "massdriver.fullname" .)) "Length" 20 "Key" "rootUser") }}
-{{- end }}
