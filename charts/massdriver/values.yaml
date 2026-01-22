@@ -57,7 +57,7 @@ massdriver:
 
   # Configuration for blob storage
   blobStorage:
-  
+
     # S3Proxy credentials for authenticated access
     username: massdriver
     password: s3proxypassword
@@ -65,12 +65,15 @@ massdriver:
     # Log level for S3Proxy (debug, info, warn, error)
     logLevel: info
 
-    # options are "minio", "s3", "gcs", or "azureblob". For whichever type you
+    # This is where you specify your desired object storage backend.
+    # Options are "minio", "s3", "gcs", or "azureblob". For whichever type you choose,
+    # be sure to fill out the corresponding configuration section below.
     type: minio
 
     # Bucket names for Massdriver to use. The default values will work with the included MinIO deployment.
-    # If you are using your own S3 buckets you will need to update the values.
-    # If you are using Azure Blob Storage, the bucket names correspond to container names.
+    # If you are using your own S3 buckets you will need to update the values to be the actual s3 bucket names (make sure they exist).
+    # If you are using Azure Blob Storage, the bucket names correspond to container names in the storage account (make sure they exist).
+    # If you are using GCS, the bucket names correspond to GCS bucket names (make sure they exist).
     # The massdriver bucket is used for bundle/OCI storage and deployment logs
     massdriverBucket: massdriver
     # The state bucket is used for OpenTofu/Terraform remote state storage
@@ -86,14 +89,14 @@ massdriver:
       password: miniosecretkey
 
     # Required if using "s3" for blobStorage.type
-    # NOTE: Be sure to update Argo Workflows artifact repository if you wish to S3 for Argo artifacts as well
     s3:
       region: us-east-1
-      # S3 access is better granted via IAM roles (IRSA for EKS) by setting the proper annotations on the service account
-      # If you aren't running in EKS or prefer to use access keys, you can set them here
+      # S3 access can be granted via access keys or IAM roles (IRSA for EKS) by setting the proper annotations on the service account
+      # If you are using access keys, set them here. If not, leave them blank and ensure the service account has the proper annotations for role binding.
       accessKeyId: ""
       secretAccessKey: ""
 
+    # Required if using "gcs" for blobStorage.type
     gcs:
       serviceAccountEmail: ""
       privateKey: |-
@@ -101,16 +104,13 @@ massdriver:
         ...
         -----END PRIVATE KEY-----
 
-    # Required if using "s3" for blobStorage.type
-    # NOTE: Be sure to update Argo Workflows artifact repository if you wish to S3 for Argo artifacts as well
+    # Required if using "azureblob" for blobStorage.type
     azureblob:
       region: eastus
-      # S3 access is better granted via IAM roles (IRSA for EKS) by setting the proper annotations on the service account
-      # If you aren't running in EKS or prefer to use access keys, you can set them here
       storageAccountName: ""
 
       # You can authenticate with either storage account key or via service principal.
-      # If using storage account key, set that value and leave the service principal values blank.
+      # If using storage account key, set the value here and leave the service principal values blank.
       storageAccountKey: ""
 
       # If using service principal authentication, leave storageAccountKey blank and set the values below
