@@ -14,7 +14,13 @@ data:
   S3PROXY_VIRTUALHOST: ""
   S3PROXY_IGNORE_UNKNOWN_HEADERS: "true"
   S3PROXY_CORS_ALLOW_ALL: "false"
-  
+
+  # JClouds HTTP client performance optimizations (applies to all providers)
+  JCLOUDS_CONNECTION_TIMEOUT: "5000"
+  JCLOUDS_SO_TIMEOUT: "10000"
+  JCLOUDS_MAX_CONNECTIONS: "200"
+  JCLOUDS_MAX_CONNECTIONS_PER_ROUTE: "20"
+
   {{- if eq .Values.massdriver.blobStorage.type "minio" }}
   # MinIO backend configuration (using S3 provider)
   JCLOUDS_PROVIDER: "aws-s3"
@@ -31,8 +37,9 @@ data:
   {{- else if eq .Values.massdriver.blobStorage.type "gcs" }}
   # Google Cloud Storage Configuration
   JCLOUDS_PROVIDER: "google-cloud-storage"
-  # JCLOUDS_IDENTITY: "<SERVICE_ACCOUNT_EMAIL>"
-  # JCLOUDS_CREDENTIAL: "<PRIVATE_KEY>"
+  JCLOUDS_IDENTITY: {{ .Values.massdriver.blobStorage.gcs.serviceAccountEmail | quote }}
+  JCLOUDS_CREDENTIAL: {{ .Values.massdriver.blobStorage.gcs.privateKey | quote }}
+  JCLOUDS_ENDPOINT: "https://storage.googleapis.com"
   {{- else if eq .Values.massdriver.blobStorage.type "azureblob" }}
   # Azure Blob Storage Configuration
   JCLOUDS_PROVIDER: "azureblob-sdk"

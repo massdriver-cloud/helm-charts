@@ -52,6 +52,12 @@ spec:
           envFrom:
             - configMapRef:
                 name: {{ include "massdriver.fullname" . }}-s3proxy-envs
+          # {{- if eq .Values.massdriver.blobStorage.type "gcs" }}
+          # volumeMounts:
+          #   - name: gcs-credentials
+          #     mountPath: /etc/s3proxy/gcs-credentials
+          #     readOnly: true
+          # {{- end }}
           securityContext:
             capabilities:
               drop:
@@ -59,5 +65,12 @@ spec:
             readOnlyRootFilesystem: false
             runAsNonRoot: true
             runAsUser: 65534
+      # {{- if eq .Values.massdriver.blobStorage.type "gcs" }}
+      # volumes:
+      #   - name: gcs-credentials
+      #     secret:
+      #       secretName: {{ include "massdriver.fullname" . }}-s3proxy-gcs-key
+      #       defaultMode: 0400
+      # {{- end }}
       securityContext:
         fsGroup: 65534
