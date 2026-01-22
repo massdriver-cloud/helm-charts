@@ -57,9 +57,13 @@ massdriver:
 
   # Configuration for blob storage
   blobStorage:
+  
     # S3Proxy credentials for authenticated access
     username: massdriver
     password: s3proxypassword
+
+    # Log level for S3Proxy (debug, info, warn, error)
+    logLevel: info
 
     # options are "minio", "s3", "gcs", or "azureblob". For whichever type you
     type: minio
