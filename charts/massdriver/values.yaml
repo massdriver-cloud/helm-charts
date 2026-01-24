@@ -55,7 +55,7 @@ massdriver:
   apiSubdomain: api
   appSubdomain: app
 
-  # Configuration for blob storage
+  # Configuration for blob storage. This includes deployment logs, bundle/OCI storage, and Terraform/OpenTofu remote state.
   blobStorage:
 
     # S3Proxy credentials for authenticated access
@@ -66,8 +66,7 @@ massdriver:
     logLevel: info
 
     # This is where you specify your desired object storage backend.
-    # Options are "minio", "s3", "gcs", or "azureblob". For whichever type you choose,
-    # be sure to fill out the corresponding configuration section below.
+    # Options are "minio", "s3", "gcs", or "azureblob". For whichever type you choose, be sure to fill out the corresponding configuration section below.
     type: minio
 
     # Bucket names for Massdriver to use. The default values will work with the included MinIO deployment.
@@ -79,9 +78,17 @@ massdriver:
     # The state bucket is used for OpenTofu/Terraform remote state storage
     stateBucket: state
 
-    # Additional annotations to add to the ServiceAccount used by S3Proxy
-    # This is useful for adding dynamic IAM role bindings
-    annotations: {}
+    serviceAccount:
+      # Annotations to add to the ServiceAccount used by S3Proxy
+      # This can be used to attach cloud IAM roles/identities to the pod via ServiceAccount annotations.
+      # Examples:
+      #   - AWS EKS (IRSA):
+      #       eks.amazonaws.com/role-arn: arn:aws:iam::123456789012:role/YourS3ProxyRole
+      #   - GKE Workload Identity:
+      #       iam.gke.io/gcp-service-account: your-sa@your-gcp-project.iam.gserviceaccount.com
+      #   - Azure Workload Identity:
+      #       azure.workload.identity/client-id: "<azure-ad-app-client-id>"
+      annotations: {}
 
     # Required if using "minio" for blobStorage.type
     minio:
@@ -106,7 +113,6 @@ massdriver:
 
     # Required if using "azureblob" for blobStorage.type
     azureblob:
-      region: eastus
       storageAccountName: ""
 
       # You can authenticate with either storage account key or via service principal.
