@@ -2,8 +2,8 @@ apiVersion: v2
 name: massdriver
 description: Helm chart for deploying Massdriver
 type: application
-version: 0.0.16
-appVersion: 1.2.1
+version: 0.0.17
+appVersion: 1.2.3
 
 dependencies:
   - name: argo-workflows
