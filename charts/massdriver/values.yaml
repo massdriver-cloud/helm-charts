@@ -55,26 +55,74 @@ massdriver:
   apiSubdomain: api
   appSubdomain: app
 
-  # Configuration for blob storage
+  # Configuration for blob storage. This includes deployment logs, bundle/OCI storage, and Terraform/OpenTofu remote state.
   blobStorage:
-    # options are "minio" or "s3". If using "s3", make sure you set the correct bucket names and s3 values below
+
+    # S3Proxy credentials for authenticated access
+    username: massdriver
+    password: s3proxypassword
+
+    # Log level for S3Proxy (debug, info, warn, error)
+    logLevel: info
+
+    # This is where you specify your desired object storage backend.
+    # Options are "minio", "s3", "gcs", or "azureblob". For whichever type you choose, be sure to fill out the corresponding configuration section below.
     type: minio
 
     # Bucket names for Massdriver to use. The default values will work with the included MinIO deployment.
-    # If you are using your own S3 buckets you will need to update the values.
-    # The massdriver bucket is used for bundle and OCI storage
+    # If you are using your own S3 buckets you will need to update the values to be the actual s3 bucket names (make sure they exist).
+    # If you are using Azure Blob Storage, the bucket names correspond to container names in the storage account (make sure they exist).
+    # If you are using GCS, the bucket names correspond to GCS bucket names (make sure they exist).
+    # The massdriver bucket is used for bundle/OCI storage and deployment logs
     massdriverBucket: massdriver
     # The state bucket is used for OpenTofu/Terraform remote state storage
     stateBucket: state
 
+    serviceAccount:
+      # Annotations to add to the ServiceAccount used by S3Proxy
+      # This can be used to attach cloud IAM roles/identities to the pod via ServiceAccount annotations.
+      # Examples:
+      #   - AWS EKS (IRSA):
+      #       eks.amazonaws.com/role-arn: arn:aws:iam::123456789012:role/YourS3ProxyRole
+      #   - GKE Workload Identity:
+      #       iam.gke.io/gcp-service-account: your-sa@your-gcp-project.iam.gserviceaccount.com
+      #   - Azure Workload Identity:
+      #       azure.workload.identity/client-id: "<azure-ad-app-client-id>"
+      annotations: {}
+
+    # Required if using "minio" for blobStorage.type
+    minio:
+      username: minioaccesskey
+      password: miniosecretkey
+
     # Required if using "s3" for blobStorage.type
-    # NOTE: Be sure to update Argo Workflows artifact repository if you wish to S3 for Argo artifacts as well
     s3:
       region: us-east-1
-      # S3 access is better granted via IAM roles (IRSA for EKS) by setting the proper annotations on the service account
-      # If you aren't running in EKS or prefer to use access keys, you can set them here
+      # S3 access can be granted via access keys or IAM roles (IRSA for EKS) by setting the proper annotations on the service account
+      # If you are using access keys, set them here. If not, leave them blank and ensure the service account has the proper annotations for role binding.
       accessKeyId: ""
       secretAccessKey: ""
+
+    # Required if using "gcs" for blobStorage.type
+    gcs:
+      serviceAccountEmail: ""
+      privateKey: |-
+        -----BEGIN PRIVATE KEY-----
+        ...
+        -----END PRIVATE KEY-----
+
+    # Required if using "azureblob" for blobStorage.type
+    azureblob:
+      storageAccountName: ""
+
+      # You can authenticate with either storage account key or via service principal.
+      # If using storage account key, set the value here and leave the service principal values blank.
+      storageAccountKey: ""
+
+      # If using service principal authentication, leave storageAccountKey blank and set the values below
+      clientId: ""
+      clientSecret: ""
+      tenantId: ""
 
   replicaCount: 2
 

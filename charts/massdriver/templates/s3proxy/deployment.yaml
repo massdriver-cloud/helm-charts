@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "massdriver.fullname" . }}-s3proxy
+  labels:
+    {{- include "massdriver.labels" . | nindent 4 }}
+    app.kubernetes.io/component: s3proxy
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      {{- include "massdriver.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: s3proxy
+  template:
+    metadata:
+      annotations:
+        secret.s3proxy-config/checksum: {{ include (print $.Template.BasePath "/s3proxy/secret-envs.yaml") . | sha256sum }}
+      labels:
+        {{- include "massdriver.labels" . | nindent 8 }}
+        app.kubernetes.io/component: s3proxy
+    spec:
+      serviceAccountName: {{ include "massdriver.fullname" . }}-s3proxy
+      containers:
+        - name: s3proxy
+          image: "andrewgaul/s3proxy:3.0.0"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          livenessProbe:
+            tcpSocket:
+              port: http
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          readinessProbe:
+            tcpSocket:
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 3
+          resources:
+            limits:
+              cpu: 500m
+              memory: 512Mi
+            requests:
+              cpu: 100m
+              memory: 128Mi
+          envFrom:
+            - secretRef:
+                name: {{ include "massdriver.fullname" . }}-s3proxy-envs
+          securityContext:
+            capabilities:
+              drop:
+              - ALL
+            readOnlyRootFilesystem: false
+            runAsNonRoot: true
+            runAsUser: 65534
+      securityContext:
+        fsGroup: 65534
