@@ -40,5 +40,5 @@ data:
   PHX_URL_SCHEME: {{ include "massdriver.protocol" . }}
   TERRAFORM_STATE_BUCKET_NAME: {{ .Values.massdriver.blobStorage.stateBucket }}
 {{- range $key, $value := .Values.massdriver.extraEnvs }}
-  {{ $key }}: {{ $value | quote }}
+  {{ $key }}: {{ $value | toString | quote }}
 {{- end }}
