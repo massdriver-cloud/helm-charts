@@ -223,7 +223,7 @@ massdriver:
     # Parent Gateway references - HTTPRoute attaches to these Gateways
     # You can specify multiple parent Gateways if needed
     parentRefs:
-      - name: ""  # Required: name of the Gateway resource (e.g., "gateway", "external-gateway")
+      - name: "gateway"  # Required: set this to the name of your Gateway resource (e.g., "gateway", "external-gateway")
         # namespace: gateway-system  # Optional: namespace of the Gateway (defaults to HTTPRoute namespace)
         # sectionName: https  # Optional: specific listener name on the Gateway
         # port: 443  # Optional: specific port on the Gateway
