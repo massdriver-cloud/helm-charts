@@ -62,7 +62,7 @@ TLS Secret Name
 Protocol to use for links (http or https)
 */}}
 {{- define "massdriver.protocol" -}}
-  {{- if .Values.massdriver.ingress.tls.enabled }}
+  {{- if (or (and .Values.massdriver.ingress.enabled .Values.massdriver.ingress.tls.enabled ) (and .Values.massdriver.httpRoute.enabled .Values.massdriver.httpRoute.tls.enabled )) }}
   {{- printf "https" }}
   {{- else }}
   {{- printf "http" }}
@@ -73,7 +73,7 @@ Protocol to use for links (http or https)
 Websocket protocol to use (ws or wss)
 */}}
 {{- define "massdriver.websocketProtocol" -}}
-  {{- if .Values.massdriver.ingress.tls.enabled }}
+  {{- if (or (and .Values.massdriver.ingress.enabled .Values.massdriver.ingress.tls.enabled ) (and .Values.massdriver.httpRoute.enabled .Values.massdriver.httpRoute.tls.enabled )) }}
   {{- printf "wss" }}
   {{- else }}
   {{- printf "ws" }}

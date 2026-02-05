@@ -227,6 +227,13 @@ massdriver:
         # namespace: gateway-system  # Optional: namespace of the Gateway (defaults to HTTPRoute namespace)
         # sectionName: https  # Optional: specific listener name on the Gateway
         # port: 443  # Optional: specific port on the Gateway
+    
+    # This TLS block has no impact on the HTTPRoute itself; TLS is configured on the Gateway. It is included here because
+    # Massdriver needs to know whether TLS is enabled to set correct URL schemes and ports. If you have TLS configured on your Gateway,
+    # set enabled to true here. If not, set to false.
+    tls:
+      # Set this to false to run Massdriver without TLS (only HTTP). This is NOT recommended for production.
+      enabled: true
 
   epmd:
     enabled: true
