@@ -134,7 +134,7 @@ massdriver:
 
   # Additional environment variables to set on the Massdriver container in the Massdriver deployment
   # Format is a map of key/value pairs (not the list of name/value objects like Kubernetes uses)
-  # These will be added to the ConfigMap (envs) or Secrets (secrets) and then mounted into the deployment.
+  # These will be added to the ConfigMap (extraEnvs) or Secrets (extraSecrets) and then mounted into the deployment.
   extraEnvs: {}
   extraSecrets: {}
 
