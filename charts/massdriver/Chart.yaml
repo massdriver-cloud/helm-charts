@@ -4,6 +4,7 @@ description: Helm chart for deploying Massdriver
 type: application
 version: 0.0.20
 appVersion: 1.2.4
+icon: https://raw.githubusercontent.com/massdriver-cloud/helm-charts/main/charts/massdriver/icon.png
 
 dependencies:
   - name: argo-workflows
