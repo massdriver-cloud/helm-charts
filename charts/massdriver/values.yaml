@@ -132,6 +132,12 @@ massdriver:
 
   port: 4000
 
+  # Additional environment variables to set on the Massdriver container in the Massdriver deployment
+  # Format is a map of key/value pairs (not the list of name/value objects like Kubernetes uses)
+  # These will be added to the ConfigMap (envs) or Secrets (secrets) and then mounted into the deployment.
+  extraEnvs: {}
+  extraSecrets: {}
+
   resources:
     limits:
       cpu: 1
@@ -183,8 +189,10 @@ massdriver:
   service:
     port: 80
 
+  # Ingress configuration for Massdriver. By default this is all disabled. If you prefer the new GatewayAPI configuration,
+  # leave ingress disabled and enable httpRoute instead.
   ingress:
-    enabled: true
+    enabled: false
     ingressClassName: ""
     annotations: {}
       # cert-manager.io/cluster-issuer: letsencrypt-prod
@@ -205,6 +213,20 @@ massdriver:
       #   -----BEGIN RSA PRIVATE KEY-----
       #   ...
       #   -----END RSA PRIVATE KEY-----
+  
+  # GatewayAPI HTTPRoute configuration for Massdriver. By default this is all disabled. If you prefer traditional Ingress configuration,
+  # leave httpRoute disabled and enable ingress instead.
+  httpRoute:
+    enabled: false
+    # Annotations to add to the HTTPRoute resource
+    annotations: {}
+    # Parent Gateway references - HTTPRoute attaches to these Gateways
+    # You can specify multiple parent Gateways if needed
+    parentRefs:
+      - name: ""  # Required: name of the Gateway resource (e.g., "gateway", "external-gateway")
+        # namespace: gateway-system  # Optional: namespace of the Gateway (defaults to HTTPRoute namespace)
+        # sectionName: https  # Optional: specific listener name on the Gateway
+        # port: 443  # Optional: specific port on the Gateway
 
   epmd:
     enabled: true
