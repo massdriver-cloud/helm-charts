@@ -178,6 +178,25 @@ entries:
     version: 0.1.1
   massdriver:
   - apiVersion: v2
+    appVersion: 1.2.6
+    created: "2026-02-06T23:45:41.301191775Z"
+    dependencies:
+    - condition: argo-workflows.enabled
+      name: argo-workflows
+      repository: https://argoproj.github.io/argo-helm
+      version: 0.45.14
+    - condition: minio.enabled
+      name: minio
+      repository: https://charts.min.io/
+      version: 5.4.0
+    description: Helm chart for deploying Massdriver
+    digest: 7c7153bc0caf93c01507563c9466f9178cc0091a5bb46467524a070098c4b04b
+    name: massdriver
+    type: application
+    urls:
+    - https://github.com/massdriver-cloud/helm-charts/releases/download/massdriver-0.0.21/massdriver-0.0.21.tgz
+    version: 0.0.21
+  - apiVersion: v2
     appVersion: 1.2.4
     created: "2026-01-28T20:25:59.131190913Z"
     dependencies:
@@ -882,4 +901,4 @@ entries:
     urls:
     - https://github.com/massdriver-cloud/helm-charts/releases/download/ruby-on-rails-0.2.0/ruby-on-rails-0.2.0.tgz
     version: 0.2.0
-generated: "2026-01-28T20:25:59.131329222Z"
+generated: "2026-02-06T23:45:41.301356107Z"
