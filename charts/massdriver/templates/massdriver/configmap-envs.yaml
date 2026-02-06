@@ -36,6 +36,9 @@ data:
   PHX_HTTP_PORT: {{ .Values.massdriver.port | toString | quote }}
   PHX_SERVER: "true"
   PHX_URL_HOST: {{ .Values.massdriver.apiSubdomain }}.{{ .Values.domain }}
-  PHX_URL_PORT: "{{ if .Values.massdriver.ingress.tls.enabled }}443{{ else }}80{{ end }}"
+  PHX_URL_PORT: "{{ if eq (include "massdriver.protocol" .) "https" }}443{{ else }}80{{ end }}"
   PHX_URL_SCHEME: {{ include "massdriver.protocol" . }}
   TERRAFORM_STATE_BUCKET_NAME: {{ .Values.massdriver.blobStorage.stateBucket }}
+{{- range $key, $value := .Values.massdriver.extraEnvs }}
+  {{ $key }}: {{ $value | toString | quote }}
+{{- end }}

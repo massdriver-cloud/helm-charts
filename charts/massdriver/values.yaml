@@ -128,9 +128,15 @@ massdriver:
 
   image:
     repository: massdrivercloud/massdriver
-    tag: "1.2.4"
+    tag: "1.2.6"
 
   port: 4000
+
+  # Additional environment variables to set on the Massdriver container in the Massdriver deployment
+  # Format is a map of key/value pairs (not the list of name/value objects like Kubernetes uses)
+  # These will be added to the ConfigMap (extraEnvs) or Secrets (extraSecrets) and then mounted into the deployment.
+  extraEnvs: {}
+  extraSecrets: {}
 
   resources:
     limits:
@@ -183,8 +189,10 @@ massdriver:
   service:
     port: 80
 
+  # Ingress configuration for Massdriver. By default this is all disabled. If you prefer the new GatewayAPI configuration,
+  # leave ingress disabled and enable httpRoute instead.
   ingress:
-    enabled: true
+    enabled: false
     ingressClassName: ""
     annotations: {}
       # cert-manager.io/cluster-issuer: letsencrypt-prod
@@ -205,6 +213,27 @@ massdriver:
       #   -----BEGIN RSA PRIVATE KEY-----
       #   ...
       #   -----END RSA PRIVATE KEY-----
+  
+  # GatewayAPI HTTPRoute configuration for Massdriver. By default this is all disabled. If you prefer traditional Ingress configuration,
+  # leave httpRoute disabled and enable ingress instead.
+  httpRoute:
+    enabled: false
+    # Annotations to add to the HTTPRoute resource
+    annotations: {}
+    # Parent Gateway references - HTTPRoute attaches to these Gateways
+    # You can specify multiple parent Gateways if needed
+    parentRefs:
+      - name: "gateway"  # Required: set this to the name of your Gateway resource (e.g., "gateway", "external-gateway")
+        # namespace: gateway-system  # Optional: namespace of the Gateway (defaults to HTTPRoute namespace)
+        # sectionName: https  # Optional: specific listener name on the Gateway
+        # port: 443  # Optional: specific port on the Gateway
+    
+    # This TLS block has no impact on the HTTPRoute itself; TLS is configured on the Gateway. It is included here because
+    # Massdriver needs to know whether TLS is enabled to set correct URL schemes and ports. If you have TLS configured on your Gateway,
+    # set enabled to true here. If not, set to false.
+    tls:
+      # Set this to false to run Massdriver without TLS (only HTTP). This is NOT recommended for production.
+      enabled: true
 
   epmd:
     enabled: true
@@ -300,7 +329,7 @@ ui:
   image:
     repository: massdrivercloud/massdriver-ui
     pullPolicy: IfNotPresent
-    tag: "1.0.14"
+    tag: "1.0.15"
 
   port: 3000
 
