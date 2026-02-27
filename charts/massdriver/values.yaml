@@ -377,6 +377,8 @@ oidc: []
   #   clientId: 
   #   clientSecret: 
   #   autojoinOrganization:  # The Massdriver organization to autojoin after OIDC authentication (optional)
+  #   uiLabel:               # The label to show on the button in the Massdriver UI for this OIDC provider (optional)
+  #   uiIconUrl:             # The URL of an icon to show on the button in the Massdriver UI for this OIDC provider (optional)
 
 
 # Extra manifests to deploy as an array of objects
