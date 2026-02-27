@@ -62,6 +62,14 @@
           "autojoinOrganization": {
             "type": "string",
             "description": "The Massdriver organization to autojoin after OIDC authentication (optional)"
+          },
+          "uiLabel": {
+            "type": "string",
+            "description": "The label to show on the button in the Massdriver UI for this OIDC provider (optional)"
+          },
+          "uiIconUrl": {
+            "type": "string",
+            "description": "The URL of an icon to show on the button in the Massdriver UI for this OIDC provider (optional)"
           }
         }
       }
