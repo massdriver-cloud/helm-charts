@@ -31,8 +31,8 @@ data:
   OTEL_EXPORTER_OTLP_PROTOCOL: {{ .Values.otel.otlp.protocol | quote }}
   {{- end }}
   {{- end }}
-  PHX_CHECK_ORIGIN: //{{ .Values.massdriver.apiSubdomain }}.{{ .Values.domain }},//{{ .Values.massdriver.appSubdomain }}.{{ .Values.domain }}
-  PHX_CORS_ORIGINS: {{ include "massdriver.protocol" . }}://www.{{ .Values.domain }},{{ include "massdriver.protocol" . }}://{{ .Values.massdriver.apiSubdomain }}.{{ .Values.domain }},{{ include "massdriver.protocol" . }}://{{ .Values.massdriver.appSubdomain }}.{{ .Values.domain }}
+  PHX_CHECK_ORIGIN: //{{ .Values.massdriver.apiSubdomain }}.{{ .Values.domain }},//{{ .Values.massdriver.appSubdomain }}.{{ .Values.domain }},//dev.{{ .Values.domain }}
+  PHX_CORS_ORIGINS: {{ include "massdriver.protocol" . }}://www.{{ .Values.domain }},{{ include "massdriver.protocol" . }}://{{ .Values.massdriver.apiSubdomain }}.{{ .Values.domain }},{{ include "massdriver.protocol" . }}://{{ .Values.massdriver.appSubdomain }}.{{ .Values.domain }},{{ include "massdriver.protocol" . }}://dev.{{ .Values.domain }}
   PHX_HTTP_PORT: {{ .Values.massdriver.port | toString | quote }}
   PHX_SERVER: "true"
   PHX_URL_HOST: {{ .Values.massdriver.apiSubdomain }}.{{ .Values.domain }}
