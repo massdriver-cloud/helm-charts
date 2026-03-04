@@ -128,7 +128,7 @@ massdriver:
 
   image:
     repository: massdrivercloud/massdriver
-    tag: "1.3.1"
+    tag: "1.3.2"
 
   port: 4000
 
@@ -262,7 +262,7 @@ launchControl:
   image:
     repository: massdrivercloud/launch-control
     pullPolicy: IfNotPresent
-    tag: "1.0.3"
+    tag: "1.0.4"
 
   port: 8080
 
@@ -396,6 +396,10 @@ argo-workflows:
   server:
     authModes:
       - "server"
+  workflow:
+    rbac:
+      create: true
+      artifactGC: true
   artifactRepository:
     s3:
       bucket: argo
