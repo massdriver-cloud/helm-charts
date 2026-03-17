@@ -60,7 +60,8 @@ massdriver:
   additionalSubdomains: []
 
   # Fully qualified origins to allow, for external tools on different domains.
-  # Provide full HTTPS URLs — the chart will derive the host-only form for PHX_CHECK_ORIGIN automatically.
+  # Format: scheme://host or scheme://host:port — no path, query string, or trailing slash.
+  # The chart will derive the host-only form for PHX_CHECK_ORIGIN automatically.
   # Example: ["https://custom.service.internal.company.com"]
   additionalOrigins: []
 
