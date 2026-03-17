@@ -54,6 +54,15 @@ massdriver:
   # The subdomains to use for Massdriver. These will be used to construct URLs for the frontend and API.
   apiSubdomain: api
   appSubdomain: app
+  
+  # Additional subdomains of the base domain to allow in CORS and Phoenix origin checks. This should rarely be needed in self-hosted environments.
+  # The chart will automatically format these for both PHX_CORS_ORIGINS and PHX_CHECK_ORIGIN.
+  additionalSubdomains: []
+
+  # Fully qualified origins to allow, for external tools on different domains.
+  # Provide full HTTPS URLs — the chart will derive the host-only form for PHX_CHECK_ORIGIN automatically.
+  # Example: ["https://custom.service.internal.company.com"]
+  additionalOrigins: []
 
   # Configuration for blob storage. This includes deployment logs, bundle/OCI storage, and Terraform/OpenTofu remote state.
   blobStorage:
@@ -134,9 +143,9 @@ massdriver:
 
   # Additional environment variables to set on the Massdriver container in the Massdriver deployment
   # Format is a map of key/value pairs (not the list of name/value objects like Kubernetes uses)
-  # These will be added to the ConfigMap (extraEnvs) or Secrets (extraSecrets) and then mounted into the deployment.
-  extraEnvs: {}
-  extraSecrets: {}
+  # These will be added to the ConfigMap (additionalEnvs) or Secrets (extraSecrets) and then mounted into the deployment.
+  additionalEnvs: {}
+  additionalSecrets: {}
 
   resources:
     limits:
@@ -265,6 +274,11 @@ launchControl:
     tag: "1.0.4"
 
   port: 8080
+
+  # Additional environment variables to set on the Launch Control container in the Massdriver deployment
+  # Format is a map of key/value pairs (not the list of name/value objects like Kubernetes uses)
+  # These will be added to the ConfigMap and then mounted into the deployment.
+  additionalEnvs: {}
 
   resources:
     limits:
