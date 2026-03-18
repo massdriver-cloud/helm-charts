@@ -127,3 +127,38 @@ so we have to handle the "double" base64 encoding gracefully
 {{- define "massdriver.phxSigningSalt" -}}
   {{- include "massdriver.getValueFromSecret" (dict "Namespace" .Release.Namespace "Name" (printf "%s-massdriver-envs" (include "massdriver.fullname" .)) "Length" 20 "Key" "PHX_SIGNING_SALT") }}
 {{- end -}}
+
+{{/*
+PHX_CHECK_ORIGIN value — scheme-relative origins for Phoenix WebSocket/LiveView checks.
+Includes the core api/app subdomains, any additionalSubdomains (short names under the base domain),
+and any additionalOrigins (full URLs, protocol stripped).
+*/}}
+{{- define "massdriver.phxCheckOrigins" -}}
+  {{- $domain := .Values.domain -}}
+  {{- $origins := list (printf "//%s.%s" .Values.massdriver.apiSubdomain $domain) (printf "//%s.%s" .Values.massdriver.appSubdomain $domain) -}}
+  {{- range .Values.massdriver.additionalSubdomains -}}
+    {{- $origins = append $origins (printf "//%s.%s" . $domain) -}}
+  {{- end -}}
+  {{- range .Values.massdriver.additionalOrigins -}}
+    {{- $origins = append $origins (trimPrefix "https:" . | trimPrefix "http:") -}}
+  {{- end -}}
+  {{- join "," $origins -}}
+{{- end -}}
+
+{{/*
+PHX_CORS_ORIGINS value — full URLs for HTTP CORS policy.
+Includes www + core api/app subdomains, any additionalSubdomains (short names under the base domain),
+and any additionalOrigins (full URLs for external tools like Backstage or Port).
+*/}}
+{{- define "massdriver.corsOrigins" -}}
+  {{- $protocol := include "massdriver.protocol" . -}}
+  {{- $domain := .Values.domain -}}
+  {{- $origins := list (printf "%s://www.%s" $protocol $domain) (printf "%s://%s.%s" $protocol .Values.massdriver.apiSubdomain $domain) (printf "%s://%s.%s" $protocol .Values.massdriver.appSubdomain $domain) -}}
+  {{- range .Values.massdriver.additionalSubdomains -}}
+    {{- $origins = append $origins (printf "%s://%s.%s" $protocol . $domain) -}}
+  {{- end -}}
+  {{- range .Values.massdriver.additionalOrigins -}}
+    {{- $origins = append $origins . -}}
+  {{- end -}}
+  {{- join "," $origins -}}
+{{- end -}}

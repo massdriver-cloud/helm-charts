@@ -31,14 +31,14 @@ data:
   OTEL_EXPORTER_OTLP_PROTOCOL: {{ .Values.otel.otlp.protocol | quote }}
   {{- end }}
   {{- end }}
-  PHX_CHECK_ORIGIN: //{{ .Values.massdriver.apiSubdomain }}.{{ .Values.domain }},//{{ .Values.massdriver.appSubdomain }}.{{ .Values.domain }},//dev.{{ .Values.domain }}
-  PHX_CORS_ORIGINS: {{ include "massdriver.protocol" . }}://www.{{ .Values.domain }},{{ include "massdriver.protocol" . }}://{{ .Values.massdriver.apiSubdomain }}.{{ .Values.domain }},{{ include "massdriver.protocol" . }}://{{ .Values.massdriver.appSubdomain }}.{{ .Values.domain }},{{ include "massdriver.protocol" . }}://dev.{{ .Values.domain }}
+  PHX_CHECK_ORIGIN: {{ include "massdriver.phxCheckOrigins" . }}
+  PHX_CORS_ORIGINS: {{ include "massdriver.corsOrigins" . }}
   PHX_HTTP_PORT: {{ .Values.massdriver.port | toString | quote }}
   PHX_SERVER: "true"
   PHX_URL_HOST: {{ .Values.massdriver.apiSubdomain }}.{{ .Values.domain }}
   PHX_URL_PORT: "{{ if eq (include "massdriver.protocol" .) "https" }}443{{ else }}80{{ end }}"
   PHX_URL_SCHEME: {{ include "massdriver.protocol" . }}
   TERRAFORM_STATE_BUCKET_NAME: {{ .Values.massdriver.blobStorage.stateBucket }}
-{{- range $key, $value := .Values.massdriver.extraEnvs }}
+  {{- range $key, $value := .Values.massdriver.additionalEnvs }}
   {{ $key }}: {{ $value | toString | quote }}
-{{- end }}
+  {{- end }}

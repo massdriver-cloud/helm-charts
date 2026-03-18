@@ -21,3 +21,6 @@ data:
   OTEL_EXPORTER_OTLP_PROTOCOL: {{ .Values.otel.otlp.protocol | quote }}
   {{- end }}
   {{- end }}
+  {{- range $key, $value := .Values.launchControl.additionalEnvs }}
+  {{ $key }}: {{ $value | toString | quote }}
+  {{- end }}
