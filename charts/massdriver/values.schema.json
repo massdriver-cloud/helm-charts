@@ -70,7 +70,35 @@
           "uiIconUrl": {
             "type": "string",
             "description": "The URL of an icon to show on the button in the Massdriver UI for this OIDC provider (optional)"
+          },
+          "okta": {
+            "type": "object",
+            "description": "Okta-specific configuration (required when provider is 'okta')",
+            "required": ["site"],
+            "properties": {
+              "site": {
+                "type": "string",
+                "minLength": 1,
+                "description": "The Okta organization URL, e.g., 'https://your-org.okta.com'"
+              },
+              "authorizationServerId": {
+                "type": "string",
+                "description": "The Okta authorization server ID (optional, omit to use global /oauth2/v1/... endpoints)"
+              },
+              "userinfoUrl": {
+                "type": "string",
+                "description": "Custom userinfo endpoint URL (optional, auto-derived from site and authorizationServerId)"
+              }
+            }
           }
+        },
+        "if": {
+          "properties": {
+            "provider": { "const": "okta" }
+          }
+        },
+        "then": {
+          "required": ["okta"]
         }
       }
     },

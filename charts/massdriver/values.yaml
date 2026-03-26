@@ -395,6 +395,11 @@ oidc: []
   #   uiLabel:               # The label to show on the button in the Massdriver UI for this OIDC provider (optional)
   #   uiIconUrl:             # The URL of an icon to show on the button in the Massdriver UI for this OIDC provider (optional)
 
+  #   okta:                     # Okta-specific configuration (required when provider is "okta")
+  #     site:                   # The Okta organization URL, e.g., "https://your-org.okta.com" (required)
+  #     authorizationServerId:  # The Okta authorization server ID (optional, omit to use global /oauth2/v1/... endpoints)
+  #     userinfoUrl:            # Custom userinfo endpoint URL (optional, auto-derived from site and authorizationServerId)
+
 
 # Extra manifests to deploy as an array of objects
 extraManifests: []
