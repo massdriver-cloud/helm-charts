@@ -385,7 +385,7 @@ ui:
 # OIDC configuration
 oidc: []
   # This is the OIDC configuration for Massdriver. Uncomment and fill in the values below to enable OIDC
-  # Valid providers are "google", "github" and "microsoft"
+  # Valid providers are "google", "github", "microsoft" and "okta".
   # - provider: 
   #   authorizeUrl:
   #   tokenUrl:
