@@ -138,7 +138,7 @@ massdriver:
 
   image:
     repository: massdrivercloud/massdriver
-    tag: "1.4.2"
+    tag: "1.5.1"
 
   port: 4000
 
@@ -394,7 +394,6 @@ oidc: []
   #   autojoinOrganization:  # The Massdriver organization to autojoin after OIDC authentication (optional)
   #   uiLabel:               # The label to show on the button in the Massdriver UI for this OIDC provider (optional)
   #   uiIconUrl:             # The URL of an icon to show on the button in the Massdriver UI for this OIDC provider (optional)
-
   #   okta:                     # Okta-specific configuration (required when provider is "okta")
   #     site:                   # The Okta organization URL, e.g., "https://your-org.okta.com" (required)
   #     authorizationServerId:  # The Okta authorization server ID (optional, omit to use global /oauth2/v1/... endpoints)

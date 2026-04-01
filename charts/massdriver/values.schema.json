@@ -93,6 +93,7 @@
           }
         },
         "if": {
+          "required": ["provider"],
           "properties": {
             "provider": { "const": "okta" }
           }
