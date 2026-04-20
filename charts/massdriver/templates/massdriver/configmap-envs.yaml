@@ -6,6 +6,7 @@ metadata:
     {{- include "massdriver.labels" . | nindent 4 }}
     app.kubernetes.io/component: massdriver
 data:
+  ALLOW_OIDC_EMAIL_ACCOUNT_LINKING: "true"
   BLOB_STORAGE_HOST: "{{ include "massdriver.fullname" . }}-s3proxy.{{ .Release.Namespace }}.svc"
   BLOB_STORAGE_PORT: "80"
   BLOB_STORAGE_SCHEME: http
