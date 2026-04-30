@@ -2,7 +2,7 @@ apiVersion: v2
 name: massdriver
 description: Helm chart for deploying Massdriver
 type: application
-version: 0.0.29
+version: 0.0.30
 appVersion: 1.5.2
 
 dependencies:

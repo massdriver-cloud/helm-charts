@@ -8,3 +8,4 @@ metadata:
 data:
   NEXT_PUBLIC_MASSDRIVER_URL: {{ include "massdriver.protocol" . }}://{{ .Values.massdriver.apiSubdomain }}.{{ .Values.domain }}
   NEXT_PUBLIC_MASSDRIVER_WS_URL: {{ include "massdriver.websocketProtocol" . }}://{{ .Values.massdriver.apiSubdomain }}.{{ .Values.domain }}
+  V1_BETA: "true"
