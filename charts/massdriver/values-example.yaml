@@ -1,5 +1,7 @@
-# This file is maintained for convenience, but it is not used by the Helm chart.
-# It maintains the values that you must (or should) set before deploying the chart.
+# This file is provided for your convenience, but it is not used by the Helm chart.
+# It contains the values that you must (or should) set before deploying the chart.
+# You should modify fill out this values.yaml file and maintain it as your own copy 
+# for installing and upgrading Massdriver.
 
 # BEGIN Mandatory values
 # You must set these values before deploying the chart.
