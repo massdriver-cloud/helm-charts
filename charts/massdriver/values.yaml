@@ -138,7 +138,7 @@ massdriver:
 
   image:
     repository: massdrivercloud/massdriver
-    tag: "2.2.1"
+    tag: "2.2.2"
 
   port: 4000
 
