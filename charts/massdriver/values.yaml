@@ -54,6 +54,16 @@ massdriver:
   # The subdomains to use for Massdriver. These will be used to construct URLs for the frontend and API.
   apiSubdomain: api
   appSubdomain: app
+  
+  # Additional subdomains of the base domain to allow in CORS and Phoenix origin checks. This should rarely be needed in self-hosted environments.
+  # The chart will automatically format these for both PHX_CORS_ORIGINS and PHX_CHECK_ORIGIN.
+  additionalSubdomains: []
+
+  # Fully qualified origins to allow, for external tools on different domains.
+  # Format: scheme://host or scheme://host:port — no path, query string, or trailing slash.
+  # The chart will derive the host-only form for PHX_CHECK_ORIGIN automatically.
+  # Example: ["https://custom.service.internal.company.com"]
+  additionalOrigins: []
 
   # Configuration for blob storage. This includes deployment logs, bundle/OCI storage, and Terraform/OpenTofu remote state.
   blobStorage:
@@ -128,9 +138,15 @@ massdriver:
 
   image:
     repository: massdrivercloud/massdriver
-    tag: "1.2.4"
+    tag: "2.3.0"
 
   port: 4000
+
+  # Additional environment variables to set on the Massdriver container in the Massdriver deployment
+  # Format is a map of key/value pairs (not the list of name/value objects like Kubernetes uses)
+  # These will be added to the ConfigMap (additionalEnvs) or Secrets (extraSecrets) and then mounted into the deployment.
+  additionalEnvs: {}
+  additionalSecrets: {}
 
   resources:
     limits:
@@ -183,8 +199,10 @@ massdriver:
   service:
     port: 80
 
+  # Ingress configuration for Massdriver. By default this is all disabled. If you prefer the new GatewayAPI configuration,
+  # leave ingress disabled and enable httpRoute instead.
   ingress:
-    enabled: true
+    enabled: false
     ingressClassName: ""
     annotations: {}
       # cert-manager.io/cluster-issuer: letsencrypt-prod
@@ -205,6 +223,27 @@ massdriver:
       #   -----BEGIN RSA PRIVATE KEY-----
       #   ...
       #   -----END RSA PRIVATE KEY-----
+  
+  # GatewayAPI HTTPRoute configuration for Massdriver. By default this is all disabled. If you prefer traditional Ingress configuration,
+  # leave httpRoute disabled and enable ingress instead.
+  httpRoute:
+    enabled: false
+    # Annotations to add to the HTTPRoute resource
+    annotations: {}
+    # Parent Gateway references - HTTPRoute attaches to these Gateways
+    # You can specify multiple parent Gateways if needed
+    parentRefs:
+      - name: "gateway"  # Required: set this to the name of your Gateway resource (e.g., "gateway", "external-gateway")
+        # namespace: gateway-system  # Optional: namespace of the Gateway (defaults to HTTPRoute namespace)
+        # sectionName: https  # Optional: specific listener name on the Gateway
+        # port: 443  # Optional: specific port on the Gateway
+    
+    # This TLS block has no impact on the HTTPRoute itself; TLS is configured on the Gateway. It is included here because
+    # Massdriver needs to know whether TLS is enabled to set correct URL schemes and ports. If you have TLS configured on your Gateway,
+    # set enabled to true here. If not, set to false.
+    tls:
+      # Set this to false to run Massdriver without TLS (only HTTP). This is NOT recommended for production.
+      enabled: true
 
   epmd:
     enabled: true
@@ -233,9 +272,14 @@ launchControl:
   image:
     repository: massdrivercloud/launch-control
     pullPolicy: IfNotPresent
-    tag: "1.0.3"
+    tag: "1.0.7"
 
   port: 8080
+
+  # Additional environment variables to set on the Launch Control container in the Massdriver deployment
+  # Format is a map of key/value pairs (not the list of name/value objects like Kubernetes uses)
+  # These will be added to the ConfigMap and then mounted into the deployment.
+  additionalEnvs: {}
 
   resources:
     limits:
@@ -300,7 +344,7 @@ ui:
   image:
     repository: massdrivercloud/massdriver-ui
     pullPolicy: IfNotPresent
-    tag: "1.0.14"
+    tag: "2.0.7"
 
   port: 3000
 
@@ -314,12 +358,12 @@ ui:
   
   livenessProbe: {}
     # httpGet:
-    #   path: /health
+    #   path: /_health
     #   port: ui
   readinessProbe:
     failureThreshold: 3
     httpGet:
-      path: /health
+      path: /_health
       port: ui
       scheme: HTTP
     periodSeconds: 10
@@ -341,13 +385,19 @@ ui:
 # OIDC configuration
 oidc: []
   # This is the OIDC configuration for Massdriver. Uncomment and fill in the values below to enable OIDC
-  # Valid providers are "google", "github" and "microsoft"
+  # Valid providers are "google", "github", "microsoft" and "okta".
   # - provider: 
   #   authorizeUrl:
   #   tokenUrl:
   #   clientId: 
   #   clientSecret: 
   #   autojoinOrganization:  # The Massdriver organization to autojoin after OIDC authentication (optional)
+  #   uiLabel:               # The label to show on the button in the Massdriver UI for this OIDC provider (optional)
+  #   uiIconUrl:             # The URL of an icon to show on the button in the Massdriver UI for this OIDC provider (optional)
+  #   okta:                     # Okta-specific configuration (required when provider is "okta")
+  #     site:                   # The Okta organization URL, e.g., "https://your-org.okta.com" (required)
+  #     authorizationServerId:  # The Okta authorization server ID (optional, omit to use global /oauth2/v1/... endpoints)
+  #     userinfoUrl:            # Custom userinfo endpoint URL (optional, auto-derived from site and authorizationServerId)
 
 
 # Extra manifests to deploy as an array of objects
@@ -365,6 +415,10 @@ argo-workflows:
   server:
     authModes:
       - "server"
+  workflow:
+    rbac:
+      create: true
+      artifactGC: true
   artifactRepository:
     s3:
       bucket: argo

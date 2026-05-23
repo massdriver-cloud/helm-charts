@@ -1,0 +1,73 @@
+{{- if .Values.massdriver.httpRoute.enabled -}}
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: {{ include "massdriver.fullname" . }}-massdriver-api
+  labels:
+    {{- include "massdriver.labels" . | nindent 4 }}
+    app.kubernetes.io/component: massdriver
+  {{- with .Values.massdriver.httpRoute.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  parentRefs:
+    {{- range .Values.massdriver.httpRoute.parentRefs }}
+    - name: {{ .name }}
+      {{- if .namespace }}
+      namespace: {{ .namespace }}
+      {{- end }}
+      {{- if .sectionName }}
+      sectionName: {{ .sectionName }}
+      {{- end }}
+      {{- if .port }}
+      port: {{ .port }}
+      {{- end }}
+    {{- end }}
+  hostnames:
+    - {{ .Values.massdriver.apiSubdomain }}.{{ .Values.domain }}
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - name: {{ include "massdriver.fullname" . }}-massdriver
+          port: {{ .Values.massdriver.service.port }}
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: {{ include "massdriver.fullname" . }}-massdriver-app
+  labels:
+    {{- include "massdriver.labels" . | nindent 4 }}
+    app.kubernetes.io/component: massdriver
+  {{- with .Values.massdriver.httpRoute.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  parentRefs:
+    {{- range .Values.massdriver.httpRoute.parentRefs }}
+    - name: {{ .name }}
+      {{- if .namespace }}
+      namespace: {{ .namespace }}
+      {{- end }}
+      {{- if .sectionName }}
+      sectionName: {{ .sectionName }}
+      {{- end }}
+      {{- if .port }}
+      port: {{ .port }}
+      {{- end }}
+    {{- end }}
+  hostnames:
+    - {{ .Values.massdriver.appSubdomain }}.{{ .Values.domain }}
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - name: {{ include "massdriver.fullname" . }}-massdriver
+          port: {{ .Values.ui.service.port }}
+{{- end }}
