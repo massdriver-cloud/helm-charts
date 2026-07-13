@@ -17,10 +17,15 @@ data:
   {{- if .Values.massdriver.epmd.enabled }}
   MD_EPMD_CLUSTER_SERVICE: {{ include "massdriver.fullname" . }}-massdriver-epmd.{{ .Release.Namespace }}.svc
   {{- end }}
+  MD_API_URL: {{ include "massdriver.protocol" . }}://{{ .Values.massdriver.apiSubdomain }}.{{ .Values.domain }}
   MD_FRONTEND_URL: {{ include "massdriver.protocol" . }}://{{ .Values.massdriver.appSubdomain }}.{{ .Values.domain }}
   MD_METRICS_SERVER_ENABLED: "{{ .Values.massdriver.metrics.enabled }}"
   MD_METRICS_SERVER_PORT: {{ .Values.massdriver.metrics.port | toString | quote }}
   MD_REPOSITORY_BUCKET: {{ .Values.massdriver.blobStorage.massdriverBucket }}
+  MD_PROVISIONER_ARGO_NAMESPACE: {{ .Release.Namespace }}
+  MD_PROVISIONER_EXIT_IMAGE: {{ .Values.massdriver.provisioner.exitImage }}
+  MD_PROVISIONER_INIT_IMAGE: {{ .Values.massdriver.provisioner.initImage }}
+  MD_PROVISIONER_SERVICE_ACCOUNT_NAME: {{ include "massdriver.fullname" . }}-provisioner
   MIX_ENV: prod
   {{- if .Values.otel.enabled }}
   OTEL_RESOURCE_ATTRIBUTES: {{ .Values.otel.resourceAttributes | quote }}
