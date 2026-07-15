@@ -138,7 +138,7 @@ massdriver:
 
   image:
     repository: massdrivercloud/massdriver
-    tag: "2.3.7"
+    tag: "2.4.0"
 
   port: 4000
 
@@ -263,76 +263,6 @@ massdriver:
     enabled: true
 
 
-# Launch Control Variables
-launchControl:
-  provisionerOtelEnabled: true
-
-  replicaCount: 2
-
-  image:
-    repository: massdrivercloud/launch-control
-    pullPolicy: IfNotPresent
-    tag: "1.0.7"
-
-  port: 8080
-
-  # Additional environment variables to set on the Launch Control container in the Massdriver deployment
-  # Format is a map of key/value pairs (not the list of name/value objects like Kubernetes uses)
-  # These will be added to the ConfigMap and then mounted into the deployment.
-  additionalEnvs: {}
-
-  resources:
-    limits:
-      cpu: 500m
-      memory: 250Mi
-    requests:
-      cpu: 50m
-      memory: 50Mi
-  
-  livenessProbe: {}
-    # httpGet:
-    #   path: /healthz
-    #   port: http
-  readinessProbe: 
-    failureThreshold: 3
-    httpGet:
-      path: /healthz
-      port: http
-      scheme: HTTP
-    periodSeconds: 10
-    successThreshold: 2
-    timeoutSeconds: 1
-
-  podSecurityContext:
-    fsGroup: 10001
-
-  securityContext:
-    capabilities:
-      drop:
-      - ALL
-    readOnlyRootFilesystem: true
-    runAsNonRoot: true
-    runAsUser: 10001
-    
-  podAnnotations: {}
-
-  podLabels: {}
-
-  nodeSelector: {}
-
-  tolerations: []
-
-  affinity: {}
-
-  serviceAccount:
-    create: true
-    automount: true
-    annotations: {}
-  
-  service:
-    port: 80
-
-
 # Provisioner Variables
 provisioner:
   serviceAccount:
@@ -340,11 +270,16 @@ provisioner:
     automount: true
     annotations: {}
 
+  # Images for the provisioner init and exit containers. These are executed at the start and end of each deployment workflow.
+  # You can override these to use your own custom images if you have special requirements.
+  exitImage: massdrivercloud/provisioner-exit:latest
+  initImage: massdrivercloud/provisioner-init:latest
+
 ui:
   image:
     repository: massdrivercloud/massdriver-ui
     pullPolicy: IfNotPresent
-    tag: "2.0.12"
+    tag: "2.0.13"
 
   port: 3000
 
