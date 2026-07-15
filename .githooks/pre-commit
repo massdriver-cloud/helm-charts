@@ -1,0 +1,43 @@
+#!/bin/sh
+# When a commit bumps the massdriver chart version, make sure
+# charts/massdriver/RELEASE_NOTES.md is regenerated for that version.
+# chart-releaser publishes that file as the GitHub Release body.
+#
+# One-time setup: git config core.hooksPath .githooks
+# Bypass:         git commit --no-verify
+
+chart="charts/massdriver/Chart.yaml"
+notes="charts/massdriver/RELEASE_NOTES.md"
+
+# Nothing staged for the chart manifest? Nothing to do.
+git diff --cached --quiet -- "$chart" && exit 0
+
+new_version=$(git show ":$chart" | awk '/^version:/ {print $2}')
+old_version=$(git show "HEAD:$chart" 2>/dev/null | awk '/^version:/ {print $2}')
+
+[ "$new_version" = "$old_version" ] && exit 0
+
+# Notes already regenerated and staged for this version? Done.
+if git show ":$notes" 2>/dev/null | head -1 | grep -qF "$new_version"; then
+  exit 0
+fi
+
+echo "massdriver chart ${old_version:-<new>} -> ${new_version}: generating release notes (takes a minute)..."
+
+if ! command -v claude >/dev/null 2>&1; then
+  echo "claude CLI not found. Run 'claude \"/release-notes\"', stage ${notes}, and re-commit (or --no-verify)." >&2
+  exit 1
+fi
+
+if ! claude -p "/release-notes" --allowedTools "Bash(git:*),Read,Write,Edit,Glob,Grep"; then
+  echo "Release notes generation failed. Run 'claude \"/release-notes\"' manually, stage ${notes}, and re-commit." >&2
+  exit 1
+fi
+
+if ! head -1 "$notes" 2>/dev/null | grep -qF "$new_version"; then
+  echo "${notes} does not lead with version ${new_version}. Fix it, stage it, and re-commit." >&2
+  exit 1
+fi
+
+git add "$notes" "$chart"
+echo "Staged release notes and Artifact Hub changelog for chart ${new_version}."
