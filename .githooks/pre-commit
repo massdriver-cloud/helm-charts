@@ -29,7 +29,7 @@ if ! command -v claude >/dev/null 2>&1; then
   exit 1
 fi
 
-if ! claude -p "/release-notes" --allowedTools "Bash(git:*),Read,Write,Glob,Grep"; then
+if ! claude -p "/release-notes" --allowedTools "Bash(git:*),Read,Write,Edit,Glob,Grep"; then
   echo "Release notes generation failed. Run 'claude \"/release-notes\"' manually, stage ${notes}, and re-commit." >&2
   exit 1
 fi
@@ -39,5 +39,5 @@ if ! head -1 "$notes" 2>/dev/null | grep -qF "$new_version"; then
   exit 1
 fi
 
-git add "$notes"
-echo "Staged ${notes} for chart ${new_version}."
+git add "$notes" "$chart"
+echo "Staged release notes and Artifact Hub changelog for chart ${new_version}."

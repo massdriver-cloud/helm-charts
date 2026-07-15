@@ -49,7 +49,8 @@ git config core.hooksPath .githooks
 
 With that in place, committing a chart version bump runs `claude "/release-notes"`,
 which diffs the old and new image tags against the sibling `massdriver` and
-`massdriver-ui` checkouts and regenerates `RELEASE_NOTES.md` for the new version.
+`massdriver-ui` checkouts and regenerates `RELEASE_NOTES.md` and the
+`artifacthub.io/changes` annotation (the Artifact Hub changelog) for the new version.
 Review the generated notes in the PR — they publish verbatim on merge. To draft
 them manually, run `claude "/release-notes"` yourself; to skip the hook, commit
 with `--no-verify`.

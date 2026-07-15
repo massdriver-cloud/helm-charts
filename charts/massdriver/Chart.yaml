@@ -5,6 +5,17 @@ type: application
 version: 0.2.0
 appVersion: 2.4.0
 
+annotations:
+  artifacthub.io/changes: |
+    - kind: changed
+      description: The Launch Control service has been removed. Massdriver now builds and submits provisioning workflows to Argo Workflows directly. The launchControl values block is no longer used.
+    - kind: changed
+      description: The bundled Argo Workflows dependency has been updated from 0.45.14 to 0.47.5.
+    - kind: added
+      description: "UI: the projects list now has a search box for quickly finding projects by name."
+    - kind: added
+      description: "UI: the projects list can now be filtered by the attributes assigned to each project."
+
 dependencies:
   - name: argo-workflows
     condition: argo-workflows.enabled

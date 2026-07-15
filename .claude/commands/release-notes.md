@@ -1,11 +1,14 @@
 ---
-description: Generate public release notes for the massdriver chart into charts/massdriver/RELEASE_NOTES.md
-allowed-tools: Bash(git:*), Read, Write, Glob, Grep
+description: Generate public release notes for the massdriver chart (RELEASE_NOTES.md + Artifact Hub changes annotation)
+allowed-tools: Bash(git:*), Read, Write, Edit, Glob, Grep
 ---
 
-Generate customer-facing release notes for the `massdriver` chart and overwrite
-`charts/massdriver/RELEASE_NOTES.md` with them. chart-releaser publishes this file
-verbatim as the GitHub Release body when the chart version merges to main.
+Generate customer-facing release notes for the `massdriver` chart in two places:
+
+1. Overwrite `charts/massdriver/RELEASE_NOTES.md` — chart-releaser publishes this file
+   verbatim as the GitHub Release body when the chart version merges to main.
+2. Replace the `artifacthub.io/changes` annotation in `charts/massdriver/Chart.yaml` —
+   Artifact Hub renders it as the changelog for this chart version.
 
 ## Gather the diff
 
@@ -38,6 +41,8 @@ verbatim as the GitHub Release body when the chart version merges to main.
 
 ## Write the notes
 
+### RELEASE_NOTES.md (GitHub Release body)
+
 Overwrite `charts/massdriver/RELEASE_NOTES.md`. The first line MUST be
 `# Massdriver Chart <new chart version>` — the pre-commit hook checks for the version
 on that line. Follow with the app versions, then sections per app and, when relevant,
@@ -59,5 +64,25 @@ Audience and style — the readers are self-hosted customers, not Massdriver eng
   changes RBAC, or bumps a subchart dependency — state what the operator must do,
   or that no action is required.
 
-Do not commit — the pre-commit hook (or the operator) stages and commits the file
+### artifacthub.io/changes annotation (Artifact Hub changelog)
+
+Replace the entire `artifacthub.io/changes` annotation value in
+`charts/massdriver/Chart.yaml` with this version's changes. Format — a YAML list
+inside the block scalar, one entry per change:
+
+```yaml
+annotations:
+  artifacthub.io/changes: |
+    - kind: fixed
+      description: Deactivating a SCIM user now revokes their organization memberships.
+```
+
+- Valid kinds: `added`, `changed`, `deprecated`, `removed`, `fixed`, `security`.
+- Descriptions are plain text one-liners (no markdown) distilled from the same
+  content as RELEASE_NOTES.md — condense multi-sentence bullets to their first
+  sentence. Prefix UI changes with `UI: `.
+- The annotation describes only the version being released; Artifact Hub keeps
+  the history of prior versions itself.
+
+Do not commit — the pre-commit hook (or the operator) stages and commits the files
 with the version bump. Do not modify any other file.
