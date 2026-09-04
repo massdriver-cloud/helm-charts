@@ -134,11 +134,14 @@ massdriver:
       clientSecret: ""
       tenantId: ""
 
+  # URL for the documentation link in Massdriver UI. If left blank, the link will use Massdriver documentation (docs.massdriver.cloud)
+  docsUrl: ""
+
   replicaCount: 2
 
   image:
     repository: massdrivercloud/massdriver
-    tag: "2.4.0"
+    tag: "2.5.0"
 
   port: 4000
 
@@ -279,7 +282,7 @@ ui:
   image:
     repository: massdrivercloud/massdriver-ui
     pullPolicy: IfNotPresent
-    tag: "2.0.13"
+    tag: "2.1.0"
 
   port: 3000
 
