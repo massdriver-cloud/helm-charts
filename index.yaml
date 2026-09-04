@@ -177,6 +177,103 @@ entries:
     - https://github.com/massdriver-cloud/helm-charts/releases/download/elixir-phoenix-0.1.1/elixir-phoenix-0.1.1.tgz
     version: 0.1.1
   massdriver:
+  - annotations:
+      artifacthub.io/changes: |
+        - kind: changed
+          description: Update Massdriver to 2.5.0 and the UI to 2.1.0.
+        - kind: added
+          description: In-app documentation links can point at your own docs site via the massdriver.docsUrl value, defaulting to docs.massdriver.cloud.
+        - kind: added
+          description: Organization settings accept a Liquid naming convention template that controls generated resource names.
+        - kind: added
+          description: Environments can enable separation of duty so the proposer of a deployment cannot approve it.
+        - kind: added
+          description: A defaultBundleAccess organization setting grants all projects pull access to new bundle repositories.
+        - kind: added
+          description: Bundle dependencies declare version ranges and the matching resource type version is chosen at deploy time.
+        - kind: added
+          description: Resource types are versioned and published by pushing to an OCI repository with the RESOURCE_TYPE artifact type.
+        - kind: added
+          description: Projects, repositories, and resources can be filtered by creation date, and repositories and resources by attributes.
+        - kind: added
+          description: New createPersonalAccessToken (1 year cap) and createServiceAccountAccessToken (10 year cap) mutations.
+        - kind: added
+          description: The AWS Cost and Usage Reports integration supports Parquet reports.
+        - kind: added
+          description: Organization billing reports seatsUsed alongside the licensed seat count.
+        - kind: changed
+          description: Seat limits are enforced on SCIM provisioning and SSO auto-join; SCIM refusals return HTTP 409 and notify the organization owner.
+        - kind: changed
+          description: Links between components carry version constraints and connections materialize only where both component versions satisfy them.
+        - kind: changed
+          description: Bundle publishing rejects multi-type connection fields and references to unknown resource types.
+        - kind: changed
+          description: The md-resource-type policy attribute is version-qualified as identifier@version; a bare identifier matches every version.
+        - kind: changed
+          description: Bundle and repository names may be up to 100 characters.
+        - kind: changed
+          description: "API: resourceType.id is now identifier@version and the resourceTypes list query is deprecated."
+        - kind: changed
+          description: "API: id filters on environments, integrations, and resourceTypes use IdFilter instead of StringFilter."
+        - kind: removed
+          description: "API: the deprecated createAccessToken mutation is removed."
+        - kind: removed
+          description: "API: the unfiltered bundles list query is removed and the bundle query is scoped to visible repositories."
+        - kind: fixed
+          description: Deployments using .dependencies in environment variables or step configuration no longer fail.
+        - kind: fixed
+          description: Redrawing a link between components on a release channel now creates the connection.
+        - kind: fixed
+          description: Bundle publish no longer returns a server error when a release-channel deployment cannot be queued.
+        - kind: fixed
+          description: Rapid successive deployments are queued in order.
+        - kind: fixed
+          description: Resource type repositories show their tags, release channels, and icon.
+        - kind: fixed
+          description: Publishing a resource type with instructions no longer fails with "manifest invalid".
+        - kind: fixed
+          description: Access token expiry errors are reported on the expiresInMinutes field.
+        - kind: added
+          description: "UI: the organization home page is a dashboard with org-wide instances and deployments tabs."
+        - kind: added
+          description: "UI: the sidebar Documentation link follows the configured docs URL."
+        - kind: added
+          description: "UI: environment forms and the environments table expose the separation of duty setting."
+        - kind: added
+          description: "UI: organization settings has a default bundle access toggle and a separate Members tab."
+        - kind: added
+          description: "UI: list pages share a redesigned filter bar with attribute, select, and calendar date range filters."
+        - kind: added
+          description: "UI: canvas handles, environment defaults, and the instance Dependencies and Resources tabs show resource type versions and accepted ranges."
+        - kind: added
+          description: "UI: list tables show an attributes chip grouping direct, inherited, and Massdriver-managed attributes."
+        - kind: added
+          description: "UI: controls are disabled or hidden when the viewer's policies do not allow the action."
+        - kind: fixed
+          description: "UI: canvas handles fulfilled by an environment default no longer show as unmet."
+        - kind: fixed
+          description: "UI: the per-environment canvas draws only that environment's links."
+        - kind: fixed
+          description: "UI: missing or forbidden pages show a 404 instead of partially rendering."
+    apiVersion: v2
+    appVersion: 2.5.0
+    created: "2026-09-04T03:58:51.192746036Z"
+    dependencies:
+    - condition: argo-workflows.enabled
+      name: argo-workflows
+      repository: https://argoproj.github.io/argo-helm
+      version: 0.47.5
+    - condition: minio.enabled
+      name: minio
+      repository: https://charts.min.io/
+      version: 5.4.0
+    description: Helm chart for deploying Massdriver
+    digest: 818512f3ddf68f3a20d7d53fa271a6edcd579cee0ab27160234c150248259e00
+    name: massdriver
+    type: application
+    urls:
+    - https://github.com/massdriver-cloud/helm-charts/releases/download/massdriver-0.2.1/massdriver-0.2.1.tgz
+    version: 0.2.1
   - apiVersion: v2
     appVersion: 2.4.0
     created: "2026-07-15T19:05:39.295943339Z"
@@ -1357,4 +1454,4 @@ entries:
     urls:
     - https://github.com/massdriver-cloud/helm-charts/releases/download/ruby-on-rails-0.2.0/ruby-on-rails-0.2.0.tgz
     version: 0.2.0
-generated: "2026-07-15T19:05:39.296246888Z"
+generated: "2026-09-04T03:58:51.193058027Z"
