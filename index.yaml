@@ -180,6 +180,61 @@ entries:
   - annotations:
       artifacthub.io/changes: |
         - kind: changed
+          description: Update Massdriver to 2.5.1 and the UI to 2.1.1.
+        - kind: added
+          description: A $md.enum bundle param can name its source with a dependency key, and deployment steps receive /massdriver/dependencies.json.
+        - kind: changed
+          description: "The $md.enum placeholder for an unwired dependency reads: ERROR: Dependency not found: <name>."
+        - kind: deprecated
+          description: The $md.enum connection key and /massdriver/connections.json; use dependency and /massdriver/dependencies.json.
+        - kind: fixed
+          description: Importing a resource resolves the latest published resource type version instead of the mutable 0.0.0 row.
+        - kind: fixed
+          description: availableUpgrade only reports versions strictly newer than the instance's current bundle, including for pre-release pins.
+        - kind: fixed
+          description: The delete dialog lists each blocking instance once while a redeploy or decommission is in flight.
+        - kind: fixed
+          description: Subscription payloads carry organization context again, so live component updates reach the UI.
+        - kind: security
+          description: The curl CLI is removed from the runtime image and base packages are upgraded at build time.
+        - kind: added
+          description: "UI: organization settings has a split-panel editor for the Liquid name prefix template, with a live preview and a save confirmation."
+        - kind: added
+          description: "UI: repository details has a per-version Changelog tab."
+        - kind: added
+          description: "UI: dashboard instance rows show upgrade available, redeploy needed, and proposed deployment badges."
+        - kind: added
+          description: "UI: creating a group, repository, imported resource, or environment opens its detail page."
+        - kind: changed
+          description: "UI: version pickers and the repository Versions tab show full dev version tags."
+        - kind: changed
+          description: "UI: detail page tabs navigate without a server round trip, removing the stale-build hard reload after a deploy."
+        - kind: fixed
+          description: "UI: the first-environment dialog saves its decommission protection and separation of duty toggles."
+        - kind: security
+          description: "UI: refreshed js-yaml and svgo overrides and excluded nested .env*.local files from the Docker build context."
+    apiVersion: v2
+    appVersion: 2.5.1
+    created: "2026-09-12T22:21:25.022887339Z"
+    dependencies:
+    - condition: argo-workflows.enabled
+      name: argo-workflows
+      repository: https://argoproj.github.io/argo-helm
+      version: 0.47.5
+    - condition: minio.enabled
+      name: minio
+      repository: https://charts.min.io/
+      version: 5.4.0
+    description: Helm chart for deploying Massdriver
+    digest: 738db4f6b2bae5f81c5a3e6735524fad2850b3781aea121f632da9a1f11a8a83
+    name: massdriver
+    type: application
+    urls:
+    - https://github.com/massdriver-cloud/helm-charts/releases/download/massdriver-0.2.2/massdriver-0.2.2.tgz
+    version: 0.2.2
+  - annotations:
+      artifacthub.io/changes: |
+        - kind: changed
           description: Update Massdriver to 2.5.0 and the UI to 2.1.0.
         - kind: added
           description: In-app documentation links can point at your own docs site via the massdriver.docsUrl value, defaulting to docs.massdriver.cloud.
@@ -1454,4 +1509,4 @@ entries:
     urls:
     - https://github.com/massdriver-cloud/helm-charts/releases/download/ruby-on-rails-0.2.0/ruby-on-rails-0.2.0.tgz
     version: 0.2.0
-generated: "2026-09-04T03:58:51.193058027Z"
+generated: "2026-09-12T22:21:25.023091939Z"
