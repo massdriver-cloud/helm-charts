@@ -1,80 +1,60 @@
-# Massdriver Chart 0.2.1
+# Massdriver Chart 0.2.2
 
-**Massdriver:** 2.5.0 · **UI:** 2.1.0
+**Massdriver:** 2.5.1 · **UI:** 2.1.1
 
-## Massdriver 2.5.0
+A patch release: image bumps only, no chart configuration changes.
+
+## Massdriver 2.5.1
 
 ### Added
 
-- **Point in-app documentation links at your own docs site.** Set `massdriver.docsUrl` in your values to serve links from your own documentation. Leave it blank to keep linking to docs.massdriver.cloud.
-- **Organization naming convention.** Organization settings now accept a Liquid template that controls how resource names are generated for new instances. Templates are validated on save and must include a unique identifier so every rendered name is distinct.
-- **Separation of duty for deployment approvals.** Environments have a new setting that prevents the person who proposed a deployment from approving it. Proposers can still withdraw their own proposals.
-- **Default bundle access for new repositories.** A new organization setting grants every project pull access to newly created bundle repositories automatically.
-- **Version ranges on bundle dependencies.** Bundles declare a version range for each dependency and resource. The matching resource type version is chosen at deploy time, so an environment can hold one default per version and a bundle can pick up a compatible newer version without republishing. Remote references are checked against the expected type and version when assigned.
-- **Versioned resource types published through the registry.** Resource types are now versioned and published by pushing to an OCI repository with the `RESOURCE_TYPE` artifact type. The `resourceType` API query accepts `name@version` and `name@~range`, and new queries list the dependents of a resource type in an environment and an environment's unfulfilled dependencies.
-- **More list filters.** Projects, repositories, and resources can be filtered by creation date. Repositories and resources can be filtered by attributes. The resources filter accepts a resource type version range.
-- **Personal access token and service account token mutations.** `createPersonalAccessToken` caps at one year and `createServiceAccountAccessToken` caps at ten years. The token dialog offers duration presets.
-- **AWS Cost and Usage Reports in Parquet format.** The AWS cost integration has a new `format` option that accepts `parquet` in addition to the default `zip`.
-- **Seat usage in the API.** Organization billing now reports `seatsUsed` alongside the licensed seat count.
+- **Bundle params can name their source with `dependency`.** `massdriver.yaml` renamed the `connections` section to `dependencies`, but a `$md.enum` param still had to name its source with `connection:`. `$md.enum` now reads the name from a `dependency` key, and deployment steps are given `/massdriver/dependencies.json` carrying the same payloads as `/massdriver/connections.json`. The old key and file still work; `dependency` wins when a bundle sets both.
 
 ### Changed
 
-- **Seat limits are enforced on SCIM and SSO.** A seat is an active organization membership or a pending invitation. SCIM user creation and reactivation, and SSO auto-join, are refused when the organization is at its seat limit. SCIM refusals return HTTP 409 and the organization owner is emailed once per day. Existing members are never removed.
-- **Links between components carry version constraints.** A link's connection is materialized only in environments where both components run versions that satisfy the link's constraints. Existing links were backfilled from their components' current versions, and links whose components run different versions across environments were split into one link per version pair.
-- **Stricter bundle publishing.** Publishing rejects connection fields that declare more than one resource type and references to resource types the organization does not have. A dependency range with no published matching version now publishes, since matching happens at deploy time.
-- **Policy attribute `md-resource-type` is version-qualified.** Values take the form `identifier@version`. A bare identifier continues to match every version.
-- **Longer bundle and repository names.** The limit is raised from 53 to 100 characters.
-- **API: `resourceType.id` is now `identifier@version`.** The `resourceTypes` list query is deprecated in favor of the versioned `resourceType` query.
-- **API: id filters on `environments`, `integrations`, and `resourceTypes` use `IdFilter`.** Queries that declare a `StringFilter` variable for these fields must be updated.
+- **Clearer placeholder for an unwired dependency.** The `$md.enum` placeholder now reads `ERROR: Dependency not found: <name>`.
 
-### Removed
+### Deprecated
 
-- **API: the deprecated `createAccessToken` mutation is removed.** Use `createPersonalAccessToken` or `createServiceAccountAccessToken`.
-- **API: the unfiltered `bundles` list query is removed.** The singular `bundle` query now returns only bundles in repositories the caller can view.
+- **The `$md.enum` `connection` key and `/massdriver/connections.json`.** Both continue to work. Move bundles to `dependency` and `/massdriver/dependencies.json`.
 
 ### Fixed
 
-- **Deployments using `.dependencies` in environment variables or step configuration no longer fail.** The jq document behind those settings now carries the renamed `dependencies` section alongside `connections`.
-- **Redrawing a link between components on a release channel creates the connection.** Previously the link was saved without a connection when the components tracked `latest`.
-- **Bundle publish no longer fails with a server error when a release-channel deployment cannot be queued.** The dropped deployment is reported instead.
-- **Rapid successive deployments are queued in order.** Deployment timestamps use microsecond precision so same-second deployments no longer tie.
-- **Resource type repositories show their tags, release channels, and icon** in the API and CLI.
-- **Publishing a resource type with instructions no longer fails with "manifest invalid".**
-- **Access token expiry errors are reported on the `expiresInMinutes` field** so clients can display them.
-- **Import checks honor version-pinned policies** consistently with view and edit.
+- **Importing a resource resolves the latest published resource type version.** A bare type reference resolved to the mutable `0.0.0` row, so a type published only as real versions failed with `artifact_definition_not_found`, and a type with both imported as `0.0.0` instead of its latest. An explicit `name@version` is now honored and passed through instead of being collapsed back to the bare identifier.
+- **`availableUpgrade` no longer reports an older version as an upgrade.** Candidates must be strictly newer than the instance's current bundle. An instance pinned to a pre-release now surfaces a newer dev build or the stable cut of the same version, rather than an earlier release.
+- **The delete dialog lists each instance once.** A package keeps its provisioned status while a redeploy or decommission is in flight, so instances blocking a delete could appear twice. Each is now reported once, preferring the in-flight deployment message.
+- **Live component updates reach the UI again.** V2 subscription payload resolvers ran without organization context, so any payload field that read it crashed and the update was dropped. Component events now deliver.
+
+### Security
+
+- **Smaller runtime image attack surface.** The `curl` CLI is removed from the runtime image — nothing in the application used it, and it accounted for all 28 CVEs (5 critical, 10 high) reported against the 2.5.0 image. Base-layer packages are also upgraded at build time.
 
 ### Upgrade notes
 
-- **Back up your database before upgrading.** This release renames several tables, backfills resource type repositories and link version constraints, and drops the cached bundle schema columns. Migrations run automatically on startup and may take longer than usual on large installations.
-- **Check your seat usage before upgrading.** If your organization holds more active members and pending invitations than your license allows, SCIM will refuse to provision new users until usage falls below the limit. Existing members keep access.
-- **Review API clients** for the removed `createAccessToken` mutation and `bundles` query, the `IdFilter` change, and the versioned `resourceType.id` format.
-- **Colliding resource type names are renamed.** If an organization had a bundle repository and a resource type with the same name, the resource type repository is renamed with a `-resource` suffix. The previous name continues to resolve for reads.
-- The new `massdriver.docsUrl` value is optional and defaults to docs.massdriver.cloud. No other values changes are required.
+- No values changes are required. Both application images move forward; the chart's dependencies, templates, and RBAC are unchanged from 0.2.1.
 
-## UI 2.1.0
+## UI 2.1.1
 
 ### Added
 
-- **Organization dashboard.** The organization home page is now a dashboard with an overview of failed, awaiting-approval, and not-yet-deployed instances, plus org-wide Instances and Deployments tabs with filters and a per-instance deployment history drawer.
-- **Documentation link follows your configured docs site.** The sidebar Documentation link reads the URL set by `massdriver.docsUrl`.
-- **Separation of duty setting on environments.** The environment create, update, and fork forms expose the new setting, and the environments table shows it as a flag alongside Protected.
-- **Default bundle access toggle.** Organization settings has a new General tab with a switch that grants all projects access to new bundle repositories. The members list moves to its own Members tab.
-- **Redesigned filtering on list pages.** Projects, environments, repositories, and resources share a single Filters control with attribute filters, select filters, and calendar date ranges. Repositories and resources gain sorting, search, and attribute filters.
-- **Versioned resource types throughout.** Canvas node handles show the resource type identifier and version separately along with the field's accepted version range. Environment defaults are picked per type version, with guidance on which versions unfulfilled instances need.
-- **Rebuilt instance Dependencies and Resources tabs.** Both tabs are now row lists showing the field, the expected resource type and version, and what fulfills it, with actions in a per-row menu. The remote reference picker lists every resource that satisfies the field's version range.
-- **Attributes chip on list tables.** Tables show a single attributes chip whose hover groups direct, inherited, and Massdriver-managed attributes. Attribute cards are added to the resource, project, and repository detail pages.
-- **Permission-aware controls.** Buttons and forms across the app are disabled or hidden when the viewer's policies do not allow the action.
-- **Smaller additions.** HTTPS values in the instance properties table render as links. A Create Environment button appears on the project overview. The organization settings header has a copy-ID button. The repository details header links to the selected version's source code. Dev build versions display as `v1.2.3-dev` with the full tag on hover.
+- **Organization name prefix editor.** Organization settings has a split-panel builder for the Liquid template that produces the name prefix passed to bundles in `md_metadata`. Compose it by dragging atom cards or by typing the template directly, with a live preview of the resulting name. Malformed templates are rejected; a prefix that repeats across environments is a warning that still saves. Saving is confirmed with the current and next name, since the change applies to every instance created afterwards.
+- **Per-version Changelog tab on repository details.** Pick a version in the header and read its `CHANGELOG.md` on a full-width surface, the same way you read a README.
+- **Upgrade, redeploy, and proposed-deployment badges on dashboard instance rows.** The instances list now shows the same three signals as the environment graph — upgrade available, redeploy needed, and a proposal awaiting review — on each row's bundle version line. The proposed badge opens the deployments drawer.
+- **Create dialogs navigate to what you created.** Creating a group, repository, imported resource, or environment now opens its detail page instead of leaving you on the list.
+
+### Changed
+
+- **Version pickers show full dev version tags.** Truncated `-dev` tags made concurrent dev builds indistinguishable. The version select, repository version menu, and repository Versions tab show the full tag; single-value surfaces such as badges and table cells keep the truncated form with a tooltip.
+- **Detail page tabs load without a server round trip.** Project, repository, resource, organization settings, and account pages no longer block navigation on a server request. This also removes the stale-build 404 that forced a 10–15 second hard page load from any tab left open across a deploy.
 
 ### Fixed
 
-- **Canvas handles fulfilled by an environment default no longer show as unmet.**
-- **The per-environment canvas draws only that environment's links.** Previously it fetched every link in the project and could draw connections that did not apply.
-- **Resource type lookups on the canvas and import dialog work again** after the API's versioned resource type id change.
-- **Cached custom attribute schemas refresh when attributes change** instead of waiting for a page reload.
-- **Missing or forbidden pages show a proper 404** instead of partially rendering.
-- **The shared-grants tooltip on dependency rows displays.**
+- **The first-environment dialog saves its decommission protection and separation of duty toggles.** They were silently dropped on create.
+
+### Security
+
+- **Dependency and container image vulnerability fixes.** Refreshed the `js-yaml` and `svgo` overrides — `svgo` ships in the production image, so it was a runtime finding — and moved the development Caddy image off a build with critical CVEs. Nested `.env*.local` files are now excluded from the Docker build context.
 
 ### Maintenance
 
-- Dependency updates, including fixes for all reported package vulnerabilities.
+- Dependency updates.
