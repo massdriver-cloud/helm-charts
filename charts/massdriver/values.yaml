@@ -282,7 +282,7 @@ ui:
   image:
     repository: massdrivercloud/massdriver-ui
     pullPolicy: IfNotPresent
-    tag: "2.1.1"
+    tag: "2.1.2"
 
   port: 3000
 
