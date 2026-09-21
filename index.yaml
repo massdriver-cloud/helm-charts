@@ -179,6 +179,33 @@ entries:
   massdriver:
   - annotations:
       artifacthub.io/changes: |
+        - kind: added
+          description: "UI: the environment default and remote reference pickers show a grant-access badge, a same-environment flag, and a link to each resource."
+        - kind: added
+          description: "UI: version tooltips have a copy button and the deployment details dialog shows the full dev version tag."
+        - kind: fixed
+          description: "UI: a failed environment default swap restores the previous default and keeps the resource you picked selected."
+    apiVersion: v2
+    appVersion: 2.5.1
+    created: "2026-09-21T22:31:12.767545567Z"
+    dependencies:
+    - condition: argo-workflows.enabled
+      name: argo-workflows
+      repository: https://argoproj.github.io/argo-helm
+      version: 0.47.5
+    - condition: minio.enabled
+      name: minio
+      repository: https://charts.min.io/
+      version: 5.4.0
+    description: Helm chart for deploying Massdriver
+    digest: 775968ebf0e5c1ded37e6860526e6e64ad761345a9d1b41e773e7156a0410b83
+    name: massdriver
+    type: application
+    urls:
+    - https://github.com/massdriver-cloud/helm-charts/releases/download/massdriver-0.2.3/massdriver-0.2.3.tgz
+    version: 0.2.3
+  - annotations:
+      artifacthub.io/changes: |
         - kind: changed
           description: Update Massdriver to 2.5.1 and the UI to 2.1.1.
         - kind: added
@@ -1509,4 +1536,4 @@ entries:
     urls:
     - https://github.com/massdriver-cloud/helm-charts/releases/download/ruby-on-rails-0.2.0/ruby-on-rails-0.2.0.tgz
     version: 0.2.0
-generated: "2026-09-12T22:21:25.023091939Z"
+generated: "2026-09-21T22:31:12.767918017Z"
