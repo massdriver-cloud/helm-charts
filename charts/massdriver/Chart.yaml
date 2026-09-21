@@ -2,45 +2,17 @@ apiVersion: v2
 name: massdriver
 description: Helm chart for deploying Massdriver
 type: application
-version: 0.2.2
+version: 0.2.3
 appVersion: 2.5.1
 
 annotations:
   artifacthub.io/changes: |
-    - kind: changed
-      description: Update Massdriver to 2.5.1 and the UI to 2.1.1.
     - kind: added
-      description: A $md.enum bundle param can name its source with a dependency key, and deployment steps receive /massdriver/dependencies.json.
-    - kind: changed
-      description: "The $md.enum placeholder for an unwired dependency reads: ERROR: Dependency not found: <name>."
-    - kind: deprecated
-      description: The $md.enum connection key and /massdriver/connections.json; use dependency and /massdriver/dependencies.json.
-    - kind: fixed
-      description: Importing a resource resolves the latest published resource type version instead of the mutable 0.0.0 row.
-    - kind: fixed
-      description: availableUpgrade only reports versions strictly newer than the instance's current bundle, including for pre-release pins.
-    - kind: fixed
-      description: The delete dialog lists each blocking instance once while a redeploy or decommission is in flight.
-    - kind: fixed
-      description: Subscription payloads carry organization context again, so live component updates reach the UI.
-    - kind: security
-      description: The curl CLI is removed from the runtime image and base packages are upgraded at build time.
+      description: "UI: the environment default and remote reference pickers show a grant-access badge, a same-environment flag, and a link to each resource."
     - kind: added
-      description: "UI: organization settings has a split-panel editor for the Liquid name prefix template, with a live preview and a save confirmation."
-    - kind: added
-      description: "UI: repository details has a per-version Changelog tab."
-    - kind: added
-      description: "UI: dashboard instance rows show upgrade available, redeploy needed, and proposed deployment badges."
-    - kind: added
-      description: "UI: creating a group, repository, imported resource, or environment opens its detail page."
-    - kind: changed
-      description: "UI: version pickers and the repository Versions tab show full dev version tags."
-    - kind: changed
-      description: "UI: detail page tabs navigate without a server round trip, removing the stale-build hard reload after a deploy."
+      description: "UI: version tooltips have a copy button and the deployment details dialog shows the full dev version tag."
     - kind: fixed
-      description: "UI: the first-environment dialog saves its decommission protection and separation of duty toggles."
-    - kind: security
-      description: "UI: refreshed js-yaml and svgo overrides and excluded nested .env*.local files from the Docker build context."
+      description: "UI: a failed environment default swap restores the previous default and keeps the resource you picked selected."
 
 dependencies:
   - name: argo-workflows
