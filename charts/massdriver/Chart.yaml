@@ -2,17 +2,35 @@ apiVersion: v2
 name: massdriver
 description: Helm chart for deploying Massdriver
 type: application
-version: 0.2.3
-appVersion: 2.5.1
+version: 0.2.4
+appVersion: 2.5.2
 
 annotations:
   artifacthub.io/changes: |
     - kind: added
-      description: "UI: the environment default and remote reference pickers show a grant-access badge, a same-environment flag, and a link to each resource."
+      description: The Massdriver and UI images are published for linux/arm64 as well as linux/amd64.
+    - kind: changed
+      description: Update Massdriver to 2.5.2 and the UI to 2.1.3.
+    - kind: changed
+      description: Resource type catalog reads require repo:view on the resource type's repository; an upgrade migration grants existing groups matching policies.
+    - kind: changed
+      description: Publishing a bundle requires repo:pull on every resource type it references with a name@version reference.
     - kind: added
-      description: "UI: version tooltips have a copy button and the deployment details dialog shows the full dev version tag."
+      description: REST resources report resource_type, version_constraint, and available_upgrade.
     - kind: fixed
-      description: "UI: a failed environment default swap restores the previous default and keeps the resource you picked selected."
+      description: A bundle's resources field version range is resolved at deploy, so resources are typed and validated against the newest version in range.
+    - kind: fixed
+      description: Importing a resource accepts a version range such as name@~1.
+    - kind: fixed
+      description: The organization create form accepts hyphens in the organization ID.
+    - kind: security
+      description: Access tokens only authenticate against the organization they were created in, on every auth path.
+    - kind: added
+      description: "UI: the resource import dialog has a version selector."
+    - kind: fixed
+      description: "UI: the import dialog's instructions panel no longer crashes on Python or unlabeled code blocks."
+    - kind: fixed
+      description: "UI: the bundles empty state renders correctly in dark mode, and markdown links in form field descriptions render as links."
 
 dependencies:
   - name: argo-workflows
