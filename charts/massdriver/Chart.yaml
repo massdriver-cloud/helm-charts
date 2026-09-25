@@ -3,7 +3,7 @@ name: massdriver
 description: Helm chart for deploying Massdriver
 type: application
 version: 0.2.5
-appVersion: 2.5.2
+appVersion: 2.5.3
 
 annotations:
   artifacthub.io/changes: |
@@ -11,6 +11,10 @@ annotations:
       description: The bundled MinIO server and its setup jobs use massdrivercloud/minio, because MinIO's public images can no longer be pulled.
     - kind: changed
       description: MinIO images are now massdrivercloud/minio:RELEASE.2026-09-22T19-25-18Z, built from Chainguard's maintained MinIO fork for linux/amd64 and linux/arm64.
+    - kind: changed
+      description: Update Massdriver to 2.5.3.
+    - kind: added
+      description: The provisioner logger sidecar image is configurable with provisioner.loggerImage.
 
 dependencies:
   - name: argo-workflows

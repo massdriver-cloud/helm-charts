@@ -141,7 +141,7 @@ massdriver:
 
   image:
     repository: massdrivercloud/massdriver
-    tag: "2.5.2"
+    tag: "2.5.3"
 
   port: 4000
 
@@ -274,9 +274,11 @@ provisioner:
     annotations: {}
 
   # Images for the provisioner init and exit containers. These are executed at the start and end of each deployment workflow.
+  # The logger image runs as a sidecar alongside each provisioning step and streams its logs to Massdriver.
   # You can override these to use your own custom images if you have special requirements.
   exitImage: massdrivercloud/provisioner-exit:latest
   initImage: massdrivercloud/provisioner-init:latest
+  loggerImage: massdrivercloud/provisioner-logger:latest
 
 ui:
   image:
