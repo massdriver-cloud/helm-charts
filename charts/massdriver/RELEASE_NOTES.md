@@ -1,51 +1,56 @@
-# Massdriver Chart 0.2.4
+# Massdriver Chart 0.2.5
 
-**Massdriver:** 2.5.2 · **UI:** 2.1.3
+**Massdriver:** 2.5.3 · **UI:** 2.1.4
 
-The headline of this release is ARM64 support: both images now ship as multi-architecture images, so Massdriver runs on arm64 nodes (AWS Graviton, Azure Ampere, GCP Tau T2A, Apple Silicon dev clusters) without emulation. It also tightens resource type permissions and fixes version-range handling for resources.
+This release fixes installs that use the bundled MinIO object storage. MinIO no longer publishes public container images, so the chart's MinIO pods and bucket setup job could not pull their images. That broke new installs, and existing installs whenever a MinIO pod was rescheduled to a node without the image cached. It also updates Massdriver to 2.5.3, which lets you configure the provisioner logger image, and the UI to 2.1.4, which can show external resources on the environment graph.
 
 ## Platform
 
-- **ARM64 images.** `massdrivercloud/massdriver` and `massdrivercloud/massdriver-ui` are published as multi-architecture manifests for `linux/amd64` and `linux/arm64`. Kubernetes pulls the right architecture automatically; no values changes are needed to schedule on arm64 nodes.
+- **MinIO images now come from `massdrivercloud/minio`.** The chart's MinIO server and its bucket and user setup jobs use `massdrivercloud/minio:RELEASE.2026-09-22T19-25-18Z`. It mirrors `cgr.dev/chainguard/minio`, which Chainguard builds from [its maintained fork of MinIO](https://github.com/chainguard-forks/minio): upstream MinIO's final open-source release, plus security fixes and dependency updates. It is published for `linux/amd64` and `linux/arm64`, and replaces the `quay.io/minio/minio` and `quay.io/minio/mc` images, which can no longer be pulled.
+- **Use cloud object storage for production installations.** The bundled MinIO makes it easy to get started. For production, we recommend Amazon S3, Azure Blob Storage, or Google Cloud Storage, which offer higher durability, richer configuration options, and easier data browsing. To move an existing installation off MinIO, follow [Using Cloud Storage for Massdriver](https://docs.massdriver.cloud/platform-operations/self-hosted/cloud-storage). It covers copying your existing data and pointing Argo Workflows at the new storage.
 
-## Massdriver 2.5.2
-
-### Changed
-
-- **Resource type visibility follows repository permissions.** The resource type catalog now lists only types whose repository you hold `repo:view` on. Org admins see everything. To preserve current access, an upgrade migration gives every non-admin group with members an allow policy for `repo:view` and `repo:pull` on resource type repositories, plus `repo:push` for groups that could already publish resource types.
-- **Publishing a bundle checks access to the resource types it references.** The publisher must hold `repo:pull` on every resource type the bundle references with a `name@version` reference. A denial fails the whole publish, writes nothing, and names the types, e.g. `no access to postgres-connection@1.2.3`. Bundles using legacy `$ref` references are not checked yet, so existing pipelines keep publishing.
+## Massdriver 2.5.3
 
 ### Added
 
-- **REST resources show their resolved type and available upgrade.** The REST resource payload now includes `resource_type` (the exact `name@version` the resource was typed against), `version_constraint` (the range the producing bundle declared), and `available_upgrade` (the newest in-range version newer than the current one, or null). This matches the `availableUpgrade` field in the GraphQL API.
+- **The provisioner logger image is configurable.** Each deployment step runs a logger sidecar that streams the step's logs to Massdriver. Set `provisioner.loggerImage` to use your own image, for example from a private registry mirror. It defaults to `massdrivercloud/provisioner-logger:latest`, which is the image used before this release.
 
-### Fixed
+## UI 2.1.4
 
-- **Resource version ranges are honored at deploy.** A bundle that declares `resource_type: name@~1` on a resources field now has its resources typed and schema-validated against the newest published version in that range, instead of the unversioned `0.0.0` definition. Moving to a newer version in range updates the resource in place and keeps its grants.
-- **Importing a resource accepts a version range.** `mass resource create name@~1` resolves the range to the newest matching version instead of failing with "definition not found".
-- **Organization IDs with hyphens are accepted on the create form.** The form now matches what the API already allowed.
+### Added
 
-### Security
+- **See external resources on the environment graph.** A new toggle in the graph controls draws remote references and environment defaults as nodes, with a line to every instance that uses them. Previously you had to open each instance's Dependencies tab to see what an environment pulls in. The extra data loads only when the toggle is on.
 
-- **Access tokens are scoped to their organization.** A token created in one organization could authenticate against another organization the same account belongs to on Bearer, websocket, and OCI registry requests. Tokens now work only in the organization they were created in. Browser sessions and deployment credentials keep their multi-organization access.
+### Changed
+
+- **Help tooltips are consistent.** Term help across the UI now uses one tooltip style, with shorter glossary definitions that link to the docs. Code in tooltips is readable in light mode.
 
 ### Maintenance
 
 - Dependency updates.
 
-## UI 2.1.3
+## How to upgrade
 
-### Added
+Upgrade when no deployments are running (see the upgrade notes below). Then follow the [standard update steps](https://docs.massdriver.cloud/platform-operations/self-hosted/install#updating-your-installation):
 
-- **Pick a version when importing a resource.** The import dialog shows the chosen resource type in a card with a version selector. It defaults to the latest version, and switching versions reloads that version's form and setup instructions.
+```bash
+helm repo update
+helm upgrade massdriver massdriver/massdriver \
+  -n massdriver \
+  -f values-custom.yaml
+```
 
-### Fixed
+No changes to `values-custom.yaml` are required.
 
-- **The import instructions panel no longer crashes.** Setup instructions containing Python or unlabeled code blocks broke syntax highlighting and crashed the panel.
-- **Dark mode and markdown fixes in forms.** The bundles empty state renders correctly in dark mode, and markdown links in bundle parameter descriptions render as links instead of literal `[text](url)`.
+- **Pass your values file with `-f`. Don't use `--reuse-values`.** With `--reuse-values`, Helm keeps the previous chart version's defaults, so the release would keep the old MinIO images that can no longer be pulled, and the old Massdriver and UI versions.
+- **Installing from a clone of this repository?** Run `helm dependency update` once after pulling this release, then run `helm upgrade` against your local chart directory. `helm dependency build` will fail with `the lock file (Chart.lock) is out of sync with the dependencies file (Chart.yaml)` until you do. This is expected, because the MinIO subchart is now included in the repository.
 
 ## Upgrade notes
 
-- No values changes are required. The chart's templates, dependencies, and RBAC are unchanged from 0.2.3.
-- **Review resource type permissions after upgrading.** The migration preserves access for existing groups, but groups created afterwards need an explicit `repo:view` (and `repo:pull` to publish bundles that reference resource types) policy on resource type repositories, e.g. scoped to `md-repo-artifact-type: resource-type`.
-- **Access tokens used across organizations will stop working.** If a CI pipeline or integration uses one access token against several organizations, create a token in each organization.
+- **Existing MinIO data is kept, and no migration is needed.** The new MinIO server reuses your existing persistent volumes and reads the data already on them. Deployment logs, bundles, and OpenTofu/Terraform state are preserved.
+- **Upgrade when no deployments are running.** The MinIO pods restart one at a time. With the default two replicas, writes pause briefly while each pod restarts, and reads keep working throughout.
+- **If you already override `minio.image` or `minio.mcImage`, your override still applies.** The images you set are used instead of the new defaults. Make sure the image you point to can still be pulled.
+- **Installs that use external object storage are not affected.** If you set `minio.enabled: false` and use S3, GCS, or Azure Blob Storage, nothing changes for you.
+- **Don't use `helm rollback` to return to chart 0.2.4 or earlier.** Those versions reference the MinIO images that can no longer be pulled, and `helm rollback` reuses the old release's values. If you need to go back, run `helm upgrade --version <old version>` and set `minio.image` and `minio.mcImage` to `massdrivercloud/minio:RELEASE.2026-09-22T19-25-18Z`.
+- **New optional value: `provisioner.loggerImage`.** The default matches the image already in use, so no action is required.
+- The Argo Workflows version, RBAC, and all other values are unchanged.

@@ -25,6 +25,7 @@ data:
   MD_PROVISIONER_ARGO_NAMESPACE: {{ .Release.Namespace }}
   MD_PROVISIONER_EXIT_IMAGE: {{ .Values.provisioner.exitImage }}
   MD_PROVISIONER_INIT_IMAGE: {{ .Values.provisioner.initImage }}
+  MD_PROVISIONER_LOGGER_IMAGE: {{ .Values.provisioner.loggerImage }}
   MD_PROVISIONER_SERVICE_ACCOUNT_NAME: {{ include "massdriver.fullname" . }}-provisioner
   MIX_ENV: prod
   {{- if .Values.otel.enabled }}
