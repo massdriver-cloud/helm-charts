@@ -12,9 +12,13 @@ annotations:
     - kind: changed
       description: MinIO images are now massdrivercloud/minio:RELEASE.2026-09-22T19-25-18Z, built from Chainguard's maintained MinIO fork for linux/amd64 and linux/arm64.
     - kind: changed
-      description: Update Massdriver to 2.5.3.
+      description: Update Massdriver to 2.5.3 and the UI to 2.1.4.
     - kind: added
       description: The provisioner logger sidecar image is configurable with provisioner.loggerImage.
+    - kind: added
+      description: "UI: the environment graph can show remote references and environment defaults as nodes linked to the instances that use them."
+    - kind: changed
+      description: "UI: help tooltips share one style, with shorter glossary definitions that link to the docs."
 
 dependencies:
   - name: argo-workflows
