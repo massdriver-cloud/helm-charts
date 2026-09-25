@@ -7,6 +7,7 @@ This release fixes installs that use the bundled MinIO object storage. MinIO no 
 ## Platform
 
 - **MinIO images now come from `massdrivercloud/minio`.** The chart's MinIO server and its bucket and user setup jobs use `massdrivercloud/minio:RELEASE.2026-09-22T19-25-18Z`. It mirrors `cgr.dev/chainguard/minio`, which Chainguard builds from [its maintained fork of MinIO](https://github.com/chainguard-forks/minio): upstream MinIO's final open-source release, plus security fixes and dependency updates. It is published for `linux/amd64` and `linux/arm64`, and replaces the `quay.io/minio/minio` and `quay.io/minio/mc` images, which can no longer be pulled.
+- **Use cloud object storage for production installations.** The bundled MinIO makes it easy to get started. For production, we recommend Amazon S3, Azure Blob Storage, or Google Cloud Storage, which offer higher durability, richer configuration options, and easier data browsing. To move an existing installation off MinIO, follow [Using Cloud Storage for Massdriver](https://docs.massdriver.cloud/platform-operations/self-hosted/cloud-storage). It covers copying your existing data and pointing Argo Workflows at the new storage.
 
 ## Massdriver 2.5.3
 
