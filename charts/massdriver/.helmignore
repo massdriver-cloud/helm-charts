@@ -23,3 +23,6 @@
 .vscode/
 # Release notes are published as the GitHub Release body, not packaged
 RELEASE_NOTES.md
+# Vendored subcharts are committed to git under subcharts/ and referenced as file:// dependencies in Chart.yaml.
+# Helm packages each one into charts/ in the release archive, so the raw subcharts/ copy is excluded to avoid shipping it twice.
+subcharts/

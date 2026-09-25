@@ -376,6 +376,17 @@ minio:
   # this assumes that the release name is "massdriver". This value will need to be changed if the release name is different.
   existingSecret: massdriver-minio
 
+  # MinIO no longer publishes public images (the chart's quay.io/minio defaults can't be pulled).
+  # massdrivercloud/minio mirrors cgr.dev/chainguard/minio for linux/amd64 and linux/arm64. That image is built from
+  # Chainguard's maintained MinIO fork (AGPLv3): https://github.com/chainguard-forks/minio
+  # The same image serves the bucket/user setup jobs, since it includes mc and a shell.
+  image:
+    repository: massdrivercloud/minio
+    tag: RELEASE.2026-09-22T19-25-18Z
+  mcImage:
+    repository: massdrivercloud/minio
+    tag: RELEASE.2026-09-22T19-25-18Z
+
   replicas: 2
   resources:
     requests:
