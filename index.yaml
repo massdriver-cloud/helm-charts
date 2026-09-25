@@ -179,6 +179,39 @@ entries:
   massdriver:
   - annotations:
       artifacthub.io/changes: |
+        - kind: fixed
+          description: The bundled MinIO server and its setup jobs use massdrivercloud/minio, because MinIO's public images can no longer be pulled.
+        - kind: changed
+          description: MinIO images are now massdrivercloud/minio:RELEASE.2026-09-22T19-25-18Z, built from Chainguard's maintained MinIO fork for linux/amd64 and linux/arm64.
+        - kind: changed
+          description: Update Massdriver to 2.5.3 and the UI to 2.1.4.
+        - kind: added
+          description: The provisioner logger sidecar image is configurable with provisioner.loggerImage.
+        - kind: added
+          description: "UI: the environment graph can show remote references and environment defaults as nodes linked to the instances that use them."
+        - kind: changed
+          description: "UI: help tooltips share one style, with shorter glossary definitions that link to the docs."
+    apiVersion: v2
+    appVersion: 2.5.3
+    created: "2026-09-25T21:23:05.355361278Z"
+    dependencies:
+    - condition: argo-workflows.enabled
+      name: argo-workflows
+      repository: https://argoproj.github.io/argo-helm
+      version: 0.47.5
+    - condition: minio.enabled
+      name: minio
+      repository: file://subcharts/minio
+      version: 5.4.0
+    description: Helm chart for deploying Massdriver
+    digest: 1992ff42220d8a97867c7019c053d237251e7f8ef6052d0585808db531c1ce37
+    name: massdriver
+    type: application
+    urls:
+    - https://github.com/massdriver-cloud/helm-charts/releases/download/massdriver-0.2.5/massdriver-0.2.5.tgz
+    version: 0.2.5
+  - annotations:
+      artifacthub.io/changes: |
         - kind: added
           description: The Massdriver and UI images are published for linux/arm64 as well as linux/amd64.
         - kind: changed
@@ -1581,4 +1614,4 @@ entries:
     urls:
     - https://github.com/massdriver-cloud/helm-charts/releases/download/ruby-on-rails-0.2.0/ruby-on-rails-0.2.0.tgz
     version: 0.2.0
-generated: "2026-09-23T23:35:26.745836588Z"
+generated: "2026-09-25T21:23:05.355537203Z"
