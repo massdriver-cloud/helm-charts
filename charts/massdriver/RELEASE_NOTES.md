@@ -28,6 +28,22 @@ This release fixes installs that use the bundled MinIO object storage. MinIO no 
 
 - Dependency updates.
 
+## How to upgrade
+
+Upgrade when no deployments are running (see the upgrade notes below). Then follow the [standard update steps](https://docs.massdriver.cloud/platform-operations/self-hosted/install#updating-your-installation):
+
+```bash
+helm repo update
+helm upgrade massdriver massdriver/massdriver \
+  -n massdriver \
+  -f values-custom.yaml
+```
+
+No changes to `values-custom.yaml` are required.
+
+- **Pass your values file with `-f`. Don't use `--reuse-values`.** With `--reuse-values`, Helm keeps the previous chart version's defaults, so the release would keep the old MinIO images that can no longer be pulled, and the old Massdriver and UI versions.
+- **Installing from a clone of this repository?** Run `helm dependency update` once after pulling this release, then run `helm upgrade` against your local chart directory. `helm dependency build` will fail with `the lock file (Chart.lock) is out of sync with the dependencies file (Chart.yaml)` until you do. This is expected, because the MinIO subchart is now included in the repository.
+
 ## Upgrade notes
 
 - **Existing MinIO data is kept, and no migration is needed.** The new MinIO server reuses your existing persistent volumes and reads the data already on them. Deployment logs, bundles, and OpenTofu/Terraform state are preserved. We tested the upgrade in place and a rollback to the previous MinIO release against the chart's default two-replica layout.
