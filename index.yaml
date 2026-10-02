@@ -179,6 +179,37 @@ entries:
   massdriver:
   - annotations:
       artifacthub.io/changes: |
+        - kind: changed
+          description: Update Massdriver to 2.5.4 and the UI to 2.1.5.
+        - kind: changed
+          description: Seats are held by members of one or more groups and by pending invitations, so a member in no group no longer holds a seat.
+        - kind: fixed
+          description: Resources can be looked up by their instance.field identifier in organizations with a custom naming convention.
+        - kind: added
+          description: "UI: the Groups and Members tabs show a seat meter, and the Billing tab shows seats used out of the total."
+        - kind: changed
+          description: "UI: new organizations see a book-a-call welcome dialog in place of the previous welcome dialog."
+    apiVersion: v2
+    appVersion: 2.5.4
+    created: "2026-10-02T01:34:14.827279951Z"
+    dependencies:
+    - condition: argo-workflows.enabled
+      name: argo-workflows
+      repository: https://argoproj.github.io/argo-helm
+      version: 0.47.5
+    - condition: minio.enabled
+      name: minio
+      repository: file://subcharts/minio
+      version: 5.4.0
+    description: Helm chart for deploying Massdriver
+    digest: 14e780d7b50e04e1fe8cbf81c1043274dc0786292883674ad45abab5fc3d2588
+    name: massdriver
+    type: application
+    urls:
+    - https://github.com/massdriver-cloud/helm-charts/releases/download/massdriver-0.2.6/massdriver-0.2.6.tgz
+    version: 0.2.6
+  - annotations:
+      artifacthub.io/changes: |
         - kind: fixed
           description: The bundled MinIO server and its setup jobs use massdrivercloud/minio, because MinIO's public images can no longer be pulled.
         - kind: changed
@@ -1614,4 +1645,4 @@ entries:
     urls:
     - https://github.com/massdriver-cloud/helm-charts/releases/download/ruby-on-rails-0.2.0/ruby-on-rails-0.2.0.tgz
     version: 0.2.0
-generated: "2026-09-25T21:23:05.355537203Z"
+generated: "2026-10-02T01:34:14.827638813Z"
