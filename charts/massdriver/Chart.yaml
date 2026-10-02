@@ -2,23 +2,21 @@ apiVersion: v2
 name: massdriver
 description: Helm chart for deploying Massdriver
 type: application
-version: 0.2.5
-appVersion: 2.5.3
+version: 0.2.6
+appVersion: 2.5.4
 
 annotations:
   artifacthub.io/changes: |
+    - kind: changed
+      description: Update Massdriver to 2.5.4 and the UI to 2.1.5.
+    - kind: changed
+      description: Seats are held by members of one or more groups and by pending invitations, so a member in no group no longer holds a seat.
     - kind: fixed
-      description: The bundled MinIO server and its setup jobs use massdrivercloud/minio, because MinIO's public images can no longer be pulled.
-    - kind: changed
-      description: MinIO images are now massdrivercloud/minio:RELEASE.2026-09-22T19-25-18Z, built from Chainguard's maintained MinIO fork for linux/amd64 and linux/arm64.
-    - kind: changed
-      description: Update Massdriver to 2.5.3 and the UI to 2.1.4.
+      description: Resources can be looked up by their instance.field identifier in organizations with a custom naming convention.
     - kind: added
-      description: The provisioner logger sidecar image is configurable with provisioner.loggerImage.
-    - kind: added
-      description: "UI: the environment graph can show remote references and environment defaults as nodes linked to the instances that use them."
+      description: "UI: the Groups and Members tabs show a seat meter, and the Billing tab shows seats used out of the total."
     - kind: changed
-      description: "UI: help tooltips share one style, with shorter glossary definitions that link to the docs."
+      description: "UI: new organizations see a book-a-call welcome dialog in place of the previous welcome dialog."
 
 dependencies:
   - name: argo-workflows
