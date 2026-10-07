@@ -180,6 +180,51 @@ entries:
   - annotations:
       artifacthub.io/changes: |
         - kind: changed
+          description: Update Massdriver to 2.5.5 and the UI to 2.1.6.
+        - kind: changed
+          description: Seats for SCIM users follow their active state in the identity provider, not group membership.
+        - kind: added
+          description: A SCIM integration can set a seat attribute and value so only matching users get a seat.
+        - kind: changed
+          description: SCIM sync is never refused at the seat limit; new users wait for a free seat.
+        - kind: changed
+          description: Access requires a seat, and pending invitations no longer hold one.
+        - kind: added
+          description: Integration settings can be changed without deleting and recreating the integration.
+        - kind: fixed
+          description: Changing a custom attribute no longer blocks updates to entities that carry an old value.
+        - kind: changed
+          description: Custom attribute changes that would break a policy, a grant, or the naming convention are refused.
+        - kind: added
+          description: "UI: the Members tab shows whether each member holds a seat and where they came from."
+        - kind: added
+          description: "UI: integrations can be edited, enabled, and disabled."
+        - kind: added
+          description: "UI: the Config options menu is always available and can load config from a past deployment or JSON, promote, compare, and discard changes."
+        - kind: added
+          description: "UI: glossary help for platform terms across the app."
+    apiVersion: v2
+    appVersion: 2.5.5
+    created: "2026-10-07T22:57:36.417884209Z"
+    dependencies:
+    - condition: argo-workflows.enabled
+      name: argo-workflows
+      repository: https://argoproj.github.io/argo-helm
+      version: 0.47.5
+    - condition: minio.enabled
+      name: minio
+      repository: file://subcharts/minio
+      version: 5.4.0
+    description: Helm chart for deploying Massdriver
+    digest: c101d08dce4e92b5015b08fa11ee69d5ec9c7a4ac16ee72c42e81e74213c53f7
+    name: massdriver
+    type: application
+    urls:
+    - https://github.com/massdriver-cloud/helm-charts/releases/download/massdriver-0.2.7/massdriver-0.2.7.tgz
+    version: 0.2.7
+  - annotations:
+      artifacthub.io/changes: |
+        - kind: changed
           description: Update Massdriver to 2.5.4 and the UI to 2.1.5.
         - kind: changed
           description: Seats are held by members of one or more groups and by pending invitations, so a member in no group no longer holds a seat.
@@ -1645,4 +1690,4 @@ entries:
     urls:
     - https://github.com/massdriver-cloud/helm-charts/releases/download/ruby-on-rails-0.2.0/ruby-on-rails-0.2.0.tgz
     version: 0.2.0
-generated: "2026-10-02T01:34:14.827638813Z"
+generated: "2026-10-07T22:57:36.418143771Z"
