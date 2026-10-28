@@ -2,35 +2,73 @@ apiVersion: v2
 name: massdriver
 description: Helm chart for deploying Massdriver
 type: application
-version: 0.2.7
-appVersion: 2.5.5
+version: 0.3.0
+appVersion: 2.6.0
 
 annotations:
   artifacthub.io/changes: |
     - kind: changed
-      description: Update Massdriver to 2.5.5 and the UI to 2.1.6.
-    - kind: changed
-      description: Seats for SCIM users follow their active state in the identity provider, not group membership.
+      description: Update Massdriver to 2.6.0 and the UI to 2.1.7.
     - kind: added
-      description: A SCIM integration can set a seat attribute and value so only matching users get a seat.
-    - kind: changed
-      description: SCIM sync is never refused at the seat limit; new users wait for a free seat.
-    - kind: changed
-      description: Access requires a seat, and pending invitations no longer hold one.
+      description: Deployment identity tokens let provisioners authenticate to your cloud with OIDC; configure them under provisioner.identityTokens.
     - kind: added
-      description: Integration settings can be changed without deleting and recreating the integration.
+      description: massdriver.sessionTtlHours sets how long a user's login session lasts.
+    - kind: changed
+      description: Login sessions end a fixed time after login (default 30 days) instead of extending on each token refresh.
+    - kind: added
+      description: New organizations get editable starter groups with matching policies.
+    - kind: changed
+      description: The organization viewer group in existing organizations becomes an editable group with view policies.
+    - kind: changed
+      description: OIDC autojoin adds users to the organization's admin group and skips existing members.
+    - kind: added
+      description: Organization admins can choose the attributes sent to provisioning runs as default tags.
+    - kind: added
+      description: Create a new project from an existing environment, optionally copying instance params.
+    - kind: added
+      description: Bundle params can use $md.list to pick groups, service accounts, or projects.
+    - kind: added
+      description: Resource types can set a UI schema and declare export formats other than YAML.
+    - kind: added
+      description: Deployments can list their instance's resources with GET /v1/resources.
+    - kind: added
+      description: The V2 API Bundle type has paramsSchema and uiSchema fields.
+    - kind: changed
+      description: Organization identifiers can't be reused after the organization is deleted.
+    - kind: changed
+      description: Undeclared custom attributes are rejected when a scope has none declared.
     - kind: fixed
-      description: Changing a custom attribute no longer blocks updates to entities that carry an old value.
+      description: Service accounts that have deployed can be deleted.
+    - kind: fixed
+      description: Stored cost amounts are exact when summed or averaged.
+    - kind: security
+      description: Service accounts and deployments can only access OCI repositories in their own organization.
+    - kind: added
+      description: "UI: a Default tags tab in organization settings."
+    - kind: added
+      description: "UI: Copy to New Project, and Clone Project can copy the full project or one environment."
+    - kind: added
+      description: "UI: a proposal review view on the instance Config tab."
+    - kind: added
+      description: "UI: service account and member detail pages."
+    - kind: added
+      description: "UI: the account Organizations tab lists your groups."
+    - kind: added
+      description: "UI: search, sorting, and page size on the Members and Groups tables."
+    - kind: added
+      description: "UI: collapsible array items in forms."
+    - kind: added
+      description: "UI: a provisioned resource's origin instance links to the environment canvas."
     - kind: changed
-      description: Custom attribute changes that would break a policy, a grant, or the naming convention are refused.
-    - kind: added
-      description: "UI: the Members tab shows whether each member holds a seat and where they came from."
-    - kind: added
-      description: "UI: integrations can be edited, enabled, and disabled."
-    - kind: added
-      description: "UI: the Config options menu is always available and can load config from a past deployment or JSON, promote, compare, and discard changes."
-    - kind: added
-      description: "UI: glossary help for platform terms across the app."
+      description: "UI: Deploy and Propose validate params first and show errors inline."
+    - kind: changed
+      description: "UI: the version dropdown refreshes each time it opens."
+    - kind: changed
+      description: "UI: header dropdowns show full project and environment names."
+    - kind: security
+      description: "UI: updated Next.js and other dependencies to address published security advisories."
+    - kind: security
+      description: "UI: removed an unused endpoint and pages can no longer be embedded in frames."
 
 dependencies:
   - name: argo-workflows
