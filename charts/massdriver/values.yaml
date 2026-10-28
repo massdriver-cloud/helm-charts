@@ -137,11 +137,14 @@ massdriver:
   # URL for the documentation link in Massdriver UI. If left blank, the link will use Massdriver documentation (docs.massdriver.cloud)
   docsUrl: ""
 
+  # How long a user's login session lasts, in hours. Users must log in again after this time, whether they are active or not.
+  sessionTtlHours: 720
+
   replicaCount: 2
 
   image:
     repository: massdrivercloud/massdriver
-    tag: "2.5.5"
+    tag: "2.6.0"
 
   port: 4000
 
@@ -280,11 +283,38 @@ provisioner:
   initImage: massdrivercloud/provisioner-init:latest
   loggerImage: massdrivercloud/provisioner-logger:latest
 
+  # Massdriver can act as an OIDC identity provider for deployments. Each deployment gets signed identity tokens that your cloud
+  # (AWS, GCP, Azure, Vault, Kubernetes) can trust, so provisioners authenticate without long-lived credentials.
+  # This is disabled until a signing key is provided. Once enabled, the discovery documents are served from the API at /.well-known/openid-configuration and /.well-known/jwks.json.
+  identityTokens:
+    # Name of an existing Secret holding the signing key. It must have a "signingKey" key, and may have a "previousPublicKeys" key.
+    # If this is set, signingKey and previousPublicKeys below are ignored.
+    existingSecret: ""
+    # If you aren't using an existing Secret, provide the signingKey (and optionally previousPublicKeys) below
+    # and helm will create the Secret for you.
+    # RSA private key in PEM format used to sign identity tokens. An invalid key will stop Massdriver from starting.
+    # Generate one with: openssl genpkey -algorithm RSA -pkeyopt rsa_keygen_bits:2048
+    # signingKey: |-
+    #   -----BEGIN PRIVATE KEY-----
+    #   ...
+    #   -----END PRIVATE KEY-----
+    signingKey: ""
+    # PEM public keys of previous signing keys to keep publishing in the JWKS while rotating keys. Concatenate multiple keys.
+    # previousPublicKeys: |-
+    #   -----BEGIN PUBLIC KEY-----
+    #   ...
+    #   -----END PUBLIC KEY-----
+    previousPublicKeys: ""
+    # Token issuer. Defaults to the Massdriver API URL. Set this if you host the discovery documents somewhere else.
+    issuer: ""
+    # Identity token lifetime in minutes
+    ttlMinutes: 120
+
 ui:
   image:
     repository: massdrivercloud/massdriver-ui
     pullPolicy: IfNotPresent
-    tag: "2.1.6"
+    tag: "2.1.7"
 
   port: 3000
 

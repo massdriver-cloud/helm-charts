@@ -20,6 +20,7 @@ spec:
         configmap.massdriver-envs/checksum: {{ include (print $.Template.BasePath "/massdriver/configmap-envs.yaml") . | sha256sum }}
         configmap.ui-envs/checksum: {{ include (print $.Template.BasePath "/massdriver/configmap-ui.yaml") . | sha256sum }}
         secret.massdriver-envs/checksum: {{ include (print $.Template.BasePath "/massdriver/secret-envs.yaml") . | sha256sum }}
+        secret.massdriver-identity-tokens/checksum: {{ include (print $.Template.BasePath "/massdriver/secret-identity-tokens.yaml") . | sha256sum }}
       labels:
         {{- include "massdriver.labels" . | nindent 8 }}
         {{- with .Values.massdriver.podLabels }}
@@ -43,6 +44,19 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: status.podIP
+            {{- if include "massdriver.identityTokensEnabled" . }}
+            - name: MD_PROVISIONER_OIDC_SIGNING_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "massdriver.identityTokensSecretName" . }}
+                  key: signingKey
+            - name: MD_PROVISIONER_OIDC_PREVIOUS_PUBLIC_KEYS
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "massdriver.identityTokensSecretName" . }}
+                  key: previousPublicKeys
+                  optional: true
+            {{- end }}
           envFrom:
             - configMapRef:
                 name: {{ include "massdriver.fullname" . }}-massdriver-envs

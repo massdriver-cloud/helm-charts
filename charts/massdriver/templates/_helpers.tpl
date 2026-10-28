@@ -59,6 +59,23 @@ TLS Secret Name
 {{- end }}
 
 {{/*
+Identity Tokens Secret Name
+*/}}
+{{- define "massdriver.identityTokensSecretName" -}}
+  {{- $default := printf "%s-massdriver-identity-tokens" (include "massdriver.fullname" .) -}}
+  {{- default $default .Values.provisioner.identityTokens.existingSecret -}}
+{{- end }}
+
+{{/*
+Identity tokens are enabled when the user provides an existing secret or a signing key for the chart to put in one
+*/}}
+{{- define "massdriver.identityTokensEnabled" -}}
+  {{- with .Values.provisioner.identityTokens -}}
+    {{- if or .existingSecret .signingKey }}true{{ end -}}
+  {{- end -}}
+{{- end }}
+
+{{/*
 Protocol to use for links (http or https)
 */}}
 {{- define "massdriver.protocol" -}}

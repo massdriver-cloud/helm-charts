@@ -26,7 +26,16 @@ data:
   MD_PROVISIONER_EXIT_IMAGE: {{ .Values.provisioner.exitImage }}
   MD_PROVISIONER_INIT_IMAGE: {{ .Values.provisioner.initImage }}
   MD_PROVISIONER_LOGGER_IMAGE: {{ .Values.provisioner.loggerImage }}
+  {{- if include "massdriver.identityTokensEnabled" . }}
+  {{- with .Values.provisioner.identityTokens }}
+  {{- if .issuer }}
+  MD_PROVISIONER_OIDC_ISSUER: {{ .issuer | quote }}
+  {{- end }}
+  MD_PROVISIONER_OIDC_TOKEN_TTL_MINUTES: {{ .ttlMinutes | toString | quote }}
+  {{- end }}
+  {{- end }}
   MD_PROVISIONER_SERVICE_ACCOUNT_NAME: {{ include "massdriver.fullname" . }}-provisioner
+  MD_SESSION_TTL_HOURS: {{ .Values.massdriver.sessionTtlHours | toString | quote }}
   MIX_ENV: prod
   {{- if .Values.otel.enabled }}
   OTEL_RESOURCE_ATTRIBUTES: {{ .Values.otel.resourceAttributes | quote }}
