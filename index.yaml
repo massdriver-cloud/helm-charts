@@ -180,6 +180,89 @@ entries:
   - annotations:
       artifacthub.io/changes: |
         - kind: changed
+          description: Update Massdriver to 2.6.0 and the UI to 2.1.7.
+        - kind: added
+          description: Deployment identity tokens let provisioners authenticate to your cloud with OIDC; configure them under provisioner.identityTokens.
+        - kind: added
+          description: massdriver.sessionTtlHours sets how long a user's login session lasts.
+        - kind: changed
+          description: Login sessions end a fixed time after login (default 30 days) instead of extending on each token refresh.
+        - kind: added
+          description: New organizations get editable starter groups with matching policies.
+        - kind: changed
+          description: The organization viewer group in existing organizations becomes an editable group with view policies.
+        - kind: changed
+          description: OIDC autojoin adds users to the organization's admin group and skips existing members.
+        - kind: added
+          description: Organization admins can choose the attributes sent to provisioning runs as default tags.
+        - kind: added
+          description: Create a new project from an existing environment, optionally copying instance params.
+        - kind: added
+          description: Bundle params can use $md.list to pick groups, service accounts, or projects.
+        - kind: added
+          description: Resource types can set a UI schema and declare export formats other than YAML.
+        - kind: added
+          description: Deployments can list their instance's resources with GET /v1/resources.
+        - kind: added
+          description: The V2 API Bundle type has paramsSchema and uiSchema fields.
+        - kind: changed
+          description: Organization identifiers can't be reused after the organization is deleted.
+        - kind: changed
+          description: Undeclared custom attributes are rejected when a scope has none declared.
+        - kind: fixed
+          description: Service accounts that have deployed can be deleted.
+        - kind: fixed
+          description: Stored cost amounts are exact when summed or averaged.
+        - kind: security
+          description: Service accounts and deployments can only access OCI repositories in their own organization.
+        - kind: added
+          description: "UI: a Default tags tab in organization settings."
+        - kind: added
+          description: "UI: Copy to New Project, and Clone Project can copy the full project or one environment."
+        - kind: added
+          description: "UI: a proposal review view on the instance Config tab."
+        - kind: added
+          description: "UI: service account and member detail pages."
+        - kind: added
+          description: "UI: the account Organizations tab lists your groups."
+        - kind: added
+          description: "UI: search, sorting, and page size on the Members and Groups tables."
+        - kind: added
+          description: "UI: collapsible array items in forms."
+        - kind: added
+          description: "UI: a provisioned resource's origin instance links to the environment canvas."
+        - kind: changed
+          description: "UI: Deploy and Propose validate params first and show errors inline."
+        - kind: changed
+          description: "UI: the version dropdown refreshes each time it opens."
+        - kind: changed
+          description: "UI: header dropdowns show full project and environment names."
+        - kind: security
+          description: "UI: updated Next.js and other dependencies to address published security advisories."
+        - kind: security
+          description: "UI: removed an unused endpoint and pages can no longer be embedded in frames."
+    apiVersion: v2
+    appVersion: 2.6.0
+    created: "2026-10-28T22:14:47.13309817Z"
+    dependencies:
+    - condition: argo-workflows.enabled
+      name: argo-workflows
+      repository: https://argoproj.github.io/argo-helm
+      version: 0.47.5
+    - condition: minio.enabled
+      name: minio
+      repository: file://subcharts/minio
+      version: 5.4.0
+    description: Helm chart for deploying Massdriver
+    digest: 6f06dc71ee8cbd404d0144c6c7dcd998ff2df86d3e10cec0e36a370d2c5e9f79
+    name: massdriver
+    type: application
+    urls:
+    - https://github.com/massdriver-cloud/helm-charts/releases/download/massdriver-0.3.0/massdriver-0.3.0.tgz
+    version: 0.3.0
+  - annotations:
+      artifacthub.io/changes: |
+        - kind: changed
           description: Update Massdriver to 2.5.5 and the UI to 2.1.6.
         - kind: changed
           description: Seats for SCIM users follow their active state in the identity provider, not group membership.
@@ -1690,4 +1773,4 @@ entries:
     urls:
     - https://github.com/massdriver-cloud/helm-charts/releases/download/ruby-on-rails-0.2.0/ruby-on-rails-0.2.0.tgz
     version: 0.2.0
-generated: "2026-10-07T22:57:36.418143771Z"
+generated: "2026-10-28T22:14:47.133316785Z"
