@@ -9,8 +9,6 @@ rules:
 - apiGroups: ["argoproj.io"]
   resources: ["workflows"]
   verbs: ["create", "get", "list", "watch", "update", "patch", "delete"]
-# Each workflow gets a Secret holding its sensitive inputs. The Secret is owned
-# by the Workflow, so Kubernetes garbage-collects it; no delete is needed.
 - apiGroups: [""]
   resources: ["secrets"]
   verbs: ["create"]
