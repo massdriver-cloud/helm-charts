@@ -9,3 +9,6 @@ rules:
 - apiGroups: ["argoproj.io"]
   resources: ["workflows"]
   verbs: ["create", "get", "list", "watch", "update", "patch", "delete"]
+- apiGroups: [""]
+  resources: ["secrets"]
+  verbs: ["create"]
