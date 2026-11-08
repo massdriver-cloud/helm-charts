@@ -179,6 +179,29 @@ entries:
   massdriver:
   - annotations:
       artifacthub.io/changes: |
+        - kind: added
+          description: The Massdriver Role can create Secrets, so Massdriver can store each deployment's sensitive inputs in a Secret owned by its workflow.
+    apiVersion: v2
+    appVersion: 2.6.0
+    created: "2026-11-08T17:19:42.238929627Z"
+    dependencies:
+    - condition: argo-workflows.enabled
+      name: argo-workflows
+      repository: https://argoproj.github.io/argo-helm
+      version: 0.47.5
+    - condition: minio.enabled
+      name: minio
+      repository: file://subcharts/minio
+      version: 5.4.0
+    description: Helm chart for deploying Massdriver
+    digest: 3a8457899cfed3c7de677bee8ba2aa637539ff742ee830710ef35e90cd40db91
+    name: massdriver
+    type: application
+    urls:
+    - https://github.com/massdriver-cloud/helm-charts/releases/download/massdriver-0.3.1/massdriver-0.3.1.tgz
+    version: 0.3.1
+  - annotations:
+      artifacthub.io/changes: |
         - kind: changed
           description: Update Massdriver to 2.6.0 and the UI to 2.1.7.
         - kind: added
@@ -1773,4 +1796,4 @@ entries:
     urls:
     - https://github.com/massdriver-cloud/helm-charts/releases/download/ruby-on-rails-0.2.0/ruby-on-rails-0.2.0.tgz
     version: 0.2.0
-generated: "2026-10-28T22:14:47.133316785Z"
+generated: "2026-11-08T17:19:42.239275285Z"
