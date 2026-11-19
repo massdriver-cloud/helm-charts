@@ -11,5 +11,8 @@ roleRef:
   name: {{ include "massdriver.fullname" . }}-argo-workflows-wf-artifactgc
 subjects:
 - kind: ServiceAccount
+  name: {{ include "massdriver.fullname" . }}-workflow-executor
+  namespace: {{ .Release.Namespace }}
+- kind: ServiceAccount
   name: {{ include "massdriver.fullname" . }}-provisioner
   namespace: {{ .Release.Namespace }}
