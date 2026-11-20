@@ -144,7 +144,7 @@ massdriver:
 
   image:
     repository: massdrivercloud/massdriver
-    tag: "2.6.0"
+    tag: "2.7.0"
 
   port: 4000
 
@@ -276,6 +276,12 @@ provisioner:
     automount: true
     annotations: {}
 
+  artifactGC:
+    # Service account Argo's artifact garbage collection pods run as. It needs permission to delete objects from the
+    # artifact repository. Defaults to the provisioner service account. If you set this, the service account must already
+    # exist in the release namespace.
+    serviceAccountName: ""
+
   # Images for the provisioner init and exit containers. These are executed at the start and end of each deployment workflow.
   # The logger image runs as a sidecar alongside each provisioning step and streams its logs to Massdriver.
   # You can override these to use your own custom images if you have special requirements.
@@ -314,7 +320,7 @@ ui:
   image:
     repository: massdrivercloud/massdriver-ui
     pullPolicy: IfNotPresent
-    tag: "2.1.7"
+    tag: "2.1.8"
 
   port: 3000
 

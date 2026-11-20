@@ -2,18 +2,62 @@ apiVersion: v2
 name: massdriver
 description: Helm chart for deploying Massdriver
 type: application
-version: 0.3.1
-appVersion: 2.6.0
+version: 0.4.0
+appVersion: 2.7.0
 
 annotations:
   artifacthub.io/changes: |
     - kind: added
-      description: The Massdriver Role can create Secrets, so Massdriver can store each deployment's sensitive inputs in a Secret owned by its workflow.
+      description: Event destinations send audit log events to HTTP endpoints, managed through the V2 API.
+    - kind: added
+      description: Move an instance to an environment in another project with the moveInstance mutation.
+    - kind: changed
+      description: Audit log events are recorded under V2 event names and store the entity's attributes; event data keys context and resource are now actor and entity.
+    - kind: changed
+      description: Every organization member can see the organization's member list.
+    - kind: changed
+      description: Removing an organization member now requires the new organization:manageMembers action, which existing policies with organization:manageProfile are given during the upgrade.
+    - kind: changed
+      description: When an instance's bundle version leaves a link's version range, its connections are moved to a matching link or removed.
+    - kind: added
+      description: ociRepo tags and release channels accept a channel filter.
+    - kind: added
+      description: ociRepos can be filtered to the bundles available to a project or to the current user.
+    - kind: added
+      description: Environment defaults show the instance that produced a resource and the groups that can view it.
+    - kind: fixed
+      description: The repository list and canvas show the icon and description from a resource type's newest version.
+    - kind: fixed
+      description: connection.deleted events are sent after the change is saved.
+    - kind: fixed
+      description: New organizations start on the selected default tags.
+    - kind: changed
+      description: Listing instances loads resources and dependencies in batches.
+    - kind: added
+      description: "UI: The environment graph can show the full external resource chain."
+    - kind: added
+      description: "UI: Move an instance to another project, with a reminder to redeploy it."
+    - kind: added
+      description: "UI: A canvas toggle hides initialized and decommissioned instances."
+    - kind: changed
+      description: "UI: The bundles drawer lists project bundles and your own bundles separately."
+    - kind: added
+      description: "UI: Audit log entries show the credential used and the entity's attributes."
+    - kind: changed
+      description: "UI: A repository whose published versions aren't in use can be deleted."
+    - kind: fixed
+      description: "UI: The edit attribute form shows its current values when it first opens."
+    - kind: changed
+      description: Argo Workflows subchart updated from 0.47.5 to 2.0.18 (Argo Workflows v3.7.11 to v4.1.6), which fixes failed workflows getting stuck on the artifact-gc finalizer. CRDs are now installed by a pre-upgrade hook Job.
+    - kind: added
+      description: A workflow-executor ServiceAccount, bound to Argo's workflow Role, that Massdriver 2.7.0 runs Argo's init and wait containers as.
+    - kind: added
+      description: provisioner.artifactGC.serviceAccountName sets the service account Argo's artifact GC pods run as. It defaults to the provisioner service account.
 
 dependencies:
   - name: argo-workflows
     condition: argo-workflows.enabled
-    version: 0.47.5
+    version: 2.0.18
     repository: https://argoproj.github.io/argo-helm
   # Vendored, unmodified copy of the upstream MinIO chart (see subcharts/minio/VENDORED.md)
   - name: minio
