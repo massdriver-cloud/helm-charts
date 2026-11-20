@@ -12,7 +12,7 @@ annotations:
     - kind: added
       description: A workflow-executor ServiceAccount for Argo's init and wait containers, bound to Argo's workflow Role.
     - kind: added
-      description: workflow.artifactGC.serviceAccountName sets the service account Argo's artifact GC pods run as. It defaults to the provisioner service account, and Argo's artifact GC Role is bound to whichever account is set.
+      description: provisioner.artifactGC.serviceAccountName sets the service account Argo's artifact GC pods run as. It defaults to the provisioner service account, and Argo's artifact GC Role is bound to whichever account is set.
 
 dependencies:
   - name: argo-workflows

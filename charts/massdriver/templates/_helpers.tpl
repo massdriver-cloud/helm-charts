@@ -80,7 +80,7 @@ Service account Argo's artifact GC pods run as
 */}}
 {{- define "massdriver.artifactGCServiceAccountName" -}}
   {{- $default := printf "%s-provisioner" (include "massdriver.fullname" .) -}}
-  {{- default $default .Values.workflow.artifactGC.serviceAccountName -}}
+  {{- default $default .Values.provisioner.artifactGC.serviceAccountName -}}
 {{- end }}
 
 {{/*
