@@ -310,6 +310,14 @@ provisioner:
     # Identity token lifetime in minutes
     ttlMinutes: 120
 
+# Settings for Argo Workflows' handling of deployment workflows.
+workflow:
+  artifactGC:
+    # Service account Argo's artifact garbage collection pods run as. It needs permission to delete objects from the
+    # artifact repository. Defaults to the provisioner service account. If you set this, the service account must already
+    # exist in the release namespace.
+    serviceAccountName: ""
+
 ui:
   image:
     repository: massdrivercloud/massdriver-ui

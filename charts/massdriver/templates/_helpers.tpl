@@ -76,6 +76,14 @@ Identity tokens are enabled when the user provides an existing secret or a signi
 {{- end }}
 
 {{/*
+Service account Argo's artifact GC pods run as
+*/}}
+{{- define "massdriver.artifactGCServiceAccountName" -}}
+  {{- $default := printf "%s-provisioner" (include "massdriver.fullname" .) -}}
+  {{- default $default .Values.workflow.artifactGC.serviceAccountName -}}
+{{- end }}
+
+{{/*
 Protocol to use for links (http or https)
 */}}
 {{- define "massdriver.protocol" -}}

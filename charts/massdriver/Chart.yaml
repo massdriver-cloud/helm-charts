@@ -10,7 +10,9 @@ annotations:
     - kind: changed
       description: Argo Workflows subchart updated from 0.47.5 to 2.0.18 (Argo Workflows v3.7.11 to v4.1.6), which fixes failed workflows getting stuck on the artifact-gc finalizer. CRDs are now installed by a pre-upgrade hook Job.
     - kind: added
-      description: A workflow-executor ServiceAccount for Argo's init and wait containers, bound to Argo's workflow and artifact GC Roles.
+      description: A workflow-executor ServiceAccount for Argo's init and wait containers, bound to Argo's workflow Role.
+    - kind: added
+      description: workflow.artifactGC.serviceAccountName sets the service account Argo's artifact GC pods run as. It defaults to the provisioner service account, and Argo's artifact GC Role is bound to whichever account is set.
 
 dependencies:
   - name: argo-workflows

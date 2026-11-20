@@ -34,6 +34,7 @@ data:
   MD_PROVISIONER_OIDC_TOKEN_TTL_MINUTES: {{ .ttlMinutes | toString | quote }}
   {{- end }}
   {{- end }}
+  MD_WORKFLOW_ARTIFACT_GC_SERVICE_ACCOUNT_NAME: {{ include "massdriver.artifactGCServiceAccountName" . }}
   MD_WORKFLOW_EXECUTOR_SERVICE_ACCOUNT_NAME: {{ include "massdriver.fullname" . }}-workflow-executor
   MD_PROVISIONER_SERVICE_ACCOUNT_NAME: {{ include "massdriver.fullname" . }}-provisioner
   MD_SESSION_TTL_HOURS: {{ .Values.massdriver.sessionTtlHours | toString | quote }}
