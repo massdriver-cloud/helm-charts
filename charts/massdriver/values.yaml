@@ -7,33 +7,10 @@ postgres:
   database: massdriver
   port: 5432
 
-  # The settings below are optional. When a value is empty, Massdriver uses the default stated in its comment.
-
-  # Database connections each Massdriver pod holds open, shared by web requests and background work.
+  # Optional. Database connections each Massdriver pod holds open, shared by web requests and background work.
   # poolSize × massdriver.replicaCount, plus a few connections for the migration job, must stay below the database's max_connections.
-  # Default: 20
+  # When empty, Massdriver uses 20.
   poolSize:
-  # Target time, in milliseconds, to wait for a free connection from the pool. If waits stay above this for
-  # queueIntervalMs, the pool starts dropping requests to recover. Raise both if you see "connection not available" errors under load.
-  # Defaults: queueTargetMs 50, queueIntervalMs 2000
-  queueTargetMs:
-  queueIntervalMs:
-  # How long a single database query can run, in milliseconds, before it is cancelled.
-  # Default: 15000
-  timeoutMs:
-  # Prepared statement mode: "named" or "unnamed".
-  # Set to "unnamed" when connecting through PgBouncer or RDS Proxy in transaction pooling mode.
-  # Default: named
-  prepare:
-
-  # TLS for the database connection. TLS is always on; these settings control certificate verification.
-  ssl:
-    # Verify the database server's certificate and hostname. Without caCert, the system CA bundle is used.
-    # Default: false
-    verify:
-    # PEM-encoded CA certificate to verify the database server against, e.g. the AWS RDS CA bundle.
-    # Only used when verify is true.
-    caCert:
 
 smtp:
   username: 
@@ -182,19 +159,7 @@ massdriver:
   additionalEnvs: {}
   additionalSecrets: {}
 
-  # Additional environment variables in Kubernetes format, set on the Massdriver container and the migration job.
-  # Use this to set a value from an existing Secret or ConfigMap with valueFrom.
-  # Example:
-  #   - name: SOME_SETTING
-  #     value: "true"
-  #   - name: SOME_SECRET
-  #     valueFrom:
-  #       secretKeyRef:
-  #         name: my-secret
-  #         key: some-secret
-  extraEnv: []
-
-  # Background jobs each Massdriver pod runs at the same time, per job type.
+  # Optional. Background jobs each Massdriver pod runs at the same time, per job type.
   # Each running job uses a database connection from postgres.poolSize, so lower these on a small database.
   # When a value is empty, Massdriver uses the default stated in its comment.
   concurrency:

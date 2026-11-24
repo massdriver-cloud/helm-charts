@@ -187,25 +187,3 @@ and any additionalOrigins (full URLs for external tools like Backstage or Port).
   {{- end -}}
   {{- join "," $origins -}}
 {{- end -}}
-
-{{/*
-One ConfigMap env entry, rendered only when the value is set and the operator has not set the same key in
-massdriver.additionalEnvs, so existing installs keep their values and the ConfigMap never has duplicate keys.
-Takes a dict with "key", "value", and "root" (the top-level context).
-*/}}
-{{- define "massdriver.optionalEnv" -}}
-{{- if and (not (kindIs "invalid" .value)) (not (hasKey (.root.Values.massdriver.additionalEnvs | default dict) .key)) }}
-{{ printf "  %s: %s" .key (.value | toString | quote) }}
-{{- end }}
-{{- end -}}
-
-{{/*
-Directory and file path where the Postgres CA certificate is mounted when postgres.ssl.caCert is set.
-*/}}
-{{- define "massdriver.postgresCaCertDir" -}}
-/etc/massdriver/postgres-ca
-{{- end -}}
-
-{{- define "massdriver.postgresCaCertPath" -}}
-{{ include "massdriver.postgresCaCertDir" . }}/ca.crt
-{{- end -}}

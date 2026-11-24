@@ -32,10 +32,6 @@ spec:
         - name: massdriver
           image: "{{ .Values.massdriver.image.repository }}:{{ .Values.massdriver.image.tag }}"
           imagePullPolicy: {{ .Values.massdriver.image.pullPolicy }}
-          {{- with .Values.massdriver.extraEnv }}
-          env:
-            {{- toYaml . | nindent 12 }}
-          {{- end }}
           envFrom:
             - configMapRef:
                 name: {{ include "massdriver.fullname" . }}-massdriver-envs
@@ -48,18 +44,6 @@ spec:
           securityContext:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-          {{- if .Values.postgres.ssl.caCert }}
-          volumeMounts:
-            - name: postgres-ca
-              mountPath: {{ include "massdriver.postgresCaCertDir" . }}
-              readOnly: true
-          {{- end }}
-      {{- if .Values.postgres.ssl.caCert }}
-      volumes:
-        - name: postgres-ca
-          configMap:
-            name: {{ include "massdriver.fullname" . }}-postgres-ca
-      {{- end }}
       {{- with .Values.massdriver.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

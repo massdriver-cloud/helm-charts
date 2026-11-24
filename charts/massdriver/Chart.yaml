@@ -10,17 +10,11 @@ annotations:
     - kind: fixed
       description: postgres.port is passed to Massdriver as POSTGRES_PORT.
     - kind: added
-      description: postgres.poolSize, queueTargetMs, queueIntervalMs, and timeoutMs set the database connection pool size, queue timing, and query timeout.
+      description: The optional postgres.poolSize value sets how many database connections each Massdriver pod holds open.
     - kind: added
-      description: postgres.prepare can be set to unnamed for PgBouncer or RDS Proxy in transaction pooling mode.
-    - kind: added
-      description: postgres.ssl.verify turns on database certificate verification, and postgres.ssl.caCert sets the CA certificate to verify against.
-    - kind: added
-      description: massdriver.concurrency sets how many background jobs of each type a Massdriver pod runs at the same time.
-    - kind: added
-      description: massdriver.extraEnv adds Kubernetes-format environment variables, including valueFrom, to the Massdriver container and the migration job.
+      description: Optional massdriver.concurrency values set how many background jobs of each type a Massdriver pod runs at the same time.
     - kind: changed
-      description: The new database and concurrency values are optional, and a key already set in massdriver.additionalEnvs is not set again by the chart.
+      description: A key already set in massdriver.additionalEnvs is not set again by the chart.
 
 dependencies:
   - name: argo-workflows

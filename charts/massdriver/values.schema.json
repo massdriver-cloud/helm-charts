@@ -132,31 +132,30 @@
         "poolSize": {
           "type": ["integer", "null"],
           "minimum": 1
-        },
-        "queueTargetMs": {
-          "type": ["integer", "null"],
-          "minimum": 1
-        },
-        "queueIntervalMs": {
-          "type": ["integer", "null"],
-          "minimum": 1
-        },
-        "timeoutMs": {
-          "type": ["integer", "null"],
-          "minimum": 1
-        },
-        "prepare": {
-          "type": ["string", "null"],
-          "enum": ["named", "unnamed", null]
-        },
-        "ssl": {
+        }
+      }
+    },
+    "massdriver": {
+      "type": "object",
+      "properties": {
+        "concurrency": {
           "type": "object",
           "properties": {
-            "verify": {
-              "type": ["boolean", "null"]
+            "environmentDeploys": {
+              "type": ["integer", "null"],
+              "minimum": 1
             },
-            "caCert": {
-              "type": ["string", "null"]
+            "eventDeliveries": {
+              "type": ["integer", "null"],
+              "minimum": 1
+            },
+            "integrationRuns": {
+              "type": ["integer", "null"],
+              "minimum": 1
+            },
+            "deploymentLogCompaction": {
+              "type": ["integer", "null"],
+              "minimum": 1
             }
           }
         }

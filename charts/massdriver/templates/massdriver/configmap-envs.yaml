@@ -11,22 +11,14 @@ data:
   BLOB_STORAGE_PORT: "80"
   BLOB_STORAGE_SCHEME: http
   DATABASE_SSL: "true"
-  {{- if .Values.postgres.ssl.caCert }}
-  {{- include "massdriver.optionalEnv" (dict "key" "DATABASE_SSL_CA_CERT_FILE" "value" (include "massdriver.postgresCaCertPath" .) "root" .) }}
-  {{- end }}
-  {{- include "massdriver.optionalEnv" (dict "key" "DATABASE_SSL_VERIFY" "value" .Values.postgres.ssl.verify "root" .) }}
   FORCE_V2_LOGGING: "true"
   LOG_LEVEL: {{ .Values.massdriver.logLevel | quote }}
   {{- if .Values.massdriver.epmd.enabled }}
   MD_EPMD_CLUSTER_SERVICE: {{ include "massdriver.fullname" . }}-massdriver-epmd.{{ .Release.Namespace }}.svc
   {{- end }}
   MD_API_URL: {{ include "massdriver.protocol" . }}://{{ .Values.massdriver.apiSubdomain }}.{{ .Values.domain }}
-  {{- include "massdriver.optionalEnv" (dict "key" "MD_DEPLOYMENT_LOG_COMPACTION_CONCURRENCY" "value" .Values.massdriver.concurrency.deploymentLogCompaction "root" .) }}
   MD_DOCS_URL: {{ .Values.massdriver.docsUrl | default "https://docs.massdriver.cloud" | quote }}
-  {{- include "massdriver.optionalEnv" (dict "key" "MD_ENVIRONMENT_DEPLOY_CONCURRENCY" "value" .Values.massdriver.concurrency.environmentDeploys "root" .) }}
-  {{- include "massdriver.optionalEnv" (dict "key" "MD_EVENT_DESTINATIONS_DELIVERY_CONCURRENCY" "value" .Values.massdriver.concurrency.eventDeliveries "root" .) }}
   MD_FRONTEND_URL: {{ include "massdriver.protocol" . }}://{{ .Values.massdriver.appSubdomain }}.{{ .Values.domain }}
-  {{- include "massdriver.optionalEnv" (dict "key" "MD_INTEGRATION_RUN_CONCURRENCY" "value" .Values.massdriver.concurrency.integrationRuns "root" .) }}
   MD_METRICS_SERVER_ENABLED: "{{ .Values.massdriver.metrics.enabled }}"
   MD_METRICS_SERVER_PORT: {{ .Values.massdriver.metrics.port | toString | quote }}
   MD_REPOSITORY_BUCKET: {{ .Values.massdriver.blobStorage.massdriverBucket }}
@@ -64,13 +56,29 @@ data:
   PHX_URL_HOST: {{ .Values.massdriver.apiSubdomain }}.{{ .Values.domain }}
   PHX_URL_PORT: "{{ if eq (include "massdriver.protocol" .) "https" }}443{{ else }}80{{ end }}"
   PHX_URL_SCHEME: {{ include "massdriver.protocol" . }}
-  {{- include "massdriver.optionalEnv" (dict "key" "POSTGRES_POOL_SIZE" "value" .Values.postgres.poolSize "root" .) }}
-  {{- include "massdriver.optionalEnv" (dict "key" "POSTGRES_PORT" "value" .Values.postgres.port "root" .) }}
-  {{- include "massdriver.optionalEnv" (dict "key" "POSTGRES_PREPARE" "value" .Values.postgres.prepare "root" .) }}
-  {{- include "massdriver.optionalEnv" (dict "key" "POSTGRES_QUEUE_INTERVAL_MS" "value" .Values.postgres.queueIntervalMs "root" .) }}
-  {{- include "massdriver.optionalEnv" (dict "key" "POSTGRES_QUEUE_TARGET_MS" "value" .Values.postgres.queueTargetMs "root" .) }}
-  {{- include "massdriver.optionalEnv" (dict "key" "POSTGRES_TIMEOUT_MS" "value" .Values.postgres.timeoutMs "root" .) }}
   TERRAFORM_STATE_BUCKET_NAME: {{ .Values.massdriver.blobStorage.stateBucket }}
+  {{- /* A key the operator already set in additionalEnvs is not rendered again, so the ConfigMap has no duplicate keys. */}}
+  {{- $additionalEnvs := .Values.massdriver.additionalEnvs | default dict }}
+  {{- if not (hasKey $additionalEnvs "POSTGRES_PORT") }}
+  POSTGRES_PORT: {{ .Values.postgres.port | toString | quote }}
+  {{- end }}
+  {{- if and .Values.postgres.poolSize (not (hasKey $additionalEnvs "POSTGRES_POOL_SIZE")) }}
+  POSTGRES_POOL_SIZE: {{ .Values.postgres.poolSize | toString | quote }}
+  {{- end }}
+  {{- with .Values.massdriver.concurrency }}
+  {{- if and .environmentDeploys (not (hasKey $additionalEnvs "MD_ENVIRONMENT_DEPLOY_CONCURRENCY")) }}
+  MD_ENVIRONMENT_DEPLOY_CONCURRENCY: {{ .environmentDeploys | toString | quote }}
+  {{- end }}
+  {{- if and .eventDeliveries (not (hasKey $additionalEnvs "MD_EVENT_DESTINATIONS_DELIVERY_CONCURRENCY")) }}
+  MD_EVENT_DESTINATIONS_DELIVERY_CONCURRENCY: {{ .eventDeliveries | toString | quote }}
+  {{- end }}
+  {{- if and .integrationRuns (not (hasKey $additionalEnvs "MD_INTEGRATION_RUN_CONCURRENCY")) }}
+  MD_INTEGRATION_RUN_CONCURRENCY: {{ .integrationRuns | toString | quote }}
+  {{- end }}
+  {{- if and .deploymentLogCompaction (not (hasKey $additionalEnvs "MD_DEPLOYMENT_LOG_COMPACTION_CONCURRENCY")) }}
+  MD_DEPLOYMENT_LOG_COMPACTION_CONCURRENCY: {{ .deploymentLogCompaction | toString | quote }}
+  {{- end }}
+  {{- end }}
   {{- range $key, $value := .Values.massdriver.additionalEnvs }}
   {{ $key }}: {{ $value | toString | quote }}
   {{- end }}
