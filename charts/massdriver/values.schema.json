@@ -130,33 +130,33 @@
           "maximum": 65535
         },
         "poolSize": {
-          "type": "integer",
+          "type": ["integer", "null"],
           "minimum": 1
         },
         "queueTargetMs": {
-          "type": "integer",
+          "type": ["integer", "null"],
           "minimum": 1
         },
         "queueIntervalMs": {
-          "type": "integer",
+          "type": ["integer", "null"],
           "minimum": 1
         },
         "timeoutMs": {
-          "type": "integer",
+          "type": ["integer", "null"],
           "minimum": 1
         },
         "prepare": {
-          "type": "string",
-          "enum": ["named", "unnamed"]
+          "type": ["string", "null"],
+          "enum": ["named", "unnamed", null]
         },
         "ssl": {
           "type": "object",
           "properties": {
             "verify": {
-              "type": "boolean"
+              "type": ["boolean", "null"]
             },
             "caCert": {
-              "type": "string"
+              "type": ["string", "null"]
             }
           }
         }

@@ -19,6 +19,8 @@ annotations:
       description: massdriver.concurrency sets how many background jobs of each type a Massdriver pod runs at the same time.
     - kind: added
       description: massdriver.extraEnv adds Kubernetes-format environment variables, including valueFrom, to the Massdriver container and the migration job.
+    - kind: changed
+      description: The new database and concurrency values are optional, and a key already set in massdriver.additionalEnvs is not set again by the chart.
 
 dependencies:
   - name: argo-workflows

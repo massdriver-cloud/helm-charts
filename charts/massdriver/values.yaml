@@ -7,26 +7,33 @@ postgres:
   database: massdriver
   port: 5432
 
+  # The settings below are optional. When a value is empty, Massdriver uses the default stated in its comment.
+
   # Database connections each Massdriver pod holds open, shared by web requests and background work.
   # poolSize × massdriver.replicaCount, plus a few connections for the migration job, must stay below the database's max_connections.
-  poolSize: 20
+  # Default: 20
+  poolSize:
   # Target time, in milliseconds, to wait for a free connection from the pool. If waits stay above this for
   # queueIntervalMs, the pool starts dropping requests to recover. Raise both if you see "connection not available" errors under load.
-  queueTargetMs: 50
-  queueIntervalMs: 1000
+  # Defaults: queueTargetMs 50, queueIntervalMs 2000
+  queueTargetMs:
+  queueIntervalMs:
   # How long a single database query can run, in milliseconds, before it is cancelled.
-  timeoutMs: 15000
+  # Default: 15000
+  timeoutMs:
   # Prepared statement mode: "named" or "unnamed".
   # Set to "unnamed" when connecting through PgBouncer or RDS Proxy in transaction pooling mode.
-  prepare: named
+  # Default: named
+  prepare:
 
   # TLS for the database connection. TLS is always on; these settings control certificate verification.
   ssl:
     # Verify the database server's certificate and hostname. Without caCert, the system CA bundle is used.
-    verify: false
+    # Default: false
+    verify:
     # PEM-encoded CA certificate to verify the database server against, e.g. the AWS RDS CA bundle.
     # Only used when verify is true.
-    caCert: ""
+    caCert:
 
 smtp:
   username: 
@@ -189,15 +196,16 @@ massdriver:
 
   # Background jobs each Massdriver pod runs at the same time, per job type.
   # Each running job uses a database connection from postgres.poolSize, so lower these on a small database.
+  # When a value is empty, Massdriver uses the default stated in its comment.
   concurrency:
-    # Deployments started by an environment-wide deploy.
-    environmentDeploys: 10
-    # Event deliveries to event destinations.
-    eventDeliveries: 10
-    # Scheduled cloud integration runs.
-    integrationRuns: 3
-    # Jobs that combine a finished deployment's log files into one file.
-    deploymentLogCompaction: 5
+    # Deployments started by an environment-wide deploy. Default: 10
+    environmentDeploys:
+    # Event deliveries to event destinations. Default: 10
+    eventDeliveries:
+    # Scheduled cloud integration runs. Default: 3
+    integrationRuns:
+    # Jobs that combine a finished deployment's log files into one file. Default: 5
+    deploymentLogCompaction:
 
   resources:
     limits:
