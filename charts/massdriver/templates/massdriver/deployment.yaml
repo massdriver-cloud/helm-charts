@@ -18,6 +18,7 @@ spec:
         {{- toYaml . | nindent 8 }}
         {{- end }}
         configmap.massdriver-envs/checksum: {{ include (print $.Template.BasePath "/massdriver/configmap-envs.yaml") . | sha256sum }}
+        configmap.postgres-ca/checksum: {{ include (print $.Template.BasePath "/massdriver/configmap-postgres-ca.yaml") . | sha256sum }}
         configmap.ui-envs/checksum: {{ include (print $.Template.BasePath "/massdriver/configmap-ui.yaml") . | sha256sum }}
         secret.massdriver-envs/checksum: {{ include (print $.Template.BasePath "/massdriver/secret-envs.yaml") . | sha256sum }}
         secret.massdriver-identity-tokens/checksum: {{ include (print $.Template.BasePath "/massdriver/secret-identity-tokens.yaml") . | sha256sum }}
@@ -57,6 +58,9 @@ spec:
                   key: previousPublicKeys
                   optional: true
             {{- end }}
+            {{- with .Values.massdriver.extraEnv }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
           envFrom:
             - configMapRef:
                 name: {{ include "massdriver.fullname" . }}-massdriver-envs
@@ -92,6 +96,12 @@ spec:
           securityContext:
             {{- toYaml . | nindent 12 }}
           {{- end }}
+          {{- if .Values.postgres.ssl.caCert }}
+          volumeMounts:
+            - name: postgres-ca
+              mountPath: {{ include "massdriver.postgresCaCertDir" . }}
+              readOnly: true
+          {{- end }}
         - name: ui
           image: "{{ .Values.ui.image.repository }}:{{ .Values.ui.image.tag }}"
           imagePullPolicy: {{ .Values.ui.image.pullPolicy }}
@@ -118,6 +128,12 @@ spec:
           securityContext:
             {{- toYaml . | nindent 12 }}
           {{- end }}
+      {{- if .Values.postgres.ssl.caCert }}
+      volumes:
+        - name: postgres-ca
+          configMap:
+            name: {{ include "massdriver.fullname" . }}-postgres-ca
+      {{- end }}
       {{- with .Values.massdriver.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

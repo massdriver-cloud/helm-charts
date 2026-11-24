@@ -128,6 +128,37 @@
           "type": "integer",
           "minimum": 1,
           "maximum": 65535
+        },
+        "poolSize": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "queueTargetMs": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "queueIntervalMs": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "timeoutMs": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "prepare": {
+          "type": "string",
+          "enum": ["named", "unnamed"]
+        },
+        "ssl": {
+          "type": "object",
+          "properties": {
+            "verify": {
+              "type": "boolean"
+            },
+            "caCert": {
+              "type": "string"
+            }
+          }
         }
       }
     },

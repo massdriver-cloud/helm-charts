@@ -11,14 +11,22 @@ data:
   BLOB_STORAGE_PORT: "80"
   BLOB_STORAGE_SCHEME: http
   DATABASE_SSL: "true"
+  {{- if .Values.postgres.ssl.caCert }}
+  DATABASE_SSL_CA_CERT_FILE: {{ include "massdriver.postgresCaCertPath" . | quote }}
+  {{- end }}
+  DATABASE_SSL_VERIFY: {{ .Values.postgres.ssl.verify | toString | quote }}
   FORCE_V2_LOGGING: "true"
   LOG_LEVEL: {{ .Values.massdriver.logLevel | quote }}
   {{- if .Values.massdriver.epmd.enabled }}
   MD_EPMD_CLUSTER_SERVICE: {{ include "massdriver.fullname" . }}-massdriver-epmd.{{ .Release.Namespace }}.svc
   {{- end }}
   MD_API_URL: {{ include "massdriver.protocol" . }}://{{ .Values.massdriver.apiSubdomain }}.{{ .Values.domain }}
+  MD_DEPLOYMENT_LOG_COMPACTION_CONCURRENCY: {{ .Values.massdriver.concurrency.deploymentLogCompaction | toString | quote }}
   MD_DOCS_URL: {{ .Values.massdriver.docsUrl | default "https://docs.massdriver.cloud" | quote }}
+  MD_ENVIRONMENT_DEPLOY_CONCURRENCY: {{ .Values.massdriver.concurrency.environmentDeploys | toString | quote }}
+  MD_EVENT_DESTINATIONS_DELIVERY_CONCURRENCY: {{ .Values.massdriver.concurrency.eventDeliveries | toString | quote }}
   MD_FRONTEND_URL: {{ include "massdriver.protocol" . }}://{{ .Values.massdriver.appSubdomain }}.{{ .Values.domain }}
+  MD_INTEGRATION_RUN_CONCURRENCY: {{ .Values.massdriver.concurrency.integrationRuns | toString | quote }}
   MD_METRICS_SERVER_ENABLED: "{{ .Values.massdriver.metrics.enabled }}"
   MD_METRICS_SERVER_PORT: {{ .Values.massdriver.metrics.port | toString | quote }}
   MD_REPOSITORY_BUCKET: {{ .Values.massdriver.blobStorage.massdriverBucket }}
@@ -56,6 +64,12 @@ data:
   PHX_URL_HOST: {{ .Values.massdriver.apiSubdomain }}.{{ .Values.domain }}
   PHX_URL_PORT: "{{ if eq (include "massdriver.protocol" .) "https" }}443{{ else }}80{{ end }}"
   PHX_URL_SCHEME: {{ include "massdriver.protocol" . }}
+  POSTGRES_POOL_SIZE: {{ .Values.postgres.poolSize | toString | quote }}
+  POSTGRES_PORT: {{ .Values.postgres.port | toString | quote }}
+  POSTGRES_PREPARE: {{ .Values.postgres.prepare | quote }}
+  POSTGRES_QUEUE_INTERVAL_MS: {{ .Values.postgres.queueIntervalMs | toString | quote }}
+  POSTGRES_QUEUE_TARGET_MS: {{ .Values.postgres.queueTargetMs | toString | quote }}
+  POSTGRES_TIMEOUT_MS: {{ .Values.postgres.timeoutMs | toString | quote }}
   TERRAFORM_STATE_BUCKET_NAME: {{ .Values.massdriver.blobStorage.stateBucket }}
   {{- range $key, $value := .Values.massdriver.additionalEnvs }}
   {{ $key }}: {{ $value | toString | quote }}

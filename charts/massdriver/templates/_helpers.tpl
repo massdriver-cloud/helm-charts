@@ -187,3 +187,14 @@ and any additionalOrigins (full URLs for external tools like Backstage or Port).
   {{- end -}}
   {{- join "," $origins -}}
 {{- end -}}
+
+{{/*
+Directory and file path where the Postgres CA certificate is mounted when postgres.ssl.caCert is set.
+*/}}
+{{- define "massdriver.postgresCaCertDir" -}}
+/etc/massdriver/postgres-ca
+{{- end -}}
+
+{{- define "massdriver.postgresCaCertPath" -}}
+{{ include "massdriver.postgresCaCertDir" . }}/ca.crt
+{{- end -}}
